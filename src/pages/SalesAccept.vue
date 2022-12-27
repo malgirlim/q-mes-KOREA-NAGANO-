@@ -9,12 +9,26 @@ import Lucide from "../base-components/Lucide";
 import Tippy from "../base-components/Tippy";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
+import moment from 'moment'
+import VueMoment from 'vue-moment'
 
+//등록 Modal
+const insertModal = ref(false);
+const setinsertModal = (value: boolean) => {
+  insertModal.value = value;
+};
+
+//삭제 Modal
 const deleteConfirmationModal = ref(false);
 const setDeleteConfirmationModal = (value: boolean) => {
   deleteConfirmationModal.value = value;
 };
 const deleteButtonRef = ref(null);
+
+// 날짜 구하기
+const now = moment().format('YYYY-MM-DD');
+const nowPlus = moment().add(7, 'days').format('YYYY-MM-DD');
+
 </script>
 
 <template>
@@ -22,7 +36,18 @@ const deleteButtonRef = ref(null);
     <div
       class="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap"
     >
-      <Button variant="primary" class="mr-2 shadow-md"> 등록 </Button>
+      <Button
+          class="mr-2 shadow-md"
+          as="a"
+          variant="primary"
+          @click="
+            () => {
+              setinsertModal(true);
+            }
+          "
+        >
+          추가
+        </Button>
 
       <div class="hidden mx-auto md:block text-slate-500">
         총 150개 중 10개 항목 조회됨
@@ -176,6 +201,52 @@ const deleteButtonRef = ref(null);
     </div>
     <!-- END: Pagination -->
   </div>
+   <!-- BEGIN: Insert Modal Content -->
+      <Dialog
+        size="md"
+        :open="insertModal"
+        @close="
+          () => {
+            setinsertModal(false);
+          }
+        "
+      >
+        <Dialog.Panel class="p-10 text-center">
+          <!--추가 Modal 내용 시작-->
+          <div style="text-align: left">
+            <div>
+              <FormLabel htmlFor="vertical-form-1">수주일자</FormLabel>
+              <FormInput id="vertical-form-1" type="date" :modelValue=now placeholder=""/>
+            </div>
+            <div class="mt-3">
+              <FormLabel htmlFor="vertical-form-1">수주번호</FormLabel>
+              <FormInput id="vertical-form-1" type="text" placeholder="" />
+            </div>
+            <div class="mt-3">
+              <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
+              <FormInput id="vertical-form-1" type="text" placeholder="" />
+            </div>
+            <div class="mt-3">
+              <FormLabel htmlFor="vertical-form-1">품목명</FormLabel>
+              <FormInput id="vertical-form-1" type="text" placeholder="" />
+            </div>
+            <div class="mt-3">
+              <FormLabel htmlFor="vertical-form-2">수량</FormLabel>
+              <FormInput id="vertical-form-2" type="text" placeholder="" />
+            </div>
+            <div class="mt-3">
+              <FormLabel htmlFor="vertical-form-2">납기일</FormLabel>
+              <FormInput id="vertical-form-2" type="date" :modelValue=nowPlus placeholder="" />
+            </div>
+            <div class="mt-5 text-right">
+              <Button class="mr-2 shadow-md" variant="primary">확인</Button>
+              <Button class="mr-2 shadow-md" variant="primary">취소</Button>
+            </div>
+          </div>
+          <!--Modal 내용 끝--></Dialog.Panel
+        >
+      </Dialog>
+  <!-- END: Insert Modal Content -->
   <!-- BEGIN: Delete Confirmation Modal -->
   <Dialog
     :open="deleteConfirmationModal"
@@ -189,10 +260,9 @@ const deleteButtonRef = ref(null);
     <Dialog.Panel>
       <div class="p-5 text-center">
         <Lucide icon="XCircle" class="w-16 h-16 mx-auto mt-3 text-danger" />
-        <div class="mt-5 text-3xl">Are you sure?</div>
+        <div class="mt-5 text-3xl">삭제</div>
         <div class="mt-2 text-slate-500">
-          Do you really want to delete these records? <br />
-          This process cannot be undone.
+          정말 삭제하시겠습니까?
         </div>
       </div>
       <div class="px-5 pb-8 text-center">
@@ -206,7 +276,7 @@ const deleteButtonRef = ref(null);
           "
           class="w-24 mr-1"
         >
-          Cancel
+          취소
         </Button>
         <Button
           variant="danger"
@@ -214,7 +284,7 @@ const deleteButtonRef = ref(null);
           class="w-24"
           ref="deleteButtonRef"
         >
-          Delete
+          삭제
         </Button>
       </div>
     </Dialog.Panel>
