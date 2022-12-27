@@ -1,4 +1,4 @@
-# 한국 나가노 간이 MES
+# Q MES
 
 ## Vue 3 + TypeScript + Vite
 
