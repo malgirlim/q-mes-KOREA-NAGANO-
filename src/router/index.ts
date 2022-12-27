@@ -3,88 +3,64 @@ import SideMenu from "../layouts/SideMenu/SideMenu.vue";
 import SimpleMenu from "../layouts/SimpleMenu/SimpleMenu.vue";
 import TopMenu from "../layouts/TopMenu/TopMenu.vue";
 import Main from "../pages/Main.vue";
-import MasterUser from "../pages/MasterUser.vue";
-import MasterProduct from "../pages/MasterProduct.vue";
-import MasterClient from "../pages/MasterClient.vue";
-import MasterBad from "../pages/MasterBad.vue";
-import MasterProcess from "../pages/MasterProcess.vue";
-import MasterLocation from "../pages/MasterLocation.vue";
-import StockReceive from "../pages/StockReceive.vue";
-import StockUse from "../pages/StockUse.vue";
-import StockBad from "../pages/StockBad.vue";
-import MonitorStock from "../pages/MonitorStock.vue";
-import MonitorBad from "../pages/MonitorBad.vue";
-import MonitorSafe from "../pages/MonitorSafe.vue";
+import SalesAccept from "../pages/SalesAccept.vue";
+import ClientShipment from "../pages/ClientShipment.vue";
+import RawOrder from "../pages/RawOrder.vue";
+import RawReceive from "../pages/RawReceive.vue";
+import RawIssue from "../pages/RawIssue.vue";
+import RawTake from "../pages/RawTake.vue";
+import WorkOrder from "../pages/WorkOrder.vue";
+import WarehouseRelease from "../pages/WarehouseRelease.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/side-menu",
     component: SideMenu,
     children: [
       {
-        path: "/",
+        path: "/main",
         name: "side-menu-main",
         component: Main,
       },
       {
-        path: "master/user",
-        name: "side-menu-master-user",
-        component: MasterUser,
+        path: "sales/accept",
+        name: "side-menu-sales-accept",
+        component: SalesAccept,
       },
       {
-        path: "master/product",
-        name: "side-menu-master-product",
-        component: MasterProduct,
+        path: "sales/shipment",
+        name: "side-menu-client-shipment",
+        component: ClientShipment,
       },
       {
-        path: "master/client",
-        name: "side-menu-master-client",
-        component: MasterClient,
+        path: "purchase/order",
+        name: "side-menu-raw-order",
+        component: RawOrder,
       },
       {
-        path: "master/bad",
-        name: "side-menu-master-bad",
-        component: MasterBad,
+        path: "purchase/receive",
+        name: "side-menu-raw-receive",
+        component: RawReceive,
       },
       {
-        path: "master/process",
-        name: "side-menu-master-process",
-        component: MasterProcess,
+        path: "purchase/issue",
+        name: "side-menu-raw-issue",
+        component: RawIssue,
       },
       {
-        path: "master/location",
-        name: "side-menu-master-location",
-        component: MasterLocation,
+        path: "product/take",
+        name: "side-menu-raw-take",
+        component: RawTake,
       },
       {
-        path: "stock/receive",
-        name: "side-menu-stock-receive",
-        component: StockReceive,
+        path: "product/work",
+        name: "side-menu-work-order",
+        component: WorkOrder,
       },
       {
-        path: "stock/use",
-        name: "side-menu-stock-use",
-        component: StockUse,
-      },
-      {
-        path: "stock/bad",
-        name: "side-menu-stock-bad",
-        component: StockBad,
-      },
-      {
-        path: "monitor/stock",
-        name: "side-menu-monitor-stock",
-        component: MonitorStock,
-      },
-      {
-        path: "monitor/bad",
-        name: "side-menu-monitor-bad",
-        component: MonitorBad,
-      },
-      {
-        path: "monitor/safe",
-        name: "side-menu-monitor-safe",
-        component: MonitorSafe,
+        path: "product/warehouse",
+        name: "side-menu-warehouse-release",
+        component: WarehouseRelease,
       },
     ],
   },
@@ -93,74 +69,54 @@ const routes = [
     component: SimpleMenu,
     children: [
       {
-        path: "/",
+        path: "/main",
         name: "simple-menu-main",
         component: Main,
       },
       {
-        path: "master/user",
-        name: "simple-menu-master-user",
-        component: MasterUser,
+        path: "sales/accept",
+        name: "simple-menu-sales-accept",
+        component: SalesAccept,
       },
       {
-        path: "master/product",
-        name: "simple-menu-master-product",
-        component: MasterProduct,
+        path: "sales/shipment",
+        name: "simple-menu-client-shipment",
+        component: ClientShipment,
       },
       {
-        path: "master/client",
-        name: "simple-menu-master-client",
-        component: MasterClient,
+        path: "purchase/order",
+        name: "simple-menu-raw-order",
+        component: RawOrder,
       },
       {
-        path: "master/bad",
-        name: "simple-menu-master-bad",
-        component: MasterBad,
+        path: "purchase/receive",
+        name: "simple-menu-raw-receive",
+        component: RawReceive,
       },
       {
-        path: "master/process",
-        name: "simple-menu-master-process",
-        component: MasterProcess,
+        path: "purchase/issue",
+        name: "simple-menu-raw-issue",
+        component: RawIssue,
       },
       {
-        path: "master/location",
-        name: "simple-menu-master-location",
-        component: MasterLocation,
+        path: "product/take",
+        name: "simple-menu-raw-take",
+        component: RawTake,
       },
       {
-        path: "stock/receive",
-        name: "simple-menu-stock-receive",
-        component: StockReceive,
+        path: "product/work",
+        name: "simple-menu-work-order",
+        component: WorkOrder,
       },
       {
-        path: "stock/use",
-        name: "simple-menu-stock-use",
-        component: StockUse,
-      },
-      {
-        path: "stock/bad",
-        name: "simple-menu-stock-bad",
-        component: StockBad,
-      },
-      {
-        path: "monitor/stock",
-        name: "simple-menu-monitor-stock",
-        component: MonitorStock,
-      },
-      {
-        path: "monitor/bad",
-        name: "simple-menu-monitor-bad",
-        component: MonitorBad,
-      },
-      {
-        path: "monitor/safe",
-        name: "simple-menu-monitor-safe",
-        component: MonitorSafe,
+        path: "product/warehouse",
+        name: "simple-menu-warehouse-release",
+        component: WarehouseRelease,
       },
     ],
   },
   {
-    path: "/top-menu",
+    path: "/",
     component: TopMenu,
     children: [
       {
@@ -169,64 +125,44 @@ const routes = [
         component: Main,
       },
       {
-        path: "master/user",
-        name: "top-menu-master-user",
-        component: MasterUser,
+        path: "sales/accept",
+        name: "top-menu-sales-accept",
+        component: SalesAccept,
       },
       {
-        path: "master/product",
-        name: "top-menu-master-product",
-        component: MasterProduct,
+        path: "sales/shipment",
+        name: "top-menu-client-shipment",
+        component: ClientShipment,
       },
       {
-        path: "master/client",
-        name: "top-menu-master-client",
-        component: MasterClient,
+        path: "purchase/order",
+        name: "top-menu-raw-order",
+        component: RawOrder,
       },
       {
-        path: "master/bad",
-        name: "top-menu-master-bad",
-        component: MasterBad,
+        path: "purchase/receive",
+        name: "top-menu-raw-receive",
+        component: RawReceive,
       },
       {
-        path: "master/process",
-        name: "top-menu-master-process",
-        component: MasterProcess,
+        path: "purchase/issue",
+        name: "top-menu-raw-issue",
+        component: RawIssue,
       },
       {
-        path: "master/location",
-        name: "top-menu-master-location",
-        component: MasterLocation,
+        path: "product/take",
+        name: "top-menu-raw-take",
+        component: RawTake,
       },
       {
-        path: "stock/receive",
-        name: "top-menu-stock-receive",
-        component: StockReceive,
+        path: "product/work",
+        name: "top-menu-work-order",
+        component: WorkOrder,
       },
       {
-        path: "stock/use",
-        name: "top-menu-stock-use",
-        component: StockUse,
-      },
-      {
-        path: "stock/bad",
-        name: "top-menu-stock-bad",
-        component: StockBad,
-      },
-      {
-        path: "monitor/stock",
-        name: "top-menu-monitor-stock",
-        component: MonitorStock,
-      },
-      {
-        path: "monitor/bad",
-        name: "top-menu-monitor-bad",
-        component: MonitorBad,
-      },
-      {
-        path: "monitor/safe",
-        name: "top-menu-monitor-safe",
-        component: MonitorSafe,
+        path: "product/warehouse",
+        name: "top-menu-warehouse-release",
+        component: WarehouseRelease,
       },
     ],
   },

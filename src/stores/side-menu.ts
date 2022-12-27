@@ -22,83 +22,63 @@ export const useSideMenuStore = defineStore("sideMenu", {
         title: "메인",
       },
       {
-        icon: "Info",
+        icon: "Sheet",
         pageName: "",
-        title: "기준정보",
+        title: "영업 관리",
         subMenu: [
           {
-            icon: "Users",
-            pageName: "side-menu-master-user",
-            title: "사용자 등록",
+            icon: "FileText",
+            pageName: "side-menu-sales-accept",
+            title: "수주 접수",
           },
           {
-            icon: "PackagePlus",
-            pageName: "side-menu-master-product",
-            title: "품목 등록",
-          },
-          {
-            icon: "CreditCard",
-            pageName: "side-menu-master-client",
-            title: "거래처 등록",
-          },
-          {
-            icon: "PackageX",
-            pageName: "side-menu-master-bad",
-            title: "불량 내용 등록",
-          },
-          {
-            icon: "Cpu",
-            pageName: "side-menu-master-process",
-            title: "공정 등록",
-          },
-          {
-            icon: "Navigation",
-            pageName: "side-menu-master-location",
-            title: "원자재 위치 등록",
+            icon: "Truck",
+            pageName: "side-menu-client-shipment",
+            title: "고객사 출하",
           },
         ],
       },
       {
-        icon: "Package",
+        icon: "DollarSign",
         pageName: "",
-        title: "재고관리",
-        subMenu: [
-          {
-            icon: "PackagePlus",
-            pageName: "side-menu-stock-receive",
-            title: "원자재 입고 등록",
-          },
-          {
-            icon: "PackageMinus",
-            pageName: "side-menu-stock-use",
-            title: "원자재 사용 등록",
-          },
-          {
-            icon: "PackageX",
-            pageName: "side-menu-stock-bad",
-            title: "원자재 불량 등록",
-          },
-        ],
-      },
-      {
-        icon: "Monitor",
-        pageName: "",
-        title: "모니터링",
+        title: "구매 관리",
         subMenu: [
           {
             icon: "PackageSearch",
-            pageName: "side-menu-monitor-stock",
-            title: "원자재 재고조회",
+            pageName: "side-menu-raw-order",
+            title: "원자재 발주",
           },
           {
-            icon: "PackageX",
-            pageName: "side-menu-monitor-bad",
-            title: "원자재 불량조회",
+            icon: "PackagePlus",
+            pageName: "side-menu-raw-receive",
+            title: "원자재 입고",
           },
           {
-            icon: "Siren",
-            pageName: "side-menu-monitor-safe",
-            title: "안전재고 미달통보",
+            icon: "PackageMinus",
+            pageName: "side-menu-raw-issue",
+            title: "원자재 불출",
+          },
+        ],
+      },
+      {
+        icon: "Factory",
+        pageName: "",
+        title: "생산 관리",
+        subMenu: [
+          {
+            icon: "PackagePlus",
+            pageName: "side-menu-raw-take",
+            title: "자재 인수",
+          },
+          {
+            icon: "FileText",
+            pageName: "side-menu-work-order",
+            title: "작업 지시",
+          },
+          {
+            icon: "ShoppingCart",
+            pageName: "side-menu-warehouse-release",
+            title: "완제품 창고 출고",
           },
         ],
       },

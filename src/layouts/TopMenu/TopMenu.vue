@@ -29,14 +29,16 @@ onMounted(() => {
 
 <template>
   <div class="py-5 md:py-0">
+    <!--BEGIN : 컬러스위쳐
     <DarkModeSwitcher />
     <MainColorSwitcher />
+    END : 컬러 스위쳐-->
     <MobileMenu />
     <TopBar layout="top-menu" />
     <!-- BEGIN: Top Menu -->
     <nav
       :class="[
-        'relative z-50 hidden pt-32 -mt-4 md:block',
+        'relative z-50 hidden pt-32 -mt-7 md:block',
 
         // Animation
         'opacity-0 animate-[0.4s_ease-in-out_0.2s_intro-top-menu] animate-fill-mode-forwards',
@@ -107,7 +109,7 @@ onMounted(() => {
     <!-- BEGIN: Content -->
     <div
       :class="[
-        'max-w-full md:max-w-none rounded-[30px] md:rounded-[35px_35px_0_0] px-4 md:px-[22px] min-w-0 min-h-screen bg-slate-100 flex-1 pb-10 mt-5 relative dark:bg-darkmode-700',
+        'max-w-full md:max-w-none rounded-[30px] md:rounded-[20px_20px_20px_20px] px-4 md:px-[22px] min-w-0 min-h-0 bg-slate-100 flex-1 pb-10 m-3 mt-5 relative dark:bg-darkmode-700',
         'before:content-[\'\'] before:w-full before:h-px before:block',
       ]"
     >

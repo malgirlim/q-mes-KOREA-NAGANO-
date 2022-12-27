@@ -34,7 +34,7 @@ const hideSearchDropdown = () => {
     <div class="flex items-center h-full">
       <!-- BEGIN: Logo -->
       <RouterLink
-        :to="{ name: 'side-menu-main' }"
+        :to="{ name: 'top-menu-main' }"
         :class="[
           '-intro-x hidden md:flex',
           props.layout == 'side-menu' && 'xl:w-[180px]',
@@ -54,7 +54,7 @@ const hideSearchDropdown = () => {
             props.layout == 'simple-menu' && 'hidden',
           ]"
         >
-          KOREA NAGANO
+          Q-MES
         </span>
       </RouterLink>
       <!-- END: Logo -->

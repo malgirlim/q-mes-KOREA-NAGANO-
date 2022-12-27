@@ -31,8 +31,10 @@ onMounted(() => {
 
 <template>
   <div class="py-5 md:py-0">
+    <!--BEGIN : 컬러스위쳐
     <DarkModeSwitcher />
     <MainColorSwitcher />
+    END : 컬러 스위쳐-->
     <MobileMenu />
     <TopBar layout="simple-menu" />
     <div class="flex overflow-hidden">
