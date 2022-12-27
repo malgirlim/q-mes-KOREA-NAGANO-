@@ -83,7 +83,7 @@ const deleteButtonRef = ref(null);
         </Table.Thead>
         <Table.Tbody>
           <Table.Tr
-            v-for="(faker, fakerKey) in _.take(fakerData, 9)"
+            v-for="(faker, fakerKey) in _.take(fakerData, 10)"
             :key="fakerKey"
             class="intro-x"
           >
