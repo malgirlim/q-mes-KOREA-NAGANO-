@@ -27,8 +27,14 @@ onMounted(async () => loadTodos());
 
 //등록 Modal
 const insertModal = ref(false);
-const setinsertModal = (value: boolean) => {
+const setInsertModal = (value: boolean) => {
   insertModal.value = value;
+};
+
+//수정 Modal
+const editModal = ref(false);
+const setEditModal = (value: boolean) => {
+  editModal.value = value;
 };
 
 //삭제 Modal
@@ -54,11 +60,11 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
         variant="primary"
         @click="
           () => {
-            setinsertModal(true);
+            setInsertModal(true);
           }
         "
       >
-        추가
+        등록
       </Button>
 
       <div class="hidden mx-auto md:block text-slate-500">
@@ -125,6 +131,7 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
         </Table.Thead>
         <Table.Tbody>
           <!-- <Table.Tr
+          <Table.Tr
             v-for="(faker, fakerKey) in _.take(fakerData, 10)"
             :key="fakerKey"
             class="intro-x"
@@ -174,7 +181,16 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
             >
               <div class="flex items-center justify-center">
-                <a class="flex items-center mr-3" href="#">
+                <a
+                  class="flex items-center mr-3"
+                  href="#"
+                  @click="
+                    (event) => {
+                      event.preventDefault();
+                      setEditModal(true);
+                    }
+                  "
+                >
                   <Lucide icon="CheckSquare" class="w-4 h-4 mr-1" />
                   Edit
                 </a>
@@ -220,7 +236,7 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
           <Lucide icon="ChevronsRight" class="w-4 h-4" />
         </Pagination.Link>
       </Pagination>
-      <FormSelect class="w-20 mt-3 !box sm:mt-0">
+      <FormSelect class="w-20 mt-3 !box sm:mt-0" modelValue="10">
         <option>10</option>
         <option>25</option>
         <option>35</option>
@@ -284,7 +300,157 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
       <!--Modal 내용 끝--></Dialog.Panel
     >
   </Dialog>
+  <!-- BEGIN: Insert Modal Content -->
+  <Dialog
+    size="md"
+    :open="insertModal"
+    @close="
+      () => {
+        setInsertModal(false);
+      }
+    "
+  >
+    <Dialog.Panel class="p-10 text-center">
+      <!--추가 Modal 내용 시작-->
+      <div class="mb-5" style="font-weight: bold">등록</div>
+      <div style="text-align: left">
+        <div>
+          <FormLabel htmlFor="vertical-form-1">수주일자</FormLabel>
+          <FormInput
+            id="vertical-form-1"
+            type="date"
+            :modelValue="now"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-1">수주번호</FormLabel>
+          <FormInput id="vertical-form-1" type="text" placeholder="" />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
+          <FormInput id="vertical-form-1" type="text" placeholder="" />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-1">품목명</FormLabel>
+          <FormInput id="vertical-form-1" type="text" placeholder="" />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-2">수량</FormLabel>
+          <FormInput id="vertical-form-2" type="text" placeholder="" />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-2">납기일</FormLabel>
+          <FormInput
+            id="vertical-form-2"
+            type="date"
+            :modelValue="nowPlus"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-5 text-right">
+          <Button class="mr-2 shadow-md" variant="primary">확인</Button>
+          <Button
+            class="mr-2 shadow-md"
+            variant="primary"
+            @click="
+              () => {
+                setInsertModal(false);
+              }
+            "
+            >취소</Button
+          >
+        </div>
+      </div>
+      <!--Modal 내용 끝--></Dialog.Panel
+    >
+  </Dialog>
+  >>>>>>> 0a3c0ceffefc3e3aba9b9ff48a86f6803f672b10
   <!-- END: Insert Modal Content -->
+  <!-- BEGIN: Edit Modal Content -->
+  <Dialog
+    size="md"
+    :open="editModal"
+    @close="
+      () => {
+        setEditModal(false);
+      }
+    "
+  >
+    <Dialog.Panel class="p-10 text-center">
+      <div class="mb-5" style="font-weight: bold">수정</div>
+      <div style="text-align: left">
+        <div>
+          <FormLabel htmlFor="vertical-form-1">수주일자</FormLabel>
+          <FormInput
+            id="vertical-form-1"
+            type="date"
+            modelValue="2022-12-21"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-1">수주번호</FormLabel>
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            modelValue="A20201221-001"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            modelValue="컴퓨존"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-1">품목명</FormLabel>
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            modelValue="bt2042 bluetooth module v10.11"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-2">수량</FormLabel>
+          <FormInput
+            id="vertical-form-2"
+            type="text"
+            modelValue="100"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-2">납기일</FormLabel>
+          <FormInput
+            id="vertical-form-2"
+            type="date"
+            modelValue="2023-01-11"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-5 text-right">
+          <Button class="mr-2 shadow-md" variant="primary">확인</Button>
+          <Button
+            class="mr-2 shadow-md"
+            variant="primary"
+            @click="
+              () => {
+                setEditModal(false);
+              }
+            "
+            >취소</Button
+          >
+        </div>
+      </div>
+    </Dialog.Panel>
+  </Dialog>
+  <!-- END: Edit Modal Content -->
   <!-- BEGIN: Delete Confirmation Modal -->
   <Dialog
     :open="deleteConfirmationModal"

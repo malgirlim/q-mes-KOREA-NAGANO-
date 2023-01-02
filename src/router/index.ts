@@ -11,6 +11,8 @@ import RawIssue from "../pages/RawIssue.vue";
 import RawTake from "../pages/RawTake.vue";
 import WorkOrder from "../pages/WorkOrder.vue";
 import WarehouseRelease from "../pages/WarehouseRelease.vue";
+import MasterRaw from "../pages/MasterRaw.vue";
+import MonitorStock from "../pages/MonitorStock.vue";
 
 const routes = [
   {
@@ -21,6 +23,11 @@ const routes = [
         path: "/main",
         name: "side-menu-main",
         component: Main,
+      },
+      {
+        path: "/master/raw",
+        name: "side-menu-master-raw",
+        component: MasterRaw,
       },
       {
         path: "sales/accept",
@@ -62,6 +69,11 @@ const routes = [
         name: "side-menu-warehouse-release",
         component: WarehouseRelease,
       },
+      {
+        path: "/monitor/stock",
+        name: "side-menu-monitor-stock",
+        component: MonitorStock,
+      },
     ],
   },
   {
@@ -72,6 +84,11 @@ const routes = [
         path: "/main",
         name: "simple-menu-main",
         component: Main,
+      },
+      {
+        path: "/master/raw",
+        name: "simple-menu-master-raw",
+        component: MasterRaw,
       },
       {
         path: "sales/accept",
@@ -113,6 +130,11 @@ const routes = [
         name: "simple-menu-warehouse-release",
         component: WarehouseRelease,
       },
+      {
+        path: "/monitor/stock",
+        name: "simple-menu-monitor-stock",
+        component: MonitorStock,
+      },
     ],
   },
   {
@@ -123,6 +145,11 @@ const routes = [
         path: "/",
         name: "top-menu-main",
         component: Main,
+      },
+      {
+        path: "/master/raw",
+        name: "top-menu-master-raw",
+        component: MasterRaw,
       },
       {
         path: "sales/accept",
@@ -163,6 +190,11 @@ const routes = [
         path: "product/warehouse",
         name: "top-menu-warehouse-release",
         component: WarehouseRelease,
+      },
+      {
+        path: "/monitor/stock",
+        name: "top-menu-monitor-stock",
+        component: MonitorStock,
       },
     ],
   },
