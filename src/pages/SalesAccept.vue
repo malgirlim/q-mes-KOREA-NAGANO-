@@ -9,8 +9,21 @@ import Lucide from "../base-components/Lucide";
 import Tippy from "../base-components/Tippy";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
-import moment from 'moment'
-import VueMoment from 'vue-moment'
+import moment from "moment";
+import VueMoment from "vue-moment";
+
+import { onMounted, watch } from "vue";
+import PaginationComponent from "../components/pagination/PaginationComponent.vue";
+import { useTodosApi } from "../composables/useTodosApi";
+const currentPage = ref(1);
+const rowsPerPage = ref(30);
+
+const { todos, todosAreLoading, loadTodos, numberOfPages } = useTodosApi(
+  currentPage,
+  rowsPerPage
+);
+
+onMounted(async () => loadTodos());
 
 //등록 Modal
 const insertModal = ref(false);
@@ -26,9 +39,8 @@ const setDeleteConfirmationModal = (value: boolean) => {
 const deleteButtonRef = ref(null);
 
 // 날짜 구하기
-const now = moment().format('YYYY-MM-DD');
-const nowPlus = moment().add(7, 'days').format('YYYY-MM-DD');
-
+const now = moment().format("YYYY-MM-DD");
+const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
 </script>
 
 <template>
@@ -37,17 +49,17 @@ const nowPlus = moment().add(7, 'days').format('YYYY-MM-DD');
       class="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap"
     >
       <Button
-          class="mr-2 shadow-md"
-          as="a"
-          variant="primary"
-          @click="
-            () => {
-              setinsertModal(true);
-            }
-          "
-        >
-          추가
-        </Button>
+        class="mr-2 shadow-md"
+        as="a"
+        variant="primary"
+        @click="
+          () => {
+            setinsertModal(true);
+          }
+        "
+      >
+        추가
+      </Button>
 
       <div class="hidden mx-auto md:block text-slate-500">
         총 150개 중 10개 항목 조회됨
@@ -84,6 +96,11 @@ const nowPlus = moment().add(7, 'days').format('YYYY-MM-DD');
     </div>
     <!-- BEGIN: Data List -->
     <div class="col-span-12 overflow-auto intro-y lg:overflow-visible">
+      <pagination-component
+        class="pagination-component"
+        v-model="currentPage"
+        :numberOfPages="numberOfPages"
+      />
       <Table class="border-spacing-y-[10px] border-separate -mt-2">
         <Table.Thead>
           <Table.Tr>
@@ -107,11 +124,22 @@ const nowPlus = moment().add(7, 'days').format('YYYY-MM-DD');
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
-          <Table.Tr
+          <!-- <Table.Tr
             v-for="(faker, fakerKey) in _.take(fakerData, 10)"
             :key="fakerKey"
             class="intro-x"
-          >
+          > -->
+          <Table.Tr v-for="todo in todos" :key="todo.id" class="intro-x">
+            <Table.Td
+              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+            >
+              <div>{{ todo.id }}</div>
+            </Table.Td>
+            <Table.Td
+              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+            >
+              <div>{{ todo.title }}</div>
+            </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
@@ -201,51 +229,61 @@ const nowPlus = moment().add(7, 'days').format('YYYY-MM-DD');
     </div>
     <!-- END: Pagination -->
   </div>
-   <!-- BEGIN: Insert Modal Content -->
-      <Dialog
-        size="md"
-        :open="insertModal"
-        @close="
-          () => {
-            setinsertModal(false);
-          }
-        "
-      >
-        <Dialog.Panel class="p-10 text-center">
-          <!--추가 Modal 내용 시작-->
-          <div style="text-align: left">
-            <div>
-              <FormLabel htmlFor="vertical-form-1">수주일자</FormLabel>
-              <FormInput id="vertical-form-1" type="date" :modelValue=now placeholder=""/>
-            </div>
-            <div class="mt-3">
-              <FormLabel htmlFor="vertical-form-1">수주번호</FormLabel>
-              <FormInput id="vertical-form-1" type="text" placeholder="" />
-            </div>
-            <div class="mt-3">
-              <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
-              <FormInput id="vertical-form-1" type="text" placeholder="" />
-            </div>
-            <div class="mt-3">
-              <FormLabel htmlFor="vertical-form-1">품목명</FormLabel>
-              <FormInput id="vertical-form-1" type="text" placeholder="" />
-            </div>
-            <div class="mt-3">
-              <FormLabel htmlFor="vertical-form-2">수량</FormLabel>
-              <FormInput id="vertical-form-2" type="text" placeholder="" />
-            </div>
-            <div class="mt-3">
-              <FormLabel htmlFor="vertical-form-2">납기일</FormLabel>
-              <FormInput id="vertical-form-2" type="date" :modelValue=nowPlus placeholder="" />
-            </div>
-            <div class="mt-5 text-right">
-              <Button class="mr-2 shadow-md" variant="primary">확인</Button>
-              <Button class="mr-2 shadow-md" variant="primary">취소</Button>
-            </div>
-          </div>
-          <!--Modal 내용 끝--></Dialog.Panel
-        >
-      </Dialog>
+  <!-- BEGIN: Insert Modal Content -->
+  <Dialog
+    size="md"
+    :open="insertModal"
+    @close="
+      () => {
+        setinsertModal(false);
+      }
+    "
+  >
+    <Dialog.Panel class="p-10 text-center">
+      <!--추가 Modal 내용 시작-->
+      <div style="text-align: left">
+        <div>
+          <FormLabel htmlFor="vertical-form-1">수주일자</FormLabel>
+          <FormInput
+            id="vertical-form-1"
+            type="date"
+            :modelValue="now"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-1">수주번호</FormLabel>
+          <FormInput id="vertical-form-1" type="text" placeholder="" />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
+          <FormInput id="vertical-form-1" type="text" placeholder="" />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-1">품목명</FormLabel>
+          <FormInput id="vertical-form-1" type="text" placeholder="" />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-2">수량</FormLabel>
+          <FormInput id="vertical-form-2" type="text" placeholder="" />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-2">납기일</FormLabel>
+          <FormInput
+            id="vertical-form-2"
+            type="date"
+            :modelValue="nowPlus"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-5 text-right">
+          <Button class="mr-2 shadow-md" variant="primary">확인</Button>
+          <Button class="mr-2 shadow-md" variant="primary">취소</Button>
+        </div>
+      </div>
+      <!--Modal 내용 끝--></Dialog.Panel
+    >
+  </Dialog>
   <!-- END: Insert Modal Content -->
   <!-- BEGIN: Delete Confirmation Modal -->
   <Dialog
@@ -261,9 +299,7 @@ const nowPlus = moment().add(7, 'days').format('YYYY-MM-DD');
       <div class="p-5 text-center">
         <Lucide icon="XCircle" class="w-16 h-16 mx-auto mt-3 text-danger" />
         <div class="mt-5 text-3xl">삭제</div>
-        <div class="mt-2 text-slate-500">
-          정말 삭제하시겠습니까?
-        </div>
+        <div class="mt-2 text-slate-500">정말 삭제하시겠습니까?</div>
       </div>
       <div class="px-5 pb-8 text-center">
         <Button
