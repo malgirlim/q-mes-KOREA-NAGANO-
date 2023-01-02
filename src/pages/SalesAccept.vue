@@ -10,7 +10,6 @@ import Tippy from "../base-components/Tippy";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
 import moment from "moment";
-import VueMoment from "vue-moment";
 
 import { onMounted, watch } from "vue";
 import PaginationComponent from "../components/pagination/PaginationComponent.vue";
