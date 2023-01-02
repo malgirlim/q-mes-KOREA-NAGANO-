@@ -5,6 +5,7 @@ import router from "./router";
 import "./assets/css/app.css";
 
 import VueHtmlToPaper from 'vue-html-to-paper';
+import { append } from 'tom-select/src/utils';
 
 const options = {
   name: '_blank',
@@ -22,4 +23,4 @@ const options = {
   windowTitle: window.document.title, // override the window title
 }
 
-createApp(App).use(router).use(createPinia()).mount('#app').use(VueHtmlToPaper, options)
+createApp(App).use(router).use(createPinia()).use(VueHtmlToPaper, options).mount('#app')
