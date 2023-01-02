@@ -46,6 +46,11 @@ const deleteButtonRef = ref(null);
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
 const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
+
+const print = () => {
+  // Pass the element id here
+  console.log("print");
+};
 </script>
 
 <template>
@@ -86,8 +91,9 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
             </span>
           </Menu.Button>
           <Menu.Items class="w-40">
-            <Menu.Item>
-              <Lucide icon="Printer" class="w-4 h-4 mr-2" /> 출력
+            <Menu.Item @click="print">
+              <Lucide icon="Printer" class="w-4 h-4 mr-2" />
+              출력
             </Menu.Item>
             <Menu.Item>
               <Lucide icon="FileText" class="w-4 h-4 mr-2" /> Excel 다운로드
@@ -442,3 +448,7 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
   </Dialog>
   <!-- END: Delete Confirmation Modal -->
 </template>
+
+function $htmlToPaper(arg0: string) { throw new Error("Function not
+implemented."); } function $htmlToPaper(arg0: string) { throw new
+Error("Function not implemented."); }
