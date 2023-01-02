@@ -9,6 +9,7 @@ import Lucide from "../base-components/Lucide";
 import Tippy from "../base-components/Tippy";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
+import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 
 const deleteConfirmationModal = ref(false);
 const setDeleteConfirmationModal = (value: boolean) => {
@@ -23,7 +24,7 @@ const deleteButtonRef = ref(null);
       class="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap"
     >
       <Button variant="primary" class="mr-2 shadow-md"> 등록 </Button>
-
+      <Print></Print>
       <div class="hidden mx-auto md:block text-slate-500">
         총 150개 중 10개 항목 조회됨
       </div>
