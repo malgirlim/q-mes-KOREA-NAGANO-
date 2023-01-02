@@ -102,7 +102,7 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
     </div>
     <!-- BEGIN: Data List -->
     <div class="col-span-12 overflow-auto intro-y lg:overflow-visible">
-      <pagination-component
+      <PaginationComponent
         class="pagination-component"
         v-model="currentPage"
         :numberOfPages="numberOfPages"
