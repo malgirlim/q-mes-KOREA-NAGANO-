@@ -22,6 +22,18 @@ export const useSideMenuStore = defineStore("sideMenu", {
         title: "메인",
       },
       {
+        icon: "FileSpreadsheet",
+        pageName: "",
+        title: "마스터",
+        subMenu: [
+          {
+            icon: "FileText",
+            pageName: "side-menu-master-raw",
+            title: "원자재 마스터",
+          },
+        ],
+      },
+      {
         icon: "Sheet",
         pageName: "",
         title: "영업 관리",
@@ -44,7 +56,7 @@ export const useSideMenuStore = defineStore("sideMenu", {
         title: "구매 관리",
         subMenu: [
           {
-            icon: "PackageSearch",
+            icon: "Boxes",
             pageName: "side-menu-raw-order",
             title: "원자재 발주",
           },
@@ -79,6 +91,18 @@ export const useSideMenuStore = defineStore("sideMenu", {
             icon: "ShoppingCart",
             pageName: "side-menu-warehouse-release",
             title: "완제품 창고 출고",
+          },
+        ],
+      },
+      {
+        icon: "Monitor",
+        pageName: "",
+        title: "모니터링",
+        subMenu: [
+          {
+            icon: "PackageSearch",
+            pageName: "side-menu-monitor-stock",
+            title: "원자재 재고 조회",
           },
         ],
       },
