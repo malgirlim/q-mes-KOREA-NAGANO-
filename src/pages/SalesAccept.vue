@@ -106,6 +106,12 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
         v-model="currentPage"
         :numberOfPages="numberOfPages"
       />
+      <FormSelect class="w-20 mt-3 !box sm:mt-0" v-model="rowsPerPage">
+        <option>10</option>
+        <option>25</option>
+        <option>35</option>
+        <option>50</option>
+      </FormSelect>
       <Table class="border-spacing-y-[10px] border-separate -mt-2">
         <Table.Thead>
           <Table.Tr>
