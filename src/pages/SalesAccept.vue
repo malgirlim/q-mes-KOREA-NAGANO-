@@ -251,61 +251,6 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
     :open="insertModal"
     @close="
       () => {
-        setinsertModal(false);
-      }
-    "
-  >
-    <Dialog.Panel class="p-10 text-center">
-      <!--추가 Modal 내용 시작-->
-      <div style="text-align: left">
-        <div>
-          <FormLabel htmlFor="vertical-form-1">수주일자</FormLabel>
-          <FormInput
-            id="vertical-form-1"
-            type="date"
-            :modelValue="now"
-            placeholder=""
-          />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">수주번호</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">품목명</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">수량</FormLabel>
-          <FormInput id="vertical-form-2" type="text" placeholder="" />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">납기일</FormLabel>
-          <FormInput
-            id="vertical-form-2"
-            type="date"
-            :modelValue="nowPlus"
-            placeholder=""
-          />
-        </div>
-        <div class="mt-5 text-right">
-          <Button class="mr-2 shadow-md" variant="primary">확인</Button>
-          <Button class="mr-2 shadow-md" variant="primary">취소</Button>
-        </div>
-      </div>
-      <!--Modal 내용 끝--></Dialog.Panel
-    >
-  </Dialog>
-  <!-- BEGIN: Insert Modal Content -->
-  <Dialog
-    size="md"
-    :open="insertModal"
-    @close="
-      () => {
         setInsertModal(false);
       }
     "
@@ -365,7 +310,6 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
       <!--Modal 내용 끝--></Dialog.Panel
     >
   </Dialog>
-  >>>>>>> 0a3c0ceffefc3e3aba9b9ff48a86f6803f672b10
   <!-- END: Insert Modal Content -->
   <!-- BEGIN: Edit Modal Content -->
   <Dialog
