@@ -24,7 +24,6 @@ const deleteButtonRef = ref(null);
       class="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap"
     >
       <Button variant="primary" class="mr-2 shadow-md"> 등록 </Button>
-      <Print></Print>
       <div class="hidden mx-auto md:block text-slate-500">
         총 150개 중 10개 항목 조회됨
       </div>
@@ -46,7 +45,7 @@ const deleteButtonRef = ref(null);
           </Menu.Button>
           <Menu.Items class="w-40">
             <Menu.Item>
-              <Lucide icon="Printer" class="w-4 h-4 mr-2" /> 출력
+              <Lucide icon="Printer" class="w-4 h-4 mr-2" /> <Print/>
             </Menu.Item>
             <Menu.Item>
               <Lucide icon="FileText" class="w-4 h-4 mr-2" /> Excel 다운로드
@@ -59,7 +58,7 @@ const deleteButtonRef = ref(null);
       </div>
     </div>
     <!-- BEGIN: Data List -->
-    <div class="col-span-12 overflow-auto intro-y lg:overflow-visible">
+    <div class="col-span-12 overflow-auto intro-y lg:overflow-visible" id="printMe">
       <Table class="border-spacing-y-[10px] border-separate -mt-2">
         <Table.Thead>
           <Table.Tr>

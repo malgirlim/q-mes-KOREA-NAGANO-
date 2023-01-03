@@ -1,17 +1,15 @@
 <template>
     <div>
-      Hello!<!-- SOURCE -->
-      <div id="printMe">
-        <h1>Print me!</h1>
-      </div>
-      <!-- OUTPUT -->
-      <button @click="print">22</button>
+      <button @click="print">Print 출력</button>
     </div>
 </template>
   
   <script>
   
   export default {
+    props:{
+      data: String,
+    },
     data () {
       return {
         output: null
