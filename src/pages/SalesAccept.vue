@@ -12,7 +12,8 @@ import Table from "../base-components/Table";
 import moment from "moment";
 
 import { onMounted, watch } from "vue";
-import PaginationComponent from "../components/pagination/PaginationComponent.vue";
+import PaginationComponent from "../components/Pagination/PaginationComponent.vue";
+import PaginationComponent2 from "../components/Pagination/PaginationComponent2.vue";
 import { useTodosApi } from "../composables/useTodosApi";
 const currentPage = ref(1);
 const rowsPerPage = ref(30);
@@ -107,7 +108,12 @@ const print = () => {
     </div>
     <!-- BEGIN: Data List -->
     <div class="col-span-12 overflow-auto intro-y lg:overflow-visible">
-      <PaginationComponent
+      <!-- <PaginationComponent
+        class="pagination-component"
+        v-model="currentPage"
+        :numberOfPages="numberOfPages"
+      /> -->
+      <PaginationComponent2
         class="pagination-component"
         v-model="currentPage"
         :numberOfPages="numberOfPages"
