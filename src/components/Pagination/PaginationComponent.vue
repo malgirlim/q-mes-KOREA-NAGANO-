@@ -4,15 +4,25 @@
       <li
         class="page-item"
         aria-label="go to previous page"
+        @click="previousEnd()"
+        :class="{
+          disabled: currentPage === 1,
+        }"
+      >
+        <span class="page-link"><Lucide icon="ChevronsLeft" class="w-4 h-4" /></span>
+      </li>
+      <li
+        class="page-item"
+        aria-label="go to previous page"
         @click="previous()"
         :class="{
           disabled: currentPage === 1,
         }"
       >
-        <span class="page-link">&laquo;</span>
+        <span class="page-link"><Lucide icon="ChevronLeft" class="w-4 h-4" /></span>
       </li>
       <li
-        v-for="index in numberOfPages"
+        v-for="index in currentPageList()"
         :key="index"
         :aria-label="'go to page ' + index"
         class="page-item"
@@ -35,13 +45,25 @@
         aria-label="go to next page"
         @click="next()"
       >
-        <div class="page-link">&raquo;</div>
+        <div class="page-link"><Lucide icon="ChevronRight" class="w-4 h-4" /></div>
+      </li>
+      <li
+        class="page-item"
+        :class="{
+          disabled: currentPage === numberOfPages || !numberOfPages,
+        }"
+        aria-label="go to next page"
+        @click="nextEnd()"
+      >
+        <div class="page-link"><Lucide icon="ChevronsRight" class="w-4 h-4" /></div>
       </li>
     </ul>
   </div>
 </template>
 
 <script lang="ts" setup>
+import Lucide from "../../base-components/Lucide";
+
 import { toRefs } from "vue";
 
 const props = defineProps({
@@ -55,6 +77,17 @@ const props = defineProps({
 });
 
 const { numberOfPages, modelValue: currentPage } = toRefs(props);
+
+const currentPageList = () => {
+  var list = [];
+  var min = currentPage.value - 2 < 1 ? 1 : currentPage.value - 2;
+  var max =
+    currentPage.value + 3 > numberOfPages.value
+      ? numberOfPages.value
+      : currentPage.value + 3;
+  for (var i = min; i < max; i += 1) list.push(i);
+  return list;
+};
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -71,6 +104,16 @@ const next = () => {
   if (currentPage.value >= numberOfPages.value) return;
   emit("update:modelValue", currentPage.value + 1);
 };
+
+const previousEnd = () => {
+  if (currentPage.value === 1) return;
+  emit("update:modelValue", 1);
+};
+
+const nextEnd = () => {
+  if (currentPage.value >= numberOfPages.value) return;
+  emit("update:modelValue", numberOfPages.value);
+};
 </script>
 
 <style scoped lang="scss">
@@ -79,9 +122,9 @@ const next = () => {
 }
 
 .pagination {
-  background: white;
+  background: none;
   margin: 0px;
-  padding: 10px;
+  padding: 0px;
   display: flex;
   gap: 5px;
   align-items: center;
@@ -96,7 +139,7 @@ const next = () => {
 .page-item {
   display: flex;
   cursor: pointer;
-  margin-bottom: 0px;
+  margin:0 8px 0 8px;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -110,7 +153,7 @@ const next = () => {
   border-radius: 5px;
   padding: 10px 15px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 0;
   &:hover {
     color: #333333;
     background-color: #e9e9e9;
@@ -119,8 +162,8 @@ const next = () => {
 }
 
 .active-page {
-  background-color: #60d394 !important;
-  color: white !important;
+  background-color: white !important;
+  color: black !important;
   &:hover {
     border: none;
   }
@@ -128,7 +171,7 @@ const next = () => {
 
 .disabled {
   .page-link {
-    background-color: #f9fafb;
+    background-color: none;
   }
   cursor: not-allowed;
 }

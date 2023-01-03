@@ -10,12 +10,14 @@ import Tippy from "../base-components/Tippy";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
 import moment from "moment";
+import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
+import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 
 import { onMounted, watch } from "vue";
-import PaginationComponent from "../components/pagination/PaginationComponent.vue";
+import PaginationComponent from "../components/Pagination/PaginationComponent.vue";
 import { useTodosApi } from "../composables/useTodosApi";
 const currentPage = ref(1);
-const rowsPerPage = ref(30);
+const rowsPerPage = ref(10);
 
 const { todos, todosAreLoading, loadTodos, numberOfPages } = useTodosApi(
   currentPage,
@@ -46,6 +48,11 @@ const deleteButtonRef = ref(null);
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
 const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
+
+const print = () => {
+  // Pass the element id here
+  console.log("print");
+};
 </script>
 
 <template>
@@ -67,7 +74,7 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
       </Button>
 
       <div class="hidden mx-auto md:block text-slate-500">
-        총 150개 중 10개 항목 조회됨
+  
       </div>
       <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-0">
         <div class="relative w-56 text-slate-500">
@@ -78,7 +85,17 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
           />
         </div>
       </div>
-      <div class="m-2">
+      <div class="ml-2">
+          <!-- BEGIN: Pagination Pages-->
+          <FormSelect class="w-20 mt-3 !box sm:mt-0" v-model="rowsPerPage">
+        <option>10</option>
+        <option>25</option>
+        <option>35</option>
+        <option>50</option>
+      </FormSelect>
+    <!-- END: Pagination Pages-->
+    </div>
+      <div class="ml-2">
         <Menu>
           <Menu.Button :as="Button" class="px-2 !box">
             <span class="flex items-center justify-center w-5 h-5">
@@ -86,32 +103,37 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
             </span>
           </Menu.Button>
           <Menu.Items class="w-40">
-            <Menu.Item>
-              <Lucide icon="Printer" class="w-4 h-4 mr-2" /> 출력
+            <Menu.Item @click="print">
+              <Lucide icon="Printer" class="w-4 h-4 mr-2" />
+              <Print/>
             </Menu.Item>
             <Menu.Item>
-              <Lucide icon="FileText" class="w-4 h-4 mr-2" /> Excel 다운로드
-            </Menu.Item>
-            <Menu.Item>
-              <Lucide icon="FileText" class="w-4 h-4 mr-2" /> PDF 다운로드
+              <Lucide icon="FileText" class="w-4 h-4 mr-2" />
+              <Excel/>
             </Menu.Item>
           </Menu.Items>
         </Menu>
       </div>
     </div>
-    <!-- BEGIN: Data List -->
-    <div class="col-span-12 overflow-auto intro-y lg:overflow-visible">
-      <pagination-component
+    <!-- BEGIN: Pagination-->
+    <div class="flex flex-wrap items-center col-span-12 mt-0 intro-y sm:flex-nowrap">
+      <div>
+      <PaginationComponent
         class="pagination-component"
         v-model="currentPage"
         :numberOfPages="numberOfPages"
       />
-      <FormSelect class="w-20 mt-3 !box sm:mt-0" v-model="rowsPerPage">
-        <option>10</option>
-        <option>25</option>
-        <option>35</option>
-        <option>50</option>
-      </FormSelect>
+      </div>
+      <div class="hidden mx-auto md:block text-slate-500">
+      </div>
+      <div>
+      {{todos.length}}개 데이터 조회됨. {{currentPage}} / {{numberOfPages}} 페이지
+    <!-- END: Pagination-->
+
+      </div>
+    </div> 
+    <!-- BEGIN: Data List -->
+    <div class="col-span-12 overflow-auto intro-y lg:overflow-visible" id="printMe">
       <Table class="border-spacing-y-[10px] border-separate -mt-2">
         <Table.Thead>
           <Table.Tr>
@@ -129,7 +151,7 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               납기일
             </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+            <Table.Th class="text-center border-b-0 whitespace-nowrap" id="edit">
               편집
             </Table.Th>
           </Table.Tr>
@@ -142,16 +164,7 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
             class="intro-x"
           > -->
           <Table.Tr v-for="todo in todos" :key="todo.id" class="intro-x">
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-            >
-              <div>{{ todo.id }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-            >
-              <div>{{ todo.title }}</div>
-            </Table.Td>
+            
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
@@ -160,7 +173,7 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-15 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
-              A20201221-001
+            <div>{{ todo.id }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-15 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -170,7 +183,7 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-30 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
-              bt2042 bluetooth module v10.11
+            <div>{{ todo.title }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -183,7 +196,7 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
               2023.1.11(수)
             </Table.Td>
             <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
+              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"  id="edit"
             >
               <div class="flex items-center justify-center">
                 <a
@@ -218,37 +231,6 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
       </Table>
     </div>
     <!-- END: Data List -->
-    <!-- BEGIN: Pagination -->
-    <div
-      class="flex flex-wrap items-center col-span-12 intro-y sm:flex-row sm:flex-nowrap"
-    >
-      <Pagination class="w-full sm:w-auto sm:mr-auto">
-        <Pagination.Link>
-          <Lucide icon="ChevronsLeft" class="w-4 h-4" />
-        </Pagination.Link>
-        <Pagination.Link>
-          <Lucide icon="ChevronLeft" class="w-4 h-4" />
-        </Pagination.Link>
-        <Pagination.Link>...</Pagination.Link>
-        <Pagination.Link active>1</Pagination.Link>
-        <Pagination.Link>2</Pagination.Link>
-        <Pagination.Link>3</Pagination.Link>
-        <Pagination.Link>...</Pagination.Link>
-        <Pagination.Link>
-          <Lucide icon="ChevronRight" class="w-4 h-4" />
-        </Pagination.Link>
-        <Pagination.Link>
-          <Lucide icon="ChevronsRight" class="w-4 h-4" />
-        </Pagination.Link>
-      </Pagination>
-      <FormSelect class="w-20 mt-3 !box sm:mt-0" modelValue="10">
-        <option>10</option>
-        <option>25</option>
-        <option>35</option>
-        <option>50</option>
-      </FormSelect>
-    </div>
-    <!-- END: Pagination -->
   </div>
   <!-- BEGIN: Insert Modal Content -->
   <Dialog
@@ -442,3 +424,7 @@ const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
   </Dialog>
   <!-- END: Delete Confirmation Modal -->
 </template>
+
+function $htmlToPaper(arg0: string) { throw new Error("Function not
+implemented."); } function $htmlToPaper(arg0: string) { throw new
+Error("Function not implemented."); }

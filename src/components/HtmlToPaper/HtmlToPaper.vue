@@ -1,25 +1,27 @@
 <template>
     <div>
       <button @click="print">Print 출력</button>
-    </div>
+      </div>
 </template>
-  
-  <script>
-  
-  export default {
-    props:{
-      data: String,
+
+<script>
+import VueHtmlToPaper from "vue-html-to-paper";
+
+export default {
+  data() {
+    return {
+      output: null,
+    };
+  },
+  methods: {
+    async print() {
+      // Pass the element id here
+      await this.$htmlToPaper("printMe");
     },
-    data () {
-      return {
-        output: null
-      }
-    },
-    methods: {
-      async print () {
-        // Pass the element id here
-        await this.$htmlToPaper('printMe');
-      }
-    }
-  }
-  </script>
+
+    // print: function () {
+    //   VueHtmlToPaper("print_area"); /** Error occurs here */
+    // },
+  },
+};
+</script>

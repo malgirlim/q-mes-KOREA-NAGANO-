@@ -109,7 +109,7 @@ onMounted(() => {
     <!-- BEGIN: Content -->
     <div
       :class="[
-        'max-w-full md:max-w-none rounded-[30px] md:rounded-[20px_20px_20px_20px] px-4 md:px-[22px] min-w-0 min-h-0 bg-slate-100 flex-1 pb-10 m-3 mt-5 relative dark:bg-darkmode-700',
+        'max-w-full md:max-w-none rounded-[30px] md:rounded-[20px_20px_20px_20px] px-4 md:px-[22px] min-w-0 min-h-0 bg-slate-100 flex-1 pb-5 m-3 mt-5 relative dark:bg-darkmode-700',
         'before:content-[\'\'] before:w-full before:h-px before:block',
       ]"
     >
