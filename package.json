@@ -45,7 +45,6 @@
     "vue-html-to-paper": "^1.4.4",
     "vue-moment": "^4.1.0",
     "vue-router": "^4.1.6",
-    "xlsx": "^0.18.5",
     "zoom-vanilla.js": "^2.0.6"
   },
   "devDependencies": {
