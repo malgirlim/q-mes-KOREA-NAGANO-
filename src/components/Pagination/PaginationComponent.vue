@@ -9,7 +9,9 @@
           disabled: currentPage === 1,
         }"
       >
-        <span class="page-link"><Lucide icon="ChevronsLeft" class="w-4 h-4" /></span>
+        <span class="page-link"
+          ><Lucide icon="ChevronsLeft" class="w-4 h-4"
+        /></span>
       </li>
       <li
         class="page-item"
@@ -19,7 +21,9 @@
           disabled: currentPage === 1,
         }"
       >
-        <span class="page-link"><Lucide icon="ChevronLeft" class="w-4 h-4" /></span>
+        <span class="page-link"
+          ><Lucide icon="ChevronLeft" class="w-4 h-4"
+        /></span>
       </li>
       <li
         v-for="index in currentPageList()"
@@ -45,7 +49,9 @@
         aria-label="go to next page"
         @click="next()"
       >
-        <div class="page-link"><Lucide icon="ChevronRight" class="w-4 h-4" /></div>
+        <div class="page-link">
+          <Lucide icon="ChevronRight" class="w-4 h-4" />
+        </div>
       </li>
       <li
         class="page-item"
@@ -55,7 +61,9 @@
         aria-label="go to next page"
         @click="nextEnd()"
       >
-        <div class="page-link"><Lucide icon="ChevronsRight" class="w-4 h-4" /></div>
+        <div class="page-link">
+          <Lucide icon="ChevronsRight" class="w-4 h-4" />
+        </div>
       </li>
     </ul>
   </div>
@@ -82,10 +90,10 @@ const currentPageList = () => {
   var list = [];
   var min = currentPage.value - 2 < 1 ? 1 : currentPage.value - 2;
   var max =
-    currentPage.value + 3 > numberOfPages.value
+    currentPage.value + 2 >= numberOfPages.value
       ? numberOfPages.value
-      : currentPage.value + 3;
-  for (var i = min; i < max; i += 1) list.push(i);
+      : currentPage.value + 2;
+  for (var i = min; i <= max; i += 1) list.push(i);
   return list;
 };
 
@@ -139,7 +147,7 @@ const nextEnd = () => {
 .page-item {
   display: flex;
   cursor: pointer;
-  margin:0 8px 0 8px;
+  margin: 0 8px 0 8px;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
