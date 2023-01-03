@@ -9,6 +9,7 @@ import Lucide from "../base-components/Lucide";
 import Tippy from "../base-components/Tippy";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
+import Popover from "../base-components/Headless/Popover";
 import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
@@ -78,7 +79,58 @@ const print = () => {
       </Button>
 
       <div class="hidden mx-auto md:block text-slate-500"></div>
-      <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-0">
+      <div class="text-center">
+    <Popover class="inline-block" v-slot="{ }">
+        <Popover.Button :as="Button" class="!box">
+          <Lucide icon="Calendar" class="w-4 h-4 mr-2" />기간설정
+            <Lucide icon="ChevronDown" class="w-4 h-4 ml-2" />
+        </Popover.Button>
+        <Popover.Panel placement="bottom-start">
+            <div class="p-2">
+                <div>
+                    <div class="text-xs text-left">From</div>
+                    <FormInput type="text" class="flex-1 mt-2" placeholder="example@gmail.com" />
+                </div>
+                <div class="mt-3">
+                    <div class="text-xs text-left">To</div>
+                    <FormInput type="text" class="flex-1 mt-2" placeholder="example@gmail.com" />
+                </div>
+                <div class="flex items-center mt-3">
+                    <Button variant="secondary" @click="
+                            () => {
+                              
+                            }
+                          " class="w-32 ml-auto">
+                        Close
+                    </Button>
+                    <Button variant="primary" class="w-32 ml-2">
+                        Search
+                    </Button>
+                </div>
+            </div>
+        </Popover.Panel>
+    </Popover>
+</div>
+      <div class="ml-2">
+        <FormSelect
+          modelValue="전체기간"
+          class="w-30 mt-3 !box sm:mt-0">
+          <option>전체기간</option>
+          <option>1일</option>
+          <option>1주</option>
+          <option>1개월</option>
+        </FormSelect>
+      </div>
+      <div class="ml-2">
+        <FormSelect
+          modelValue="수주번호"
+          class="w-30 mt-3 !box sm:mt-0">
+          <option>수주번호</option>
+          <option>품목명</option>
+          <option>거래처명</option>
+        </FormSelect>
+      </div>
+      <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-2">
         <div class="relative w-56 text-slate-500">
           <FormInput type="text" class="w-56 pr-10 !box" placeholder="검색" />
           <Lucide
@@ -356,7 +408,7 @@ const print = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="bt2042 bluetooth module v10.11"
+            modelValue="품목명"
             placeholder=""
           />
         </div>
