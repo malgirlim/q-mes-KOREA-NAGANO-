@@ -26,6 +26,10 @@ const { todos, todosAreLoading, loadTodos, numberOfPages } = useTodosApi(
 
 onMounted(async () => loadTodos());
 
+const pageChange = () => {
+  currentPage.value = 1;
+};
+
 //등록 Modal
 const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
@@ -73,9 +77,7 @@ const print = () => {
         등록
       </Button>
 
-      <div class="hidden mx-auto md:block text-slate-500">
-  
-      </div>
+      <div class="hidden mx-auto md:block text-slate-500"></div>
       <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-0">
         <div class="relative w-56 text-slate-500">
           <FormInput type="text" class="w-56 pr-10 !box" placeholder="검색" />
@@ -86,15 +88,19 @@ const print = () => {
         </div>
       </div>
       <div class="ml-2">
-          <!-- BEGIN: Pagination Pages-->
-          <FormSelect class="w-20 mt-3 !box sm:mt-0" v-model="rowsPerPage">
-        <option>10</option>
-        <option>25</option>
-        <option>35</option>
-        <option>50</option>
-      </FormSelect>
-    <!-- END: Pagination Pages-->
-    </div>
+        <!-- BEGIN: Pagination Pages-->
+        <FormSelect
+          class="w-20 mt-3 !box sm:mt-0"
+          v-model="rowsPerPage"
+          @change="pageChange"
+        >
+          <option>10</option>
+          <option>25</option>
+          <option>35</option>
+          <option>50</option>
+        </FormSelect>
+        <!-- END: Pagination Pages-->
+      </div>
       <div class="ml-2">
         <Menu>
           <Menu.Button :as="Button" class="px-2 !box">
@@ -105,35 +111,39 @@ const print = () => {
           <Menu.Items class="w-40">
             <Menu.Item @click="print">
               <Lucide icon="Printer" class="w-4 h-4 mr-2" />
-              <Print/>
+              <Print />
             </Menu.Item>
             <Menu.Item>
               <Lucide icon="FileText" class="w-4 h-4 mr-2" />
-              <Excel/>
+              <Excel />
             </Menu.Item>
           </Menu.Items>
         </Menu>
       </div>
     </div>
     <!-- BEGIN: Pagination-->
-    <div class="flex flex-wrap items-center col-span-12 mt-0 intro-y sm:flex-nowrap">
+    <div
+      class="flex flex-wrap items-center col-span-12 mt-0 intro-y sm:flex-nowrap"
+    >
       <div>
-      <PaginationComponent
-        class="pagination-component"
-        v-model="currentPage"
-        :numberOfPages="numberOfPages"
-      />
+        <PaginationComponent
+          class="pagination-component"
+          v-model="currentPage"
+          :numberOfPages="numberOfPages"
+        />
       </div>
-      <div class="hidden mx-auto md:block text-slate-500">
-      </div>
+      <div class="hidden mx-auto md:block text-slate-500"></div>
       <div>
-      {{todos.length}}개 데이터 조회됨. {{currentPage}} / {{numberOfPages}} 페이지
-    <!-- END: Pagination-->
-
+        {{ todos.length }}개 데이터 조회됨. {{ currentPage }} /
+        {{ numberOfPages }} 페이지
+        <!-- END: Pagination-->
       </div>
-    </div> 
+    </div>
     <!-- BEGIN: Data List -->
-    <div class="col-span-12 overflow-auto intro-y lg:overflow-visible" id="printMe">
+    <div
+      class="col-span-12 overflow-auto intro-y lg:overflow-visible"
+      id="printMe"
+    >
       <Table class="border-spacing-y-[10px] border-separate -mt-2">
         <Table.Thead>
           <Table.Tr>
@@ -151,7 +161,10 @@ const print = () => {
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               납기일
             </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap" id="edit">
+            <Table.Th
+              class="text-center border-b-0 whitespace-nowrap"
+              id="edit"
+            >
               편집
             </Table.Th>
           </Table.Tr>
@@ -164,7 +177,6 @@ const print = () => {
             class="intro-x"
           > -->
           <Table.Tr v-for="todo in todos" :key="todo.id" class="intro-x">
-            
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
@@ -173,7 +185,7 @@ const print = () => {
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-15 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
-            <div>{{ todo.id }}</div>
+              <div>{{ todo.id }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-15 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -183,7 +195,7 @@ const print = () => {
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-30 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
-            <div>{{ todo.title }}</div>
+              <div>{{ todo.title }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -196,7 +208,8 @@ const print = () => {
               2023.1.11(수)
             </Table.Td>
             <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"  id="edit"
+              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
+              id="edit"
             >
               <div class="flex items-center justify-center">
                 <a
