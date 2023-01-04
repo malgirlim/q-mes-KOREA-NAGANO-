@@ -54,7 +54,7 @@ const hideSearchDropdown = () => {
             props.layout == 'simple-menu' && 'hidden',
           ]"
         >
-          Q-MES
+          EUNSUNG PRINTERS
         </span>
       </RouterLink>
       <!-- END: Logo -->
