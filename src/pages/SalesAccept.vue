@@ -91,40 +91,60 @@ const print = () => {
           </Popover.Button>
           <Popover.Panel placement="bottom-start">
             <div class="p-2">
-                <div>
-                  <FormCheck class="mt-2">
-        <FormCheck.Input id="radio-switch-1" type="radio" name="vertical_radio_button" value="vertical-radio-chris-evans" />
-        <FormCheck.Label htmlFor="radio-switch-1">
-            1주
-        </FormCheck.Label>
-    </FormCheck>
-                </div>
-                <div>
-                  <FormCheck class="mt-2">
-        <FormCheck.Input id="radio-switch-2" type="radio" name="vertical_radio_button" value="vertical-radio-chris-evans" />
-        <FormCheck.Label htmlFor="radio-switch-2">
-            1개월
-        </FormCheck.Label>
-    </FormCheck>
-                </div>
-                <div>
-                  <FormCheck class="mt-2">
-        <FormCheck.Input id="radio-switch-3" type="radio" name="vertical_radio_button" value="vertical-radio-chris-evans" />
-        <FormCheck.Label htmlFor="radio-switch-3">
-            전체
-        </FormCheck.Label>
-    </FormCheck>
-                </div>
-                <div>
-                  <FormCheck class="mt-2">
-        <FormCheck.Input id="radio-switch-4" type="radio" name="vertical_radio_button" value="vertical-radio-chris-evans" />
-        <FormCheck.Label htmlFor="radio-switch-4">
-            사용자 지정
-        </FormCheck.Label>
-    </FormCheck>
-                </div>
-                <div class="mt-3">
-                 <!-- <Litepicker v-model="daterange" :options="{
+              <div>
+                <FormCheck class="mt-2">
+                  <FormCheck.Input
+                    id="radio-switch-1"
+                    type="radio"
+                    name="vertical_radio_button"
+                    value="vertical-radio-chris-evans"
+                  />
+                  <FormCheck.Label htmlFor="radio-switch-1">
+                    1주
+                  </FormCheck.Label>
+                </FormCheck>
+              </div>
+              <div>
+                <FormCheck class="mt-2">
+                  <FormCheck.Input
+                    id="radio-switch-2"
+                    type="radio"
+                    name="vertical_radio_button"
+                    value="vertical-radio-chris-evans"
+                  />
+                  <FormCheck.Label htmlFor="radio-switch-2">
+                    1개월
+                  </FormCheck.Label>
+                </FormCheck>
+              </div>
+              <div>
+                <FormCheck class="mt-2">
+                  <FormCheck.Input
+                    id="radio-switch-3"
+                    type="radio"
+                    name="vertical_radio_button"
+                    value="vertical-radio-chris-evans"
+                  />
+                  <FormCheck.Label htmlFor="radio-switch-3">
+                    전체
+                  </FormCheck.Label>
+                </FormCheck>
+              </div>
+              <div>
+                <FormCheck class="mt-2">
+                  <FormCheck.Input
+                    id="radio-switch-4"
+                    type="radio"
+                    name="vertical_radio_button"
+                    value="vertical-radio-chris-evans"
+                  />
+                  <FormCheck.Label htmlFor="radio-switch-4">
+                    사용자 지정
+                  </FormCheck.Label>
+                </FormCheck>
+              </div>
+              <div class="mt-3">
+                <!-- <Litepicker v-model="daterange" :options="{
                   autoApply: false,
                   singleMode: false,
                   numberOfColumns: 2,
@@ -137,27 +157,23 @@ const print = () => {
                     years: true,
                   },
                 }" class="block w-56 mx-auto" />-->
-                </div>
-                <div class="flex items-center mt-3">
-                    <Button variant="secondary" @click="
-                            () => {
-                              
-                            }
-                          " class="w-32 ml-auto">
-                        취소
-                    </Button>
-                    <Button variant="primary" class="w-32 ml-2">
-                        적용
-                    </Button>
-                </div>
+              </div>
+              <div class="flex items-center mt-3">
+                <Button
+                  variant="secondary"
+                  @click="() => {}"
+                  class="w-32 ml-auto"
+                >
+                  취소
+                </Button>
+                <Button variant="primary" class="w-32 ml-2"> 적용 </Button>
+              </div>
             </div>
           </Popover.Panel>
         </Popover>
       </div>
       <div class="ml-2">
-        <FormSelect
-          modelValue="수주번호"
-          class="w-30 mt-3 !box sm:mt-0">
+        <FormSelect modelValue="수주번호" class="w-30 mt-3 !box sm:mt-0">
           <option>수주번호</option>
           <option>품목명</option>
           <option>거래처명</option>
@@ -285,7 +301,7 @@ const print = () => {
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
-              <div>{{ todo.number }}</div>
+              <div>{{ todo.num }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -327,11 +343,11 @@ const print = () => {
           </Table.Tr>
         </Table.Tbody>
       </Table>
-    <!-- BEGIN: FOOTER(COPYRIGHT) -->
-      <div style="text-align: right;">
-      <footer>&copy;2023 QInnotek. All rights reserved.</footer>
-    </div>
-    <!-- END: FOOTER(COPYRIGHT) -->
+      <!-- BEGIN: FOOTER(COPYRIGHT) -->
+      <div style="text-align: right">
+        <footer>&copy;2023 QInnotek. All rights reserved.</footer>
+      </div>
+      <!-- END: FOOTER(COPYRIGHT) -->
     </div>
     <!-- END: Data List -->
   </div>
@@ -396,7 +412,6 @@ const print = () => {
             >취소</Button
           >
         </div>
-     
       </div>
       <!--Modal 내용 끝--></Dialog.Panel
     >
@@ -527,8 +542,6 @@ const print = () => {
     </Dialog.Panel>
   </Dialog>
   <!-- END: Delete Confirmation Modal -->
-
-
 </template>
 
 function $htmlToPaper(arg0: string) { throw new Error("Function not

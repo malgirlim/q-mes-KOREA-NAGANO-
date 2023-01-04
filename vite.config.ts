@@ -12,7 +12,16 @@ export default defineConfig({
   optimizeDeps: {
     include: ["tailwind-config"],
   },
-  plugins: [vue()],
+  // plugins: [vue()],
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => ["FormLabel"].includes(tag),
+        },
+      },
+    }),
+  ],
   resolve: {
     alias: {
       "tailwind-config": path.resolve(__dirname, "./tailwind.config.js"),
