@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
 import path from "path";
 
 // https://vitejs.dev/config/
@@ -18,4 +18,10 @@ export default defineConfig({
       "tailwind-config": path.resolve(__dirname, "./tailwind.config.js"),
     },
   },
-})
+  // 백엔드와 연결
+  server: {
+    proxy: {
+      "/api": "http://192.168.0.17:3000",
+    },
+  },
+});

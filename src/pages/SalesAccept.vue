@@ -16,11 +16,12 @@ import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 
+// 페이징기능
 import { onMounted, watch } from "vue";
-import PaginationComponent from "../components/Pagination/PaginationComponent.vue";
-import { useTodosApi } from "../composables/useTodosApi";
-const currentPage = ref(1);
-const rowsPerPage = ref(10);
+import PaginationComponent from "../components/Pagination/PaginationComponent.vue"; // 페이징설정
+import { useTodosApi } from "../composables/useTodosApi"; // 여기서 데이터 가져옴
+const currentPage = ref(1); // 현재페이지
+const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
 
 const { todos, todosAreLoading, loadTodos, numberOfPages } = useTodosApi(
   currentPage,
@@ -30,6 +31,7 @@ const { todos, todosAreLoading, loadTodos, numberOfPages } = useTodosApi(
 onMounted(async () => loadTodos());
 
 const pageChange = () => {
+  // 한 페이지에 보여질 데이터 갯수 변경 시 1페이지로 이동
   currentPage.value = 1;
 };
 
@@ -82,12 +84,12 @@ const print = () => {
 
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div class="text-center">
-    <Popover class="inline-block" v-slot="{ }">
-        <Popover.Button :as="Button" class="!box">
-          <Lucide icon="Calendar" class="w-4 h-4 mr-2" />기간설정
+        <Popover class="inline-block" v-slot="{}">
+          <Popover.Button :as="Button" class="!box">
+            <Lucide icon="Calendar" class="w-4 h-4 mr-2" />기간설정
             <Lucide icon="ChevronDown" class="w-4 h-4 ml-2" />
-        </Popover.Button>
-        <Popover.Panel placement="bottom-start">
+          </Popover.Button>
+          <Popover.Panel placement="bottom-start">
             <div class="p-2">
                 <div>
                   <FormCheck class="mt-2">
@@ -149,9 +151,9 @@ const print = () => {
                     </Button>
                 </div>
             </div>
-        </Popover.Panel>
-    </Popover>
-</div>
+          </Popover.Panel>
+        </Popover>
+      </div>
       <div class="ml-2">
         <FormSelect
           modelValue="수주번호"
@@ -259,7 +261,7 @@ const print = () => {
             :key="fakerKey"
             class="intro-x"
           > -->
-          <Table.Tr v-for="todo in todos" :key="todo.id" class="intro-x">
+          <Table.Tr v-for="todo in todos" :key="todo.content" class="intro-x">
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
@@ -268,7 +270,7 @@ const print = () => {
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-15 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
-              <div>{{ todo.id }}</div>
+              <div>{{ todo.content }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-15 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -278,12 +280,12 @@ const print = () => {
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-30 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
-              <div>{{ todo.title }}</div>
+              <div>{{ todo.name }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
-              100
+              <div>{{ todo.number }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
