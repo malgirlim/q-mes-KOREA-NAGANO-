@@ -57,6 +57,9 @@ const deleteButtonRef = ref(null);
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
 const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
+const max_year = moment().format("YYYY");
+const min_year = moment().add(-3, "years").format("YYYY");
+const now2 ="전체기간";
 
 const print = () => {
   // Pass the element id here
@@ -83,77 +86,28 @@ const print = () => {
       </Button>
 
       <div class="hidden mx-auto md:block text-slate-500"></div>
-      <div class="text-center">
-        <Popover class="inline-block" v-slot="{}">
-          <Popover.Button :as="Button" class="!box">
-            <Lucide icon="Calendar" class="w-4 h-4 mr-2" />기간설정
-            <Lucide icon="ChevronDown" class="w-4 h-4 ml-2" />
-          </Popover.Button>
-          <Popover.Panel placement="bottom-start">
-            <div class="p-2">
-                <div>
-                  <FormCheck class="mt-2">
-        <FormCheck.Input id="radio-switch-1" type="radio" name="vertical_radio_button" value="vertical-radio-chris-evans" />
-        <FormCheck.Label htmlFor="radio-switch-1">
-            1주
-        </FormCheck.Label>
-    </FormCheck>
-                </div>
-                <div>
-                  <FormCheck class="mt-2">
-        <FormCheck.Input id="radio-switch-2" type="radio" name="vertical_radio_button" value="vertical-radio-chris-evans" />
-        <FormCheck.Label htmlFor="radio-switch-2">
-            1개월
-        </FormCheck.Label>
-    </FormCheck>
-                </div>
-                <div>
-                  <FormCheck class="mt-2">
-        <FormCheck.Input id="radio-switch-3" type="radio" name="vertical_radio_button" value="vertical-radio-chris-evans" />
-        <FormCheck.Label htmlFor="radio-switch-3">
-            전체
-        </FormCheck.Label>
-    </FormCheck>
-                </div>
-                <div>
-                  <FormCheck class="mt-2">
-        <FormCheck.Input id="radio-switch-4" type="radio" name="vertical_radio_button" value="vertical-radio-chris-evans" />
-        <FormCheck.Label htmlFor="radio-switch-4">
-            사용자 지정
-        </FormCheck.Label>
-    </FormCheck>
-                </div>
-                <div class="mt-3">
-                 <!-- <Litepicker v-model="daterange" :options="{
+      <div class="text-center">  
+        <div>
+             <Litepicker v-model="now2" :options="{
                   autoApply: false,
                   singleMode: false,
-                  numberOfColumns: 2,
-                  numberOfMonths: 2,
+                  numberOfColumns: 1,
+                  numberOfMonths: 1,
                   showWeekNumbers: true,
                   dropdowns: {
-                    minYear: 1990,
-                    maxYear: null,
+                    minYear: min_year,
+                    maxYear: max_year,
                     months: true,
                     years: true,
                   },
-                }" class="block w-56 mx-auto" />-->
-                </div>
-                <div class="flex items-center mt-3">
-                    <Button variant="secondary" @click="
-                            () => {
-                              
-                            }
-                          " class="w-32 ml-auto">
-                        취소
-                    </Button>
-                    <Button variant="primary" class="w-32 ml-2">
-                        적용
-                    </Button>
-                </div>
-            </div>
-          </Popover.Panel>
-        </Popover>
-      </div>
+                  lang:ko-KR,
+                  format:'YY/MM/DD',
+                  delimiter:' - ',
+                  buttonText: {
+                    'apply':'적용','cancel':'취소'
+                  },
+                }" class="block w-40 mx-auto !box" placeholder="전체기간" />
+      </div></div>
       <div class="ml-2">
         <FormSelect
           modelValue="수주번호"
@@ -165,7 +119,7 @@ const print = () => {
       </div>
       <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-2">
         <div class="relative w-56 text-slate-500">
-          <FormInput type="text" class="w-56 pr-10 !box" placeholder="검색" />
+          <FormInput type="text" class="w-56 pr-10 !box" placeholder="검색어를 입력해주세요" />
           <Lucide
             icon="Search"
             class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
