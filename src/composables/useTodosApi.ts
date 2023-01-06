@@ -11,7 +11,7 @@ export interface Todo {
   // title: string;
   content: string;
   name: string;
-  number: number;
+  num: number;
 }
 
 export function useTodosApi(
