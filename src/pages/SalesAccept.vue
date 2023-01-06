@@ -57,6 +57,9 @@ const deleteButtonRef = ref(null);
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
 const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
+const max_year = moment().format("YYYY");
+const min_year = moment().add(-3, "years").format("YYYY");
+const now2 ="전체기간";
 
 const print = () => {
   // Pass the element id here
@@ -83,6 +86,11 @@ const print = () => {
       </Button>
 
       <div class="hidden mx-auto md:block text-slate-500"></div>
+<<<<<<< HEAD
+      <div class="text-center">  
+        <div>
+             <Litepicker v-model="now2" :options="{
+=======
       <div class="text-center">
         <Popover class="inline-block" v-slot="{}">
           <Popover.Button :as="Button" class="!box">
@@ -145,17 +153,28 @@ const print = () => {
               </div>
               <div class="mt-3">
                 <!-- <Litepicker v-model="daterange" :options="{
+>>>>>>> 19befa019fa243242268bdb267efceebfa3f9dfa
                   autoApply: false,
                   singleMode: false,
-                  numberOfColumns: 2,
-                  numberOfMonths: 2,
+                  numberOfColumns: 1,
+                  numberOfMonths: 1,
                   showWeekNumbers: true,
                   dropdowns: {
-                    minYear: 1990,
-                    maxYear: null,
+                    minYear: min_year,
+                    maxYear: max_year,
                     months: true,
                     years: true,
                   },
+<<<<<<< HEAD
+                  lang:ko-KR,
+                  format:'YY/MM/DD',
+                  delimiter:' - ',
+                  buttonText: {
+                    'apply':'적용','cancel':'취소'
+                  },
+                }" class="block w-40 mx-auto !box" placeholder="전체기간" />
+      </div></div>
+=======
                 }" class="block w-56 mx-auto" />-->
               </div>
               <div class="flex items-center mt-3">
@@ -172,6 +191,7 @@ const print = () => {
           </Popover.Panel>
         </Popover>
       </div>
+>>>>>>> 19befa019fa243242268bdb267efceebfa3f9dfa
       <div class="ml-2">
         <FormSelect modelValue="수주번호" class="w-30 mt-3 !box sm:mt-0">
           <option>수주번호</option>
@@ -181,7 +201,7 @@ const print = () => {
       </div>
       <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-2">
         <div class="relative w-56 text-slate-500">
-          <FormInput type="text" class="w-56 pr-10 !box" placeholder="검색" />
+          <FormInput type="text" class="w-56 pr-10 !box" placeholder="검색어를 입력해주세요" />
           <Lucide
             icon="Search"
             class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
