@@ -20,6 +20,7 @@ const showSearchDropdown = () => {
 const hideSearchDropdown = () => {
   searchDropdown.value = false;
 };
+
 </script>
 
 <template>
@@ -54,7 +55,7 @@ const hideSearchDropdown = () => {
             props.layout == 'simple-menu' && 'hidden',
           ]"
         >
-          EUNSUNG PRINTERS
+          Q-MES
         </span>
       </RouterLink>
       <!-- END: Logo -->
@@ -67,8 +68,8 @@ const hideSearchDropdown = () => {
           props.layout == 'top-menu' && 'md:pl-10',
         ]"
       >
-        <Breadcrumb.Link to="/">Application</Breadcrumb.Link>
-        <Breadcrumb.Link to="/" :active="true"> Dashboard </Breadcrumb.Link>
+        <Breadcrumb.Link to="/">메인</Breadcrumb.Link>
+        <Breadcrumb.Link to="/" :active="true"></Breadcrumb.Link>
       </Breadcrumb>
       <!-- END: Breadcrumb -->
       <!-- BEGIN: Search -->

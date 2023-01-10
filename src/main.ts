@@ -5,7 +5,6 @@ import router from "./router";
 import "./assets/css/app.css";
 
 import VueHtmlToPaper from "vue-html-to-paper";
-import { append } from "tom-select/src/utils";
 
 const options = {
   name: "_blank",

@@ -17,6 +17,7 @@ interface MenuProps {
 
 const router = useRouter();
 const props = defineProps<MenuProps>();
+
 </script>
 
 <template>

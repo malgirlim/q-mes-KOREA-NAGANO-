@@ -25,6 +25,7 @@ watch(topMenu, () => {
 onMounted(() => {
   setFormattedMenu(topMenu.value);
 });
+
 </script>
 
 <template>
