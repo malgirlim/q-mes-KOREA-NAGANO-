@@ -1,3 +1,22 @@
+<script lang="ts">
+export default {
+  created() {
+    // 컴포넌트 생성시 데이터를 패치한다
+    this.fetchData();
+  },
+  watch: {
+    // 라우터 객체를 감시하고 있다가 fetchData() 함수를 호출한다
+    $route: "fetchData",
+  },
+  methods: {
+    fetchData() {
+      console.log(this.$route.meta[0]);
+    },
+  },
+};
+</script>
+
+
 <script setup lang="ts">
 import { ref } from "vue";
 import Lucide from "../../base-components/Lucide";
@@ -68,8 +87,9 @@ const hideSearchDropdown = () => {
           props.layout == 'top-menu' && 'md:pl-10',
         ]"
       >
-        <Breadcrumb.Link to="/">메인</Breadcrumb.Link>
-        <Breadcrumb.Link to="/" :active="true"></Breadcrumb.Link>
+      <Breadcrumb.Link to="/">메인</Breadcrumb.Link>
+      <Breadcrumb.Link to="/">영업관리</Breadcrumb.Link>
+        <Breadcrumb.Link :to=this.$route.path :active="true">{{this.$route.meta[0]}}</Breadcrumb.Link>
       </Breadcrumb>
       <!-- END: Breadcrumb -->
       <!-- BEGIN: Search -->
