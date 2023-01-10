@@ -20,6 +20,8 @@ const showSearchDropdown = () => {
 const hideSearchDropdown = () => {
   searchDropdown.value = false;
 };
+
+console.log();
 </script>
 
 <template>

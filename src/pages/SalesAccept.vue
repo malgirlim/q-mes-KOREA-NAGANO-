@@ -15,6 +15,7 @@ import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 import { onMounted, watch } from "vue";
 import PaginationComponent from "../components/Pagination/PaginationComponent.vue"; // 페이징설정
 import { useTodosApi } from "../composables/useTodosApi"; // 여기서 데이터 가져옴
+import { stringToHTML } from "../utils/helper";
 const currentPage = ref(1); // 현재페이지
 const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
 
@@ -42,7 +43,7 @@ const setEditModal = (value: boolean) => {
   editModal.value = value;
 };
 
-const editModalDataArr = {content:"",name:"",number:Number()};
+const editModalDataArr = { content: "", name: "", number: Number() };
 const setEditModalData = (content: string, name: string, number: Number) => {
   editModalDataArr.content = content;
   editModalDataArr.name = name;
@@ -104,10 +105,11 @@ const print = () => {
                 months: true,
                 years: true,
               },
-              lang: ko - KR,
+              lang: 'ko',
               format: 'YY/MM/DD',
               delimiter: ' - ',
               buttonText: {
+                reset: '',
                 apply: '적용',
                 cancel: '취소',
               },
@@ -133,10 +135,11 @@ const print = () => {
             placeholder="검색어를 입력해주세요"
           />
           <button @click="">
-          <Lucide
-            icon="Search"
-            class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
-          /></button>
+            <Lucide
+              icon="Search"
+              class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
+            />
+          </button>
         </div>
       </div>
       <div class="ml-2">
@@ -231,15 +234,19 @@ const print = () => {
             :key="fakerKey"
             class="intro-x"
           > -->
-          <Table.Tr v-for="todo, index in todos" :key="todo.content" class="intro-x">
+          <Table.Tr
+            v-for="(todo, index) in todos"
+            :key="todo.content"
+            class="intro-x"
+          >
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
-              <div>{{ index+1+(currentPage-1)*rowsPerPage }}</div>
+              <div>{{ index + 1 + (currentPage - 1) * rowsPerPage }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width:150px"
+              style="width: 150px"
             >
               <div>22-12-21(수)</div>
             </Table.Td>
@@ -250,7 +257,7 @@ const print = () => {
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width:160px"
+              style="width: 160px"
             >
               컴퓨존
             </Table.Td>
@@ -266,13 +273,13 @@ const print = () => {
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width:150px"
+              style="width: 150px"
             >
               23-01-11(수)
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
-              style="width:150px"
+              style="width: 150px"
               id="edit"
             >
               <div class="flex items-center justify-center">
@@ -307,16 +314,15 @@ const print = () => {
           </Table.Tr>
         </Table.Tbody>
       </Table>
-      
     </div>
     <!-- END: Data List -->
   </div>
   <!-- BEGIN: Insert Modal Content -->
   <!-- BEGIN: FOOTER(COPYRIGHT) -->
-      <div style="text-align: right">
-        <footer>&copy;2023 QInnotek. All rights reserved.</footer>
-      </div>
-      <!-- END: FOOTER(COPYRIGHT) -->
+  <div style="text-align: right">
+    <footer>&copy;2023 QInnotek. All rights reserved.</footer>
+  </div>
+  <!-- END: FOOTER(COPYRIGHT) -->
   <Dialog
     size="md"
     :open="insertModal"
@@ -409,7 +415,7 @@ const print = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            :modelValue=editModalDataArr.content
+            :modelValue="editModalDataArr.content"
             placeholder=""
           />
         </div>
@@ -427,7 +433,7 @@ const print = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            :modelValue=editModalDataArr.name
+            :modelValue="editModalDataArr.name"
             placeholder=""
           />
         </div>
@@ -436,7 +442,7 @@ const print = () => {
           <FormInput
             id="vertical-form-2"
             type="text"
-            :modelValue=editModalDataArr.number
+            :modelValue="editModalDataArr.number"
             placeholder=""
           />
         </div>
