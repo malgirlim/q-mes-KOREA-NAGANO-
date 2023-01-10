@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import _ from "lodash";
+import _, { isArguments } from "lodash";
 import { ref } from "vue";
-import fakerData from "../utils/faker";
 import Button from "../base-components/Button";
-import Pagination from "../base-components/Pagination";
 import { FormInput, FormSelect } from "../base-components/Form";
-import FormCheck from "../base-components/Form/FormCheck";
 import Litepicker from "../base-components/Litepicker";
 import Lucide from "../base-components/Lucide";
-import Tippy from "../base-components/Tippy";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
-import Popover from "../base-components/Headless/Popover";
 import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
@@ -47,6 +42,13 @@ const setEditModal = (value: boolean) => {
   editModal.value = value;
 };
 
+const editModalDataArr = {content:"",name:"",number:Number()};
+const setEditModalData = (content: string, name: string, number: Number) => {
+  editModalDataArr.content = content;
+  editModalDataArr.name = name;
+  editModalDataArr.number = Number(number);
+};
+
 //삭제 Modal
 const deleteConfirmationModal = ref(false);
 const setDeleteConfirmationModal = (value: boolean) => {
@@ -59,7 +61,7 @@ const now = moment().format("YYYY-MM-DD");
 const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
 const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
-const now2 ="전체기간";
+const now2 = "전체기간";
 
 const print = () => {
   // Pass the element id here
@@ -86,30 +88,38 @@ const print = () => {
       </Button>
 
       <div class="hidden mx-auto md:block text-slate-500"></div>
-      <div class="text-center">  
+      <div class="text-center">
         <div>
-             <Litepicker v-model="now2" :options="{
-                  autoApply: false,
-                  singleMode: false,
-                  numberOfColumns: 1,
-                  numberOfMonths: 1,
-                  showWeekNumbers: true,
-                  dropdowns: {
-                    minYear: min_year,
-                    maxYear: max_year,
-                    months: true,
-                    years: true,
-                  },
-                  lang:ko-KR,
-                  format:'YY/MM/DD',
-                  delimiter:' - ',
-                  buttonText: {
-                    'apply':'적용','cancel':'취소'
-                  },
-                }" class="block w-40 mx-auto !box" placeholder="전체기간" />
-      </div></div>
+          <Litepicker
+            v-model="now2"
+            :options="{
+              autoApply: false,
+              singleMode: false,
+              numberOfColumns: 1,
+              numberOfMonths: 1,
+              showWeekNumbers: true,
+              dropdowns: {
+                minYear: Number(min_year),
+                maxYear: Number(max_year),
+                months: true,
+                years: true,
+              },
+              lang: ko - KR,
+              format: 'YY/MM/DD',
+              delimiter: ' - ',
+              buttonText: {
+                apply: '적용',
+                cancel: '취소',
+              },
+            }"
+            class="block w-40 mx-auto !box"
+            placeholder="전체기간"
+          />
+        </div>
+      </div>
       <div class="ml-2">
-        <FormSelect modelValue="수주번호" class="w-30 mt-3 !box sm:mt-0">
+        <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
+          <option>전체</option>
           <option>수주번호</option>
           <option>품목명</option>
           <option>거래처명</option>
@@ -117,11 +127,16 @@ const print = () => {
       </div>
       <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-2">
         <div class="relative w-56 text-slate-500">
-          <FormInput type="text" class="w-56 pr-10 !box" placeholder="검색어를 입력해주세요" />
+          <FormInput
+            type="text"
+            class="w-56 pr-10 !box"
+            placeholder="검색어를 입력해주세요"
+          />
+          <button @click="">
           <Lucide
             icon="Search"
             class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
-          />
+          /></button>
         </div>
       </div>
       <div class="ml-2">
@@ -185,6 +200,9 @@ const print = () => {
         <Table.Thead>
           <Table.Tr>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
+              <!--순번-->
+            </Table.Th>
+            <Table.Th class="text-center border-b-0 whitespace-nowrap">
               수주일자
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
@@ -213,39 +231,48 @@ const print = () => {
             :key="fakerKey"
             class="intro-x"
           > -->
-          <Table.Tr v-for="todo in todos" :key="todo.content" class="intro-x">
+          <Table.Tr v-for="todo, index in todos" :key="todo.content" class="intro-x">
             <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
-              <div>2022.12.21(수)</div>
+              <div>{{ index+1+(currentPage-1)*rowsPerPage }}</div>
             </Table.Td>
             <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-15 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              style="width:150px"
+            >
+              <div>22-12-21(수)</div>
+            </Table.Td>
+            <Table.Td
+              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
               <div>{{ todo.content }}</div>
             </Table.Td>
             <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-15 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              style="width:160px"
             >
               컴퓨존
             </Table.Td>
             <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-30 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
               <div>{{ todo.name }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
-              <div>{{ todo.num }}</div>
+              <div>{{ todo.number }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              style="width:150px"
             >
-              2023.1.11(수)
+              23-01-11(수)
             </Table.Td>
             <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
+              class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
+              style="width:150px"
               id="edit"
             >
               <div class="flex items-center justify-center">
@@ -256,11 +283,12 @@ const print = () => {
                     (event) => {
                       event.preventDefault();
                       setEditModal(true);
+                      setEditModalData(todo.content, todo.name, todo.number);
                     }
                   "
                 >
                   <Lucide icon="CheckSquare" class="w-4 h-4 mr-1" />
-                  Edit
+                  수정
                 </a>
                 <a
                   class="flex items-center text-danger"
@@ -272,7 +300,7 @@ const print = () => {
                     }
                   "
                 >
-                  <Lucide icon="Trash2" class="w-4 h-4 mr-1" /> Delete
+                  <Lucide icon="Trash2" class="w-4 h-4 mr-1" /> 삭제
                 </a>
               </div>
             </Table.Td>
@@ -381,7 +409,7 @@ const print = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="A20201221-001"
+            :modelValue=editModalDataArr.content
             placeholder=""
           />
         </div>
@@ -399,7 +427,7 @@ const print = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="품목명"
+            :modelValue=editModalDataArr.name
             placeholder=""
           />
         </div>
@@ -408,7 +436,7 @@ const print = () => {
           <FormInput
             id="vertical-form-2"
             type="text"
-            modelValue="100"
+            :modelValue=editModalDataArr.number
             placeholder=""
           />
         </div>
