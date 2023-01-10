@@ -7,7 +7,7 @@
       transform: translateX(50px);
       animation: 0.4s intro-x-animation ease-in-out 0.33333s;
       animation-fill-mode: forwards;
-      animation-delay: calc($i * 0.1s);
+      animation-delay: calc($i * 0.03s);
     }
     > .-intro-x:nth-child($i) {
       z-index: calc(50 - $i);
@@ -16,7 +16,7 @@
       transform: translateX(-50px);
       animation: 0.4s intro-x-animation ease-in-out 0.33333s;
       animation-fill-mode: forwards;
-      animation-delay: calc($i * 0.1s);
+      animation-delay: calc($i * 0.03s);
     }
     > .intro-y:nth-child($i) {
       z-index: calc(50 - $i);
@@ -25,7 +25,7 @@
       transform: translateY(50px);
       animation: 0.4s intro-y-animation ease-in-out 0.33333s;
       animation-fill-mode: forwards;
-      animation-delay: calc($i * 0.1s);
+      animation-delay: calc($i * 0.03s);
     }
     > .-intro-y:nth-child($i) {
       z-index: calc(50 - $i);
@@ -34,7 +34,7 @@
       transform: translateY(-50px);
       animation: 0.4s intro-y-animation ease-in-out 0.33333s;
       animation-fill-mode: forwards;
-      animation-delay: calc($i * 0.1s);
+      animation-delay: calc($i * 0.03s);
     }
   }
 }
