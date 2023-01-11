@@ -10,15 +10,15 @@ export default {
   },
   methods: {
     fetchData() {
-      console.log(this.$route.meta[0]);
+      console.log(this.$route.meta.pagename);
+      // console.log(this.$route.meta.name);
     },
   },
 };
 </script>
 
-
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import Lucide from "../../base-components/Lucide";
 import logoUrl from "../../assets/images/logo.svg";
 import Breadcrumb from "../../base-components/Breadcrumb";
@@ -39,7 +39,6 @@ const showSearchDropdown = () => {
 const hideSearchDropdown = () => {
   searchDropdown.value = false;
 };
-
 </script>
 
 <template>
@@ -87,9 +86,13 @@ const hideSearchDropdown = () => {
           props.layout == 'top-menu' && 'md:pl-10',
         ]"
       >
-      <Breadcrumb.Link to="/">메인</Breadcrumb.Link>
-      <Breadcrumb.Link to="/">영업관리</Breadcrumb.Link>
-        <Breadcrumb.Link :to=this.$route.path :active="true">{{this.$route.meta[0]}}</Breadcrumb.Link>
+        <Breadcrumb.Link to="/">메인</Breadcrumb.Link>
+        <Breadcrumb.Link :to="$route.meta.categorypath">
+          {{ $route.meta.category }}
+        </Breadcrumb.Link>
+        <Breadcrumb.Link :to="$route.meta.categorypath" :active="true">
+          {{ $route.meta.pagename }}
+        </Breadcrumb.Link>
       </Breadcrumb>
       <!-- END: Breadcrumb -->
       <!-- BEGIN: Search -->
