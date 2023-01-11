@@ -86,11 +86,11 @@ const hideSearchDropdown = () => {
           props.layout == 'top-menu' && 'md:pl-10',
         ]"
       >
-        <Breadcrumb.Link to="/">메인</Breadcrumb.Link>
-        <Breadcrumb.Link :to="$route.meta.categorypath">
+        <Breadcrumb.Link>메인</Breadcrumb.Link>
+        <Breadcrumb.Link v-if="$route.meta.category!=undefined">
           {{ $route.meta.category }}
         </Breadcrumb.Link>
-        <Breadcrumb.Link :to="$route.meta.categorypath" :active="true">
+        <Breadcrumb.Link>
           {{ $route.meta.pagename }}
         </Breadcrumb.Link>
       </Breadcrumb>

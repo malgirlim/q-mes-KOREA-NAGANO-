@@ -252,12 +252,13 @@ const print = () => {
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-            >
+              style="width: 150px"
+              >
               <div>{{ todo.content }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 160px"
+              style="width: 150px"
             >
               컴퓨존
             </Table.Td>

@@ -25,53 +25,93 @@ const routes = [
         component: Main,
       },
       {
-        path: "/master/raw",
+        path: "master/raw",
         name: "side-menu-master-raw",
+        meta: {
+          pagename: "원자재 마스터",
+          category: "기준 정보",
+        },
         component: MasterRaw,
       },
       {
         path: "sales/accept",
         name: "side-menu-sales-accept",
+        meta: {
+          pagename: "수주 접수",
+          category: "영업 관리",
+        },
         component: SalesAccept,
       },
       {
         path: "sales/shipment",
         name: "side-menu-client-shipment",
+        meta: {
+          pagename: "고객사 출하",
+          category: "영업 관리",
+        },
         component: ClientShipment,
       },
       {
         path: "purchase/order",
         name: "side-menu-raw-order",
+        meta: {
+          pagename: "원자재 발주",
+          category: "구매 관리",
+        },
         component: RawOrder,
       },
       {
         path: "purchase/receive",
         name: "side-menu-raw-receive",
+        meta: {
+          pagename: "원자재 입고",
+          category: "구매 관리",
+        },
         component: RawReceive,
       },
       {
         path: "purchase/issue",
         name: "side-menu-raw-issue",
+        meta: {
+          pagename: "원자재 불출",
+          category: "구매 관리",
+        },
         component: RawIssue,
       },
       {
         path: "product/take",
         name: "side-menu-raw-take",
+        meta: {
+          pagename: "자재 인수",
+          category: "생산 관리",
+        },
         component: RawTake,
       },
       {
         path: "product/work",
         name: "side-menu-work-order",
+        meta: {
+          pagename: "작업 지시",
+          category: "생산 관리",
+        },
         component: WorkOrder,
       },
       {
         path: "product/warehouse",
         name: "side-menu-warehouse-release",
+        meta: {
+          pagename: "완제품 창고 출고",
+          category: "생산 관리",
+        },
         component: WarehouseRelease,
       },
       {
-        path: "/monitor/stock",
+        path: "monitor/stock",
         name: "side-menu-monitor-stock",
+        meta: {
+          pagename: "원자재 재고 조회",
+          category: "모니터링",
+        },
         component: MonitorStock,
       },
     ],
@@ -86,53 +126,93 @@ const routes = [
         component: Main,
       },
       {
-        path: "/master/raw",
+        path: "master/raw",
         name: "simple-menu-master-raw",
+        meta: {
+          pagename: "원자재 마스터",
+          category: "기준 정보",
+        },
         component: MasterRaw,
       },
       {
         path: "sales/accept",
         name: "simple-menu-sales-accept",
+        meta: {
+          pagename: "수주 접수",
+          category: "영업 관리",
+        },
         component: SalesAccept,
       },
       {
         path: "sales/shipment",
         name: "simple-menu-client-shipment",
+        meta: {
+          pagename: "고객사 출하",
+          category: "영업 관리",
+        },
         component: ClientShipment,
       },
       {
         path: "purchase/order",
         name: "simple-menu-raw-order",
+        meta: {
+          pagename: "원자재 발주",
+          category: "구매 관리",
+        },
         component: RawOrder,
       },
       {
         path: "purchase/receive",
         name: "simple-menu-raw-receive",
+        meta: {
+          pagename: "원자재 입고",
+          category: "구매 관리",
+        },
         component: RawReceive,
       },
       {
         path: "purchase/issue",
         name: "simple-menu-raw-issue",
+        meta: {
+          pagename: "원자재 불출",
+          category: "구매 관리",
+        },
         component: RawIssue,
       },
       {
         path: "product/take",
         name: "simple-menu-raw-take",
+        meta: {
+          pagename: "자재 인수",
+          category: "생산 관리",
+        },
         component: RawTake,
       },
       {
         path: "product/work",
         name: "simple-menu-work-order",
+        meta: {
+          pagename: "작업 지시",
+          category: "생산 관리",
+        },
         component: WorkOrder,
       },
       {
         path: "product/warehouse",
         name: "simple-menu-warehouse-release",
+        meta: {
+          pagename: "완제품 창고 출고",
+          category: "생산 관리",
+        },
         component: WarehouseRelease,
       },
       {
-        path: "/monitor/stock",
+        path: "monitor/stock",
         name: "simple-menu-monitor-stock",
+        meta: {
+          pagename: "원자재 재고 조회",
+          category: "모니터링",
+        },
         component: MonitorStock,
       },
     ],
@@ -147,8 +227,12 @@ const routes = [
         component: Main,
       },
       {
-        path: "/master/raw",
+        path: "master/raw",
         name: "top-menu-master-raw",
+        meta: {
+          pagename: "원자재 마스터",
+          category: "기준 정보",
+        },
         component: MasterRaw,
       },
       {
@@ -156,54 +240,80 @@ const routes = [
         name: "top-menu-sales-accept",
         meta: {
           pagename: "수주접수",
-          category: "영업관리",
-          categorypath: "sales/accept",
+          category: "영업 관리",
         },
         component: SalesAccept,
       },
       {
         path: "sales/shipment",
         name: "top-menu-client-shipment",
+        meta: {
+          pagename: "고객사 출하",
+          category: "영업 관리",
+        },
         component: ClientShipment,
       },
       {
         path: "purchase/order",
         name: "top-menu-raw-order",
         meta: {
-          pagename: "원자재발주",
-          category: "구매관리",
-          categorypath: "purchase/order",
+          pagename: "원자재 발주",
+          category: "구매 관리",
         },
         component: RawOrder,
       },
       {
         path: "purchase/receive",
         name: "top-menu-raw-receive",
+        meta: {
+          pagename: "원자재 입고",
+          category: "구매 관리",
+        },
         component: RawReceive,
       },
       {
         path: "purchase/issue",
         name: "top-menu-raw-issue",
+        meta: {
+          pagename: "원자재 불출",
+          category: "구매 관리",
+        },
         component: RawIssue,
       },
       {
         path: "product/take",
         name: "top-menu-raw-take",
+        meta: {
+          pagename: "자재 인수",
+          category: "생산 관리",
+        },
         component: RawTake,
       },
       {
         path: "product/work",
         name: "top-menu-work-order",
+        meta: {
+          pagename: "작업 지시",
+          category: "생산 관리",
+        },
         component: WorkOrder,
       },
       {
         path: "product/warehouse",
         name: "top-menu-warehouse-release",
+        meta: {
+          pagename: "완제품 창고 출고",
+          category: "생산 관리",
+        },
         component: WarehouseRelease,
       },
       {
-        path: "/monitor/stock",
+        path: "monitor/stock",
         name: "top-menu-monitor-stock",
+        meta: {
+          pagename: "원자재 재고 조회",
+          category: "모니터링",
+        },
         component: MonitorStock,
       },
     ],

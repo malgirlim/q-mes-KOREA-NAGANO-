@@ -24,7 +24,7 @@ export const useSideMenuStore = defineStore("sideMenu", {
       {
         icon: "FileSpreadsheet",
         pageName: "",
-        title: "마스터",
+        title: "기준 정보",
         subMenu: [
           {
             icon: "FileText",
