@@ -87,7 +87,7 @@ const hideSearchDropdown = () => {
         ]"
       >
         <Breadcrumb.Link>메인</Breadcrumb.Link>
-        <Breadcrumb.Link v-if="$route.meta.category!=undefined">
+        <Breadcrumb.Link v-if="$route.meta.category != undefined">
           {{ $route.meta.category }}
         </Breadcrumb.Link>
         <Breadcrumb.Link>

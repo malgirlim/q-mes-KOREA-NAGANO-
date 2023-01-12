@@ -9,7 +9,18 @@ app.use(bodyParser.json());
 
 // 조회
 app.get("/api/memos", async (req, res) => {
-  res.send("GET 조회");
+  try {
+    const Pool = await pool;
+    // select
+    const result = await Pool.request().query(
+      "SELECT ITEM_SKU AS content, ITEM_NAME AS name, ITEM_SIZE AS size, 1 AS number FROM MASTER_ITEM_TB"
+    );
+    res.send(JSON.stringify(result.recordset));
+  } catch (err) {
+    res.status(500);
+    res.send(err.message);
+  }
+  // res.send("GET 전송완료");
 });
 
 // 추가
