@@ -13,7 +13,7 @@ app.get("/api/memos", async (req, res) => {
     const Pool = await pool;
     // select
     const result = await Pool.request().query(
-      "SELECT ITEM_SKU AS content, ITEM_NAME AS name, ITEM_SIZE AS size, 1 AS number FROM MASTER_ITEM_TB"
+      "SELECT ITEM_SKU AS content, ITEM_NAME AS name, ITEM_SIZE AS size, 1 AS number FROM [QINNOTEK].[dbo].[MASTER_ITEM_TB]"
     );
     res.send(JSON.stringify(result.recordset));
   } catch (err) {
