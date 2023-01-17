@@ -1,6 +1,6 @@
 const express = require("express");
 const masterRouter = require("./router/master");
-const stockRouter = require("./router/stock");
+// const stockRouter = require("./router/stock");
 const app = express();
 const port = 3000;
 const bodyParser = require("body-parser");
