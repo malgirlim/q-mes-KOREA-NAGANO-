@@ -38,7 +38,7 @@ onMounted(() => {
     <!-- BEGIN: Top Menu -->
     <nav
       :class="[
-        'relative z-50 hidden pt-32 -mt-7 md:block',
+        'relative z-50 hidden pt-32 -mt-9 md:block',
 
         // Animation
         'opacity-0 animate-[0.4s_ease-in-out_0.2s_intro-top-menu] animate-fill-mode-forwards',

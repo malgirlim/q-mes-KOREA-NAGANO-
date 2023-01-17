@@ -3,116 +3,113 @@ import SideMenu from "../layouts/SideMenu/SideMenu.vue";
 import SimpleMenu from "../layouts/SimpleMenu/SimpleMenu.vue";
 import TopMenu from "../layouts/TopMenu/TopMenu.vue";
 import Main from "../pages/Main.vue";
-import SalesAccept from "../pages/SalesAccept.vue";
-import ClientShipment from "../pages/ClientShipment.vue";
-import RawOrder from "../pages/RawOrder.vue";
-import RawReceive from "../pages/RawReceive.vue";
-import RawIssue from "../pages/RawIssue.vue";
-import RawTake from "../pages/RawTake.vue";
-import WorkOrder from "../pages/WorkOrder.vue";
-import WarehouseRelease from "../pages/WarehouseRelease.vue";
-import MasterRaw from "../pages/MasterRaw.vue";
+
+import MasterUser from "../pages/MasterUser.vue";
+import MasterProduct from "../pages/MasterProduct.vue";
+import MasterClient from "../pages/MasterClient.vue";
+import MasterBad from "../pages/MasterBad.vue";
+import StockReceive from "../pages/StockReceive.vue";
+import StockUse from "../pages/StockUse.vue";
+import StockBad from "../pages/StockBad.vue";
 import MonitorStock from "../pages/MonitorStock.vue";
+import MonitorBad from "../pages/MonitorBad.vue";
+import MonitorSafe from "../pages/MonitorSafe.vue";
+
 
 const routes = [
   {
     path: "/side-menu",
     component: SideMenu,
     children: [
-      {
-        path: "/main",
-        name: "side-menu-main",
-        component: Main,
-      },
-      {
-        path: "master/raw",
-        name: "side-menu-master-raw",
-        meta: {
-          pagename: "원자재 마스터",
+         {
+        path: "master/user",
+        name: "side-menu-master-user",
+	meta: {
+          pagename: "사용자 등록",
           category: "기준 정보",
         },
-        component: MasterRaw,
+        component: MasterUser,
       },
       {
-        path: "sales/accept",
-        name: "side-menu-sales-accept",
-        meta: {
-          pagename: "수주 접수",
-          category: "영업 관리",
+        path: "master/product",
+        name: "side-menu-master-product",
+	meta: {
+          pagename: "품목 등록",
+          category: "기준 정보",
         },
-        component: SalesAccept,
+        component: MasterProduct,
       },
       {
-        path: "sales/shipment",
-        name: "side-menu-client-shipment",
-        meta: {
-          pagename: "고객사 출하",
-          category: "영업 관리",
+        path: "master/client",
+        name: "side-menu-master-client",
+	meta: {
+          pagename: "거래처 등록",
+          category: "기준 정보",
         },
-        component: ClientShipment,
+        component: MasterClient,
       },
       {
-        path: "purchase/order",
-        name: "side-menu-raw-order",
-        meta: {
-          pagename: "원자재 발주",
-          category: "구매 관리",
+        path: "master/bad",
+        name: "side-menu-master-bad",
+	meta: {
+          pagename: "불량 내용 등록",
+          category: "기준 정보",
         },
-        component: RawOrder,
+        component: MasterBad,
       },
       {
-        path: "purchase/receive",
-        name: "side-menu-raw-receive",
-        meta: {
-          pagename: "원자재 입고",
-          category: "구매 관리",
+        path: "stock/receive",
+        name: "side-menu-stock-receive",
+	meta: {
+          pagename: "원자재 입고 등록",
+          category: "재고 관리",
         },
-        component: RawReceive,
+        component: StockReceive,
       },
       {
-        path: "purchase/issue",
-        name: "side-menu-raw-issue",
-        meta: {
-          pagename: "원자재 불출",
-          category: "구매 관리",
+        path: "stock/use",
+        name: "side-menu-stock-use",
+	meta: {
+          pagename: "원자재 사용 등록",
+          category: "재고 관리",
         },
-        component: RawIssue,
+        component: StockUse,
       },
       {
-        path: "product/take",
-        name: "side-menu-raw-take",
-        meta: {
-          pagename: "자재 인수",
-          category: "생산 관리",
+        path: "stock/bad",
+        name: "side-menu-stock-bad",
+	meta: {
+          pagename: "원자재 불량 등록",
+          category: "재고 관리",
         },
-        component: RawTake,
-      },
-      {
-        path: "product/work",
-        name: "side-menu-work-order",
-        meta: {
-          pagename: "작업 지시",
-          category: "생산 관리",
-        },
-        component: WorkOrder,
-      },
-      {
-        path: "product/warehouse",
-        name: "side-menu-warehouse-release",
-        meta: {
-          pagename: "완제품 창고 출고",
-          category: "생산 관리",
-        },
-        component: WarehouseRelease,
+        component: StockBad,
       },
       {
         path: "monitor/stock",
         name: "side-menu-monitor-stock",
-        meta: {
+	meta: {
           pagename: "원자재 재고 조회",
-          category: "모니터링",
+          category: "재고 조회",
         },
         component: MonitorStock,
+      },
+      {
+        path: "monitor/bad",
+        name: "side-menu-monitor-bad",
+	meta: {
+          pagename: "원자재 불량 조회",
+          category: "재고 조회",
+        },
+        component: MonitorBad,
+      },
+      {
+        path: "monitor/safe",
+        name: "side-menu-monitor-safe",
+	meta: {
+          pagename: "안전재고 미달 조회",
+          category: "재고 조회",
+        },
+        component: MonitorSafe,
       },
     ],
   },
@@ -126,94 +123,94 @@ const routes = [
         component: Main,
       },
       {
-        path: "master/raw",
-        name: "simple-menu-master-raw",
-        meta: {
-          pagename: "원자재 마스터",
+        path: "master/user",
+        name: "simple-menu-master-user",
+	meta: {
+          pagename: "사용자 등록",
           category: "기준 정보",
         },
-        component: MasterRaw,
+        component: MasterUser,
       },
       {
-        path: "sales/accept",
-        name: "simple-menu-sales-accept",
-        meta: {
-          pagename: "수주 접수",
-          category: "영업 관리",
+        path: "master/product",
+        name: "simple-menu-master-product",
+	meta: {
+          pagename: "품목 등록",
+          category: "기준 정보",
         },
-        component: SalesAccept,
+        component: MasterProduct,
       },
       {
-        path: "sales/shipment",
-        name: "simple-menu-client-shipment",
-        meta: {
-          pagename: "고객사 출하",
-          category: "영업 관리",
+        path: "master/client",
+        name: "simple-menu-master-client",
+	meta: {
+          pagename: "거래처 등록",
+          category: "기준 정보",
         },
-        component: ClientShipment,
+        component: MasterClient,
       },
       {
-        path: "purchase/order",
-        name: "simple-menu-raw-order",
-        meta: {
-          pagename: "원자재 발주",
-          category: "구매 관리",
+        path: "master/bad",
+        name: "simple-menu-master-bad",
+	meta: {
+          pagename: "불량 내용 등록",
+          category: "기준 정보",
         },
-        component: RawOrder,
+        component: MasterBad,
       },
       {
-        path: "purchase/receive",
-        name: "simple-menu-raw-receive",
-        meta: {
-          pagename: "원자재 입고",
-          category: "구매 관리",
+        path: "stock/receive",
+        name: "simple-menu-stock-receive",
+	meta: {
+          pagename: "원자재 입고 등록",
+          category: "재고 관리",
         },
-        component: RawReceive,
+        component: StockReceive,
       },
       {
-        path: "purchase/issue",
-        name: "simple-menu-raw-issue",
-        meta: {
-          pagename: "원자재 불출",
-          category: "구매 관리",
+        path: "stock/use",
+        name: "simple-menu-stock-use",
+	meta: {
+          pagename: "원자재 사용 등록",
+          category: "재고 관리",
         },
-        component: RawIssue,
+        component: StockUse,
       },
       {
-        path: "product/take",
-        name: "simple-menu-raw-take",
-        meta: {
-          pagename: "자재 인수",
-          category: "생산 관리",
+        path: "stock/bad",
+        name: "simple-menu-stock-bad",
+	meta: {
+          pagename: "원자재 불량 등록",
+          category: "재고 관리",
         },
-        component: RawTake,
-      },
-      {
-        path: "product/work",
-        name: "simple-menu-work-order",
-        meta: {
-          pagename: "작업 지시",
-          category: "생산 관리",
-        },
-        component: WorkOrder,
-      },
-      {
-        path: "product/warehouse",
-        name: "simple-menu-warehouse-release",
-        meta: {
-          pagename: "완제품 창고 출고",
-          category: "생산 관리",
-        },
-        component: WarehouseRelease,
+        component: StockBad,
       },
       {
         path: "monitor/stock",
         name: "simple-menu-monitor-stock",
-        meta: {
+	meta: {
           pagename: "원자재 재고 조회",
-          category: "모니터링",
+          category: "재고 조회",
         },
         component: MonitorStock,
+      },
+      {
+        path: "monitor/bad",
+        name: "simple-menu-monitor-bad",
+	meta: {
+          pagename: "원자재 불량 조회",
+          category: "재고 조회",
+        },
+        component: MonitorBad,
+      },
+      {
+        path: "monitor/safe",
+        name: "simple-menu-monitor-safe",
+	meta: {
+          pagename: "안전재고 미달 조회",
+          category: "재고 조회",
+        },
+        component: MonitorSafe,
       },
     ],
   },
@@ -227,94 +224,94 @@ const routes = [
         component: Main,
       },
       {
-        path: "master/raw",
-        name: "top-menu-master-raw",
-        meta: {
-          pagename: "원자재 마스터",
+        path: "master/user",
+        name: "top-menu-master-user",
+	meta: {
+          pagename: "사용자 등록",
           category: "기준 정보",
         },
-        component: MasterRaw,
+        component: MasterUser,
       },
       {
-        path: "sales/accept",
-        name: "top-menu-sales-accept",
-        meta: {
-          pagename: "수주접수",
-          category: "영업 관리",
+        path: "master/product",
+        name: "top-menu-master-product",
+	meta: {
+          pagename: "품목 등록",
+          category: "기준 정보",
         },
-        component: SalesAccept,
+        component: MasterProduct,
       },
       {
-        path: "sales/shipment",
-        name: "top-menu-client-shipment",
-        meta: {
-          pagename: "고객사 출하",
-          category: "영업 관리",
+        path: "master/client",
+        name: "top-menu-master-client",
+	meta: {
+          pagename: "거래처 등록",
+          category: "기준 정보",
         },
-        component: ClientShipment,
+        component: MasterClient,
       },
       {
-        path: "purchase/order",
-        name: "top-menu-raw-order",
-        meta: {
-          pagename: "원자재 발주",
-          category: "구매 관리",
+        path: "master/bad",
+        name: "top-menu-master-bad",
+	meta: {
+          pagename: "불량 내용 등록",
+          category: "기준 정보",
         },
-        component: RawOrder,
+        component: MasterBad,
       },
       {
-        path: "purchase/receive",
-        name: "top-menu-raw-receive",
-        meta: {
-          pagename: "원자재 입고",
-          category: "구매 관리",
+        path: "stock/receive",
+        name: "top-menu-stock-receive",
+	meta: {
+          pagename: "원자재 입고 등록",
+          category: "재고 관리",
         },
-        component: RawReceive,
+        component: StockReceive,
       },
       {
-        path: "purchase/issue",
-        name: "top-menu-raw-issue",
-        meta: {
-          pagename: "원자재 불출",
-          category: "구매 관리",
+        path: "stock/use",
+        name: "top-menu-stock-use",
+	meta: {
+          pagename: "원자재 사용 등록",
+          category: "재고 관리",
         },
-        component: RawIssue,
+        component: StockUse,
       },
       {
-        path: "product/take",
-        name: "top-menu-raw-take",
-        meta: {
-          pagename: "자재 인수",
-          category: "생산 관리",
+        path: "stock/bad",
+        name: "top-menu-stock-bad",
+	meta: {
+          pagename: "원자재 불량 등록",
+          category: "재고 관리",
         },
-        component: RawTake,
-      },
-      {
-        path: "product/work",
-        name: "top-menu-work-order",
-        meta: {
-          pagename: "작업 지시",
-          category: "생산 관리",
-        },
-        component: WorkOrder,
-      },
-      {
-        path: "product/warehouse",
-        name: "top-menu-warehouse-release",
-        meta: {
-          pagename: "완제품 창고 출고",
-          category: "생산 관리",
-        },
-        component: WarehouseRelease,
+        component: StockBad,
       },
       {
         path: "monitor/stock",
         name: "top-menu-monitor-stock",
-        meta: {
+	meta: {
           pagename: "원자재 재고 조회",
-          category: "모니터링",
+          category: "재고 조회",
         },
         component: MonitorStock,
+      },
+      {
+        path: "monitor/bad",
+        name: "top-menu-monitor-bad",
+	meta: {
+          pagename: "원자재 불량 조회",
+          category: "재고 조회",
+        },
+        component: MonitorBad,
+      },
+      {
+        path: "monitor/safe",
+        name: "top-menu-monitor-safe",
+	meta: {
+          pagename: "안전재고 미달 조회",
+          category: "재고 조회",
+        },
+        component: MonitorSafe,
       },
     ],
   },

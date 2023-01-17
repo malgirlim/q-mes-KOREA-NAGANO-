@@ -9,7 +9,7 @@ import Lucide from "../base-components/Lucide";
 import Tippy from "../base-components/Tippy";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
-
+import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 const deleteConfirmationModal = ref(false);
 const setDeleteConfirmationModal = (value: boolean) => {
   deleteConfirmationModal.value = value;
@@ -23,7 +23,6 @@ const deleteButtonRef = ref(null);
       class="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap"
     >
       <Button variant="primary" class="mr-2 shadow-md"> 등록 </Button>
-
       <div class="hidden mx-auto md:block text-slate-500">
         총 150개 중 10개 항목 조회됨
       </div>
@@ -45,7 +44,7 @@ const deleteButtonRef = ref(null);
           </Menu.Button>
           <Menu.Items class="w-40">
             <Menu.Item>
-              <Lucide icon="Printer" class="w-4 h-4 mr-2" /> 출력
+              <Lucide icon="Printer" class="w-4 h-4 mr-2" /> <Print/>
             </Menu.Item>
             <Menu.Item>
               <Lucide icon="FileText" class="w-4 h-4 mr-2" /> Excel 다운로드
@@ -58,23 +57,26 @@ const deleteButtonRef = ref(null);
       </div>
     </div>
     <!-- BEGIN: Data List -->
-    <div class="col-span-12 overflow-auto intro-y lg:overflow-visible">
+    <div class="col-span-12 overflow-auto intro-y lg:overflow-visible" id="printMe">
       <Table class="border-spacing-y-[10px] border-separate -mt-2">
         <Table.Thead>
           <Table.Tr>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              입고일자
+              발주일자
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               발주코드
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              LOT
             </Table.Th>
             <Table.Th class="border-b-0 whitespace-nowrap"> 거래처명 </Table.Th>
             <Table.Th class="border-b-0 whitespace-nowrap"> 품목명 </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               수량
+            </Table.Th>
+            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+              예상입고일
+            </Table.Th>
+            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+              입고여부
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               편집
@@ -98,11 +100,6 @@ const deleteButtonRef = ref(null);
               B20201221-001
             </Table.Td>
             <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-15 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-            >
-              L20201221-001
-            </Table.Td>
-            <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-15 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
             >
               컴퓨존
@@ -117,7 +114,25 @@ const deleteButtonRef = ref(null);
             >
               100
             </Table.Td>
-
+            <Table.Td
+              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+            >
+              2023.1.11(수)
+            </Table.Td>
+            <Table.Td
+              class="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+            >
+              <div
+                :class="[
+                  'flex items-center justify-center',
+                  { 'text-success': faker.trueFalse[0] },
+                  { 'text-danger': !faker.trueFalse[0] },
+                ]"
+              >
+                <Lucide icon="CheckSquare" class="w-4 h-4 mr-2" />
+                {{ faker.trueFalse[0] ? "입고" : "미입고" }}
+              </div>
+            </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
             >

@@ -73,7 +73,7 @@ const hideSearchDropdown = () => {
             props.layout == 'simple-menu' && 'hidden',
           ]"
         >
-          Q-MES
+          KOREA NAGANO
         </span>
       </RouterLink>
       <!-- END: Logo -->
