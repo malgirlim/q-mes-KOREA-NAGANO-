@@ -3,7 +3,6 @@ import _, { isArguments } from "lodash";
 import { ref } from "vue";
 import Button from "../base-components/Button";
 import { FormInput, FormSelect, FormCheck } from "../base-components/Form";
-import Litepicker from "../base-components/Litepicker";
 import Lucide from "../base-components/Lucide";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
@@ -94,36 +93,6 @@ const print = () => {
                   ">
         <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button>
       <div class="hidden mx-auto md:block text-slate-500"></div>
-      <div class="text-center">
-        <div>
-          <Litepicker
-            v-model="now2"
-            :options="{
-              autoApply: false,
-              singleMode: false,
-              numberOfColumns: 1,
-              numberOfMonths: 1,
-              showWeekNumbers: true,
-              dropdowns: {
-                minYear: Number(min_year),
-                maxYear: Number(max_year),
-                months: true,
-                years: true,
-              },
-              lang: 'ko',
-              format: 'YY/MM/DD',
-              delimiter: ' - ',
-              buttonText: {
-                reset: '',
-                apply: '적용',
-                cancel: '취소',
-              },
-            }"
-            class="block w-40 mx-auto !box"
-            placeholder="전체기간"
-          />
-        </div>
-      </div>
       <div class="ml-2">
         <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
@@ -356,7 +325,7 @@ const print = () => {
   >
     <Dialog.Panel class="p-10 text-center">
       <!--추가 Modal 내용 시작-->
-      <div class="mb-5" style="font-weight: bold">품목 등록</div>
+      <div class="mb-5" style="font-weight: bold">거래처 등록</div>
       <div style="text-align: left">
         <div>
           <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>

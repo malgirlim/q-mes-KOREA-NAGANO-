@@ -10,7 +10,7 @@ export default {
   },
   methods: {
     fetchData() {
-      console.log(this.$route.meta.pagename);
+      //console.log(this.$route.meta.pagename);
       // console.log(this.$route.meta.name);
     },
   },

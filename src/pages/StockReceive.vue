@@ -2,7 +2,7 @@
 import _, { isArguments } from "lodash";
 import { ref } from "vue";
 import Button from "../base-components/Button";
-import { FormInput, FormSelect } from "../base-components/Form";
+import { FormInput, FormSelect, FormCheck } from "../base-components/Form";
 import Litepicker from "../base-components/Litepicker";
 import Lucide from "../base-components/Lucide";
 import { Dialog, Menu } from "../base-components/Headless";
@@ -72,7 +72,7 @@ const print = () => {
 <template>
   <div class="grid grid-cols-12 gap-1 mt-1">
     <div
-      class="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap"
+      class="flex flex-wrap items-center col-span-12 mt-2 mb-2 intro-y sm:flex-nowrap"
     >
       <Button
         class="mr-2 shadow-md"
@@ -83,10 +83,16 @@ const print = () => {
             setInsertModal(true);
           }
         "
-      >
+      > <Lucide icon="FilePlus" class="w-4 h-4 mr-2" /> 
         등록
       </Button>
-
+      <Button class="mr-2 shadow-md" as="a" variant="danger"  @click="
+                    (event) => {
+                      event.preventDefault();
+                      setDeleteConfirmationModal(true);
+                    }
+                  ">
+        <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button>
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div class="text-center">
         <div>
@@ -121,9 +127,11 @@ const print = () => {
       <div class="ml-2">
         <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
-          <option>수주번호</option>
-          <option>품목명</option>
+          <option>품목코드</option>
           <option>거래처명</option>
+          <option>품명</option>
+          <option>규격</option>
+          <option>비고</option>
         </FormSelect>
       </div>
       <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-2">
@@ -159,7 +167,7 @@ const print = () => {
         <Menu>
           <Menu.Button :as="Button" class="px-2 !box">
             <span class="flex items-center justify-center w-5 h-5">
-              <Lucide icon="Plus" class="w-4 h-4" />
+              <Lucide icon="MoreVertical" class="w-4 h-4" />
             </span>
           </Menu.Button>
           <Menu.Items class="w-40">
@@ -201,22 +209,33 @@ const print = () => {
       <Table class="border-spacing-y-[10px] border-separate -mt-2">
         <Table.Thead>
           <Table.Tr>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              <!--순번-->
+            <Table.Th class="text-center border-b-0 whitespace-nowrap"
+            id="checkbox"
+            >
+              <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              수주일자
+              순번
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              수주번호
+              입고일시
+            </Table.Th>
+            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+              품목코드
             </Table.Th>
             <Table.Th class="border-b-0 whitespace-nowrap"> 거래처명 </Table.Th>
-            <Table.Th class="border-b-0 whitespace-nowrap"> 품목명 </Table.Th>
+            <Table.Th class="border-b-0 whitespace-nowrap"> 품명 </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              수량
+              규격
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              납기일
+              단위
+            </Table.Th>
+            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+              입고수
+            </Table.Th>
+            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+              비고
             </Table.Th>
             <Table.Th
               class="text-center border-b-0 whitespace-nowrap"
@@ -238,8 +257,18 @@ const print = () => {
             :key="todo.content"
             class="intro-x"
           >
+          <Table.Td
+              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              id="checkbox"
+              style="width: 50px"
+              >
+              <FormCheck>
+                <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
+              </FormCheck> 
+            </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              style="width: 50px"
             >
               <div>{{ index + 1 + (currentPage - 1) * rowsPerPage }}</div>
             </Table.Td>
@@ -247,39 +276,53 @@ const print = () => {
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 150px"
             >
-              <div>22-12-21(수)</div>
+            <div>2023-01-17(화)</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 150px"
+              style="width: 200px"
             >
-              <div>{{ todo.content }}</div>
+            <div>{{ todo.content }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 150px"
             >
-              컴퓨존
+              <div>(주)큐이노텍</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              style="width: 300px"
             >
               <div>{{ todo.name }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              style="width: 150px"
             >
-              <div>{{ todo.number }}</div>
+              <div>300mm</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 150px"
+              style="width: 50px"
             >
-              23-01-11(수)
+              <div>EA</div>
+            </Table.Td>
+            <Table.Td
+              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              style="width: 50px"
+            >
+              <div>100</div>
+            </Table.Td>
+            <Table.Td
+              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              style="width: 200px"
+            >
+              <div>비고란 입니다.</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
-              style="width: 150px"
+              style="width: 100px"
               id="edit"
             >
               <div class="flex items-center justify-center">
@@ -296,18 +339,6 @@ const print = () => {
                 >
                   <Lucide icon="CheckSquare" class="w-4 h-4 mr-1" />
                   수정
-                </a>
-                <a
-                  class="flex items-center text-danger"
-                  href="#"
-                  @click="
-                    (event) => {
-                      event.preventDefault();
-                      setDeleteConfirmationModal(true);
-                    }
-                  "
-                >
-                  <Lucide icon="Trash2" class="w-4 h-4 mr-1" /> 삭제
                 </a>
               </div>
             </Table.Td>
@@ -334,10 +365,10 @@ const print = () => {
   >
     <Dialog.Panel class="p-10 text-center">
       <!--추가 Modal 내용 시작-->
-      <div class="mb-5" style="font-weight: bold">등록</div>
+      <div class="mb-5" style="font-weight: bold">입고 등록</div>
       <div style="text-align: left">
         <div>
-          <FormLabel htmlFor="vertical-form-1">수주일자</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">입고일시</FormLabel>
           <FormInput
             id="vertical-form-1"
             type="date"
@@ -346,7 +377,7 @@ const print = () => {
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">수주번호</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
           <FormInput id="vertical-form-1" type="text" placeholder="" />
         </div>
         <div class="mt-3">
@@ -354,27 +385,30 @@ const print = () => {
           <FormInput id="vertical-form-1" type="text" placeholder="" />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">품목명</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">품명</FormLabel>
           <FormInput id="vertical-form-1" type="text" placeholder="" />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">수량</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">규격</FormLabel>
+          <FormInput id="vertical-form-1" type="text" placeholder="" />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-2">단위</FormLabel>
           <FormInput id="vertical-form-2" type="text" placeholder="" />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">납기일</FormLabel>
-          <FormInput
-            id="vertical-form-2"
-            type="date"
-            :modelValue="nowPlus"
-            placeholder=""
-          />
+          <FormLabel htmlFor="vertical-form-2">입고수</FormLabel>
+          <FormInput id="vertical-form-2" type="text" placeholder="" />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-2">비고</FormLabel>
+          <FormInput id="vertical-form-2" type="text" placeholder="" />
         </div>
         <div class="mt-5 text-right">
           <Button class="mr-2 shadow-md" variant="primary">확인</Button>
           <Button
             class="mr-2 shadow-md"
-            variant="primary"
+            variant="outline-primary"
             @click="
               () => {
                 setInsertModal(false);
@@ -402,16 +436,16 @@ const print = () => {
       <div class="mb-5" style="font-weight: bold">수정</div>
       <div style="text-align: left">
         <div>
-          <FormLabel htmlFor="vertical-form-1">수주일자</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">입고일시</FormLabel>
           <FormInput
             id="vertical-form-1"
             type="date"
-            modelValue="2022-12-21"
+            modelValue="2022-01-17"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">수주번호</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
           <FormInput
             id="vertical-form-1"
             type="text"
@@ -424,12 +458,12 @@ const print = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="컴퓨존"
+            modelValue="(주)큐이노텍"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">품목명</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">품명</FormLabel>
           <FormInput
             id="vertical-form-1"
             type="text"
@@ -438,20 +472,38 @@ const print = () => {
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">수량</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">규격</FormLabel>
           <FormInput
-            id="vertical-form-2"
+            id="vertical-form-1"
             type="text"
-            :modelValue="editModalDataArr.number"
+            modelValue="300mm"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">납기일</FormLabel>
+          <FormLabel htmlFor="vertical-form-2">단위</FormLabel>
           <FormInput
             id="vertical-form-2"
-            type="date"
-            modelValue="2023-01-11"
+            type="text"
+            modelValue="EA"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-2">입고수</FormLabel>
+          <FormInput
+            id="vertical-form-2"
+            type="text"
+            modelValue="100"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-2">비고</FormLabel>
+          <FormInput
+            id="vertical-form-2"
+            type="text"
+            modelValue="비고란 입니다."
             placeholder=""
           />
         </div>
@@ -459,7 +511,7 @@ const print = () => {
           <Button class="mr-2 shadow-md" variant="primary">확인</Button>
           <Button
             class="mr-2 shadow-md"
-            variant="primary"
+            variant="outline-primary"
             @click="
               () => {
                 setEditModal(false);

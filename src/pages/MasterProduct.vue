@@ -3,7 +3,6 @@ import _, { isArguments } from "lodash";
 import { ref } from "vue";
 import Button from "../base-components/Button";
 import { FormInput, FormSelect, FormCheck } from "../base-components/Form";
-import Litepicker from "../base-components/Litepicker";
 import Lucide from "../base-components/Lucide";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
@@ -65,8 +64,17 @@ const now2 = "전체기간";
 
 const print = () => {
   // Pass the element id here
-  console.log("print");
+  console.log("hello");
 };
+
+// 디버그 코드
+const check_debug='3';
+let debug_value='';
+
+const setDebug = () => {
+  debug_value=check_debug;
+};
+
 </script>
 
 <template>
@@ -93,37 +101,14 @@ const print = () => {
                     }
                   ">
         <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button>
+<!--디버그 공간-->
+        <Button class="mr-2 shadow-md" as="a" variant="dark"  @click="
+                      setDebug();
+                  ">
+        <Lucide icon="Cpu" class="w-4 h-4 mr-2" /> Debug</Button>
+        <div><FormInput id="regular-form-5" type="text" :placeholder=debug_value disabled /></div>
+<!--디버그 공간-->
       <div class="hidden mx-auto md:block text-slate-500"></div>
-      <div class="text-center">
-        <div>
-          <Litepicker
-            v-model="now2"
-            :options="{
-              autoApply: false,
-              singleMode: false,
-              numberOfColumns: 1,
-              numberOfMonths: 1,
-              showWeekNumbers: true,
-              dropdowns: {
-                minYear: Number(min_year),
-                maxYear: Number(max_year),
-                months: true,
-                years: true,
-              },
-              lang: 'ko',
-              format: 'YY/MM/DD',
-              delimiter: ' - ',
-              buttonText: {
-                reset: '',
-                apply: '적용',
-                cancel: '취소',
-              },
-            }"
-            class="block w-40 mx-auto !box"
-            placeholder="전체기간"
-          />
-        </div>
-      </div>
       <div class="ml-2">
         <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
@@ -263,7 +248,7 @@ const print = () => {
               style="width: 50px"
               >
               <FormCheck>
-                <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
+                <FormCheck.Input id="checkbox-switch-1" type="checkbox" :v-model=debug_value value="디버그" />
               </FormCheck> 
             </Table.Td>
             <Table.Td

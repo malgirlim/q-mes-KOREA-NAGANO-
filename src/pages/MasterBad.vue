@@ -3,7 +3,6 @@ import _, { isArguments } from "lodash";
 import { ref } from "vue";
 import Button from "../base-components/Button";
 import { FormInput, FormSelect, FormCheck } from "../base-components/Form";
-import Litepicker from "../base-components/Litepicker";
 import Lucide from "../base-components/Lucide";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
@@ -94,42 +93,12 @@ const print = () => {
                   ">
         <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button>
       <div class="hidden mx-auto md:block text-slate-500"></div>
-      <div class="text-center">
-        <div>
-          <Litepicker
-            v-model="now2"
-            :options="{
-              autoApply: false,
-              singleMode: false,
-              numberOfColumns: 1,
-              numberOfMonths: 1,
-              showWeekNumbers: true,
-              dropdowns: {
-                minYear: Number(min_year),
-                maxYear: Number(max_year),
-                months: true,
-                years: true,
-              },
-              lang: 'ko',
-              format: 'YY/MM/DD',
-              delimiter: ' - ',
-              buttonText: {
-                reset: '',
-                apply: '적용',
-                cancel: '취소',
-              },
-            }"
-            class="block w-40 mx-auto !box"
-            placeholder="전체기간"
-          />
-        </div>
-      </div>
       <div class="ml-2">
         <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
-          <option>수주번호</option>
-          <option>품목명</option>
-          <option>거래처명</option>
+          <option>불량명</option>
+          <option>불량내용</option>
+          <option>비고</option>
         </FormSelect>
       </div>
       <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-2">
@@ -207,7 +176,7 @@ const print = () => {
       <Table class="border-spacing-y-[10px] border-separate -mt-2">
         <Table.Thead>
           <Table.Tr>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"
+            <Table.Th class="border-b-0 whitespace-nowrap"
             id="checkbox"
             >
               <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
@@ -216,19 +185,12 @@ const print = () => {
               순번
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              등록일자
+              불량명
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              품목코드
+              불량내용
             </Table.Th>
-            <Table.Th class="border-b-0 whitespace-nowrap"> 품명 </Table.Th>
-            <Table.Th class="border-b-0 whitespace-nowrap"> 규격 </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              단위
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              기초재고
-            </Table.Th>
+            <Table.Th class="text-center border-b-0 whitespace-nowrap"> 비고 </Table.Th>
             <Table.Th
               class="text-center border-b-0 whitespace-nowrap"
               id="edit"
@@ -250,7 +212,7 @@ const print = () => {
             class="intro-x"
           >
           <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               id="checkbox"
               style="width: 50px"
               >
@@ -259,44 +221,28 @@ const print = () => {
               </FormCheck> 
             </Table.Td>
             <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 50px"
             >
               <div>{{ index + 1 + (currentPage - 1) * rowsPerPage }}</div>
             </Table.Td>
             <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 150px"
-            >
-              <div>22-12-21(수)</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 200px"
             >
-              <div>{{ todo.content }}</div>
+              <div>오염</div>
             </Table.Td>
             <Table.Td
-              class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+              style="width: 200px"
+            >
+              <div>원자재 오염</div>
+            </Table.Td>
+            <Table.Td
+              class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 400px"
             >
-              <div>{{ todo.name }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-            >
-              <div>{{ todo.name }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-            >
-              <div>EA</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 150px"
-            >
-              <div>300</div>
+              <div>비고란 입니다.</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
@@ -343,27 +289,19 @@ const print = () => {
   >
     <Dialog.Panel class="p-10 text-center">
       <!--추가 Modal 내용 시작-->
-      <div class="mb-5" style="font-weight: bold">품목 등록</div>
+      <div class="mb-5" style="font-weight: bold">불량 내용 등록</div>
       <div style="text-align: left">
         <div>
-          <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">불량명</FormLabel>
           <FormInput id="vertical-form-1" type="text" placeholder="" />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">품명</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">불량내용</FormLabel>
           <FormInput id="vertical-form-1" type="text" placeholder="" />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">규격</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">비고</FormLabel>
           <FormInput id="vertical-form-1" type="text" placeholder="" />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">단위</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">기초재고</FormLabel>
-          <FormInput id="vertical-form-2" type="text" placeholder="" />
         </div>
         <div class="mt-5 text-right">
           <Button class="mr-2 shadow-md" variant="primary">확인</Button>
@@ -397,47 +335,29 @@ const print = () => {
       <div class="mb-5" style="font-weight: bold">수정</div>
       <div style="text-align: left">
         <div>
-          <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">불량명</FormLabel>
           <FormInput
             id="vertical-form-1"
             type="text"
-            :modelValue="editModalDataArr.content"
+            modelValue="오염"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">품명</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">불량내용</FormLabel>
           <FormInput
             id="vertical-form-1"
             type="text"
-            :modelValue="editModalDataArr.name"
+            modelValue="원자재 오염"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">규격</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">비고</FormLabel>
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="200mm"
-            placeholder=""
-          />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">단위</FormLabel>
-          <FormInput
-            id="vertical-form-1"
-            type="text"
-            modelValue="EA"
-            placeholder=""
-          />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">기초재고</FormLabel>
-          <FormInput
-            id="vertical-form-2"
-            type="text"
-            modelValue="300"
+            modelValue="비고란 입니다."
             placeholder=""
           />
         </div>
