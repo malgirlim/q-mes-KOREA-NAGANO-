@@ -11,7 +11,7 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get("/memos", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const Pool = await pool;
     // select

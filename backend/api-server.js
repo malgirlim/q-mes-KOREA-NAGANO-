@@ -10,7 +10,7 @@ const { sql, pool } = require("./mssql");
 app.use(bodyParser.json());
 
 // 기준정보 - router/master.js
-app.use("/api", masterRouter);
+app.use("/api/memos", masterRouter);
 
 // 추가
 app.post("/api/memos", async (req, res) => {
