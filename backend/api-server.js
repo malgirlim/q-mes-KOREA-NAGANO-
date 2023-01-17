@@ -1,4 +1,6 @@
 const express = require("express");
+const masterRouter = require("./router/master");
+const stockRouter = require("./router/stock");
 const app = express();
 const port = 3000;
 const bodyParser = require("body-parser");
@@ -7,21 +9,8 @@ const { sql, pool } = require("./mssql");
 
 app.use(bodyParser.json());
 
-// 조회
-app.get("/api/memos", async (req, res) => {
-  try {
-    const Pool = await pool;
-    // select
-    const result = await Pool.request().query(
-      "SELECT ITEM_SKU AS content, ITEM_NAME AS name, ITEM_SIZE AS size, 1 AS number FROM [QINNOTEK].[dbo].[MASTER_ITEM_TB]"
-    );
-    res.send(JSON.stringify(result.recordset));
-  } catch (err) {
-    res.status(500);
-    res.send(err.message);
-  }
-  // res.send("GET 전송완료");
-});
+// 기준정보 - router/master.js
+app.use("/api", masterRouter);
 
 // 추가
 app.post("/api/memos", async (req, res) => {
