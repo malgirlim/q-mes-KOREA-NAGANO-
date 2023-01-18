@@ -9,8 +9,9 @@ export function useSendApi<T>(
 ) {
   const datas: Ref<T[]> = ref([]); // 인터페이스 T 형식에 맞는 데이터를 가져올 공간
   const datasAreLoading = ref(false); // 데이터를 가져오면서 로딩하고 있는지 확인하는 변수
-  const dataCount = ref(1); // 가져온 데이터의 갯수
+  const dataCount = ref(0); // 가져온 데이터의 갯수
 
+  // 페이지 첫 로딩 시 데이터 가져오기
   const loadDatas = async () => {
     datasAreLoading.value = true;
     try {
@@ -25,6 +26,7 @@ export function useSendApi<T>(
     }
   };
 
+  // 조건 조회
   const searchDatas = async (key: String, input: String) => {
     datasAreLoading.value = true;
     try {
@@ -39,6 +41,16 @@ export function useSendApi<T>(
     }
   };
 
+  // 등록
+  const insertData = async (data: T) => {
+    try {
+      await axios.post(url + "/receive", { data });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // 페이징 기능
   const { paginatedArray, numberOfPages } = usePagination<T>({
     rowsPerPage,
     arrayToPaginate: datas,
@@ -51,6 +63,7 @@ export function useSendApi<T>(
     datasAreLoading,
     loadDatas,
     searchDatas,
+    insertData,
     numberOfPages,
   };
 }
