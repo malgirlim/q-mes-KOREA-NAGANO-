@@ -11,13 +11,30 @@ router.use((req, res, next) => {
   next();
 });
 
+// 조회
 router.get("/", async (req, res) => {
   try {
     const Pool = await pool;
     // select
     const result = await Pool.request().query(
-      "SELECT ITEM_SKU AS content, ITEM_NAME AS name, ITEM_SIZE AS size, 1 AS number FROM [QINNOTEK].[dbo].[MASTER_ITEM_TB]"
+      "exec [QINNOTEK].[dbo].[MASTER_ITEM2_READ_SP] '전체',''"
     );
+    res.send(JSON.stringify(result.recordset));
+  } catch (err) {
+    res.status(500);
+    res.send(err.message);
+  }
+  // res.send("GET 전송완료");
+});
+
+router.post("/", async (req, res) => {
+  try {
+    const Pool = await pool;
+    // select
+    const result = await Pool.request()
+      .input("key", sql.NVarChar, req.body.key)
+      .input("input", sql.NVarChar, req.body.input)
+      .query("exec [QINNOTEK].[dbo].[MASTER_ITEM2_READ_SP] @key,@input");
     res.send(JSON.stringify(result.recordset));
   } catch (err) {
     res.status(500);

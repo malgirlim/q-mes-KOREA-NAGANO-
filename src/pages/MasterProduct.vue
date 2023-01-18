@@ -10,23 +10,35 @@ import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 
+// API 보내는 함수 및 인터페이스 불러오기
+import { useSendApi } from "../composables/useSendApi";
+import { MasterProduct } from "../interfaces/pageInterface";
+import { useTodosApi } from "../composables/useTodosApi";
+
 // 페이징기능
 import { onMounted, watch } from "vue";
 import PaginationComponent from "../components/Pagination/PaginationComponent.vue"; // 페이징설정
-import { useTodosApi } from "../composables/useTodosApi"; // 여기서 데이터 가져옴
 const currentPage = ref(1); // 현재페이지
 const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
-
-const { todos, todosAreLoading, loadTodos, numberOfPages } = useTodosApi(
-  currentPage,
-  rowsPerPage
-);
-
-onMounted(async () => loadTodos());
 
 const pageChange = () => {
   // 한 페이지에 보여질 데이터 갯수 변경 시 1페이지로 이동
   currentPage.value = 1;
+};
+
+// api 보내기
+const url = "/api/master/product";
+const { datas, datasAreLoading, loadDatas, searchDatas, numberOfPages } =
+  useSendApi<MasterProduct>(url, currentPage, rowsPerPage);
+
+const searchKey = ref("전체");
+const searchInput = ref("");
+onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오기
+
+// 조회
+const search = () => {
+  console.log(searchKey.value, searchInput.value);
+  searchDatas(searchKey.value, searchInput.value);
 };
 
 //등록 Modal
@@ -62,19 +74,13 @@ const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
 const now2 = "전체기간";
 
-const print = () => {
-  // Pass the element id here
-  console.log("hello");
-};
-
 // 디버그 코드
-const check_debug='3';
-let debug_value='';
+const check_debug = "3";
+let debug_value = "";
 
 const setDebug = () => {
-  debug_value=check_debug;
+  debug_value = check_debug;
 };
-
 </script>
 
 <template>
@@ -91,26 +97,39 @@ const setDebug = () => {
             setInsertModal(true);
           }
         "
-      > <Lucide icon="FilePlus" class="w-4 h-4 mr-2" /> 
+      >
+        <Lucide icon="FilePlus" class="w-4 h-4 mr-2" />
         등록
       </Button>
-      <Button class="mr-2 shadow-md" as="a" variant="danger"  @click="
-                    (event) => {
-                      event.preventDefault();
-                      setDeleteConfirmationModal(true);
-                    }
-                  ">
-        <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button>
-<!--디버그 공간-->
-        <Button class="mr-2 shadow-md" as="a" variant="dark"  @click="
-                      setDebug();
-                  ">
-        <Lucide icon="Cpu" class="w-4 h-4 mr-2" /> Debug</Button>
-        <div><FormInput id="regular-form-5" type="text" :placeholder=debug_value disabled /></div>
-<!--디버그 공간-->
+      <Button
+        class="mr-2 shadow-md"
+        as="a"
+        variant="danger"
+        @click="
+          (event) => {
+            event.preventDefault();
+            setDeleteConfirmationModal(true);
+          }
+        "
+      >
+        <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
+      >
+      <!--디버그 공간-->
+      <Button class="mr-2 shadow-md" as="a" variant="dark" @click="setDebug">
+        <Lucide icon="Cpu" class="w-4 h-4 mr-2" /> Debug</Button
+      >
+      <div>
+        <FormInput
+          id="regular-form-5"
+          type="text"
+          :placeholder="debug_value"
+          disabled
+        />
+      </div>
+      <!--디버그 공간-->
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div class="ml-2">
-        <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
+        <FormSelect v-model="searchKey" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
           <option>품목코드</option>
           <option>거래처명</option>
@@ -124,9 +143,11 @@ const setDebug = () => {
           <FormInput
             type="text"
             class="w-56 pr-10 !box"
+            v-model="searchInput"
+            @keyup.enter="search"
             placeholder="검색어를 입력해주세요"
           />
-          <button @click="">
+          <button @click="search">
             <Lucide
               icon="Search"
               class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
@@ -156,7 +177,7 @@ const setDebug = () => {
             </span>
           </Menu.Button>
           <Menu.Items class="w-40">
-            <Menu.Item @click="print">
+            <Menu.Item>
               <Lucide icon="Printer" class="w-4 h-4 mr-2" />
               <Print />
             </Menu.Item>
@@ -181,7 +202,7 @@ const setDebug = () => {
       </div>
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div>
-        {{ todos.length }}개 데이터 조회됨. {{ currentPage }} /
+        {{ datas.length }}개 데이터 조회됨. {{ currentPage }} /
         {{ numberOfPages }} 페이지
         <!-- END: Pagination-->
       </div>
@@ -194,10 +215,15 @@ const setDebug = () => {
       <Table class="border-spacing-y-[10px] border-separate -mt-2">
         <Table.Thead>
           <Table.Tr>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"
-            id="checkbox"
+            <Table.Th
+              class="text-center border-b-0 whitespace-nowrap"
+              id="checkbox"
             >
-              <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
+              <FormCheck.Input
+                id="checkbox-switch-1"
+                type="checkbox"
+                value=""
+              />
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               순번
@@ -237,19 +263,20 @@ const setDebug = () => {
             :key="fakerKey"
             class="intro-x"
           > -->
-          <Table.Tr
-            v-for="(todo, index) in todos"
-            :key="todo.content"
-            class="intro-x"
-          >
-          <Table.Td
+          <Table.Tr v-for="(todo, index) in datas" :key="index" class="intro-x">
+            <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               id="checkbox"
               style="width: 50px"
-              >
+            >
               <FormCheck>
-                <FormCheck.Input id="checkbox-switch-1" type="checkbox" :v-model=debug_value value="디버그" />
-              </FormCheck> 
+                <FormCheck.Input
+                  id="checkbox-switch-1"
+                  type="checkbox"
+                  :v-model="debug_value"
+                  value="디버그"
+                />
+              </FormCheck>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -261,49 +288,49 @@ const setDebug = () => {
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 150px"
             >
-            <div>{{ todo.content }}</div>
+              <div>{{ todo.품번 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 200px"
             >
-              <div>큐이노텍</div>
+              <div>{{ todo.거래처명 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 300px"
             >
-              <div>{{ todo.name }}</div>
+              <div>{{ todo.품명 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 300px"
             >
-              <div>{{ todo.name }}</div>
+              <div>{{ todo.규격 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 50px"
             >
-              <div>EA</div>
+              <div>{{ todo.단위 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 50px"
             >
-              <div>300</div>
+              <div>{{ todo.안전재고 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 50px"
             >
-              <div>168,000</div>
+              <div>{{ todo.원가 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 200px"
             >
-              <div>비고란 입니다.</div>
+              <div>{{ todo.비고 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
@@ -318,7 +345,7 @@ const setDebug = () => {
                     (event) => {
                       event.preventDefault();
                       setEditModal(true);
-                      setEditModalData(todo.content, todo.name, todo.number);
+                      // setEditModalData();
                     }
                   "
                 >
