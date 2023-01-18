@@ -131,23 +131,9 @@ const now2 = "전체기간";
         <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
       >
       <!--디버그 공간-->
-<<<<<<< HEAD
       <Button class="mr-2 shadow-md" as="a" variant="dark" @click="">
         <Lucide icon="Cpu" class="w-4 h-4 mr-2" /> Debug</Button
       ><div>Code : {{ checkDebug }}</div>
-=======
-      <Button class="mr-2 shadow-md" as="a" variant="dark" @click="setDebug">
-        <Lucide icon="Cpu" class="w-4 h-4 mr-2" /> Debug</Button
-      >
-      <div>
-        <FormInput
-          id="regular-form-5"
-          type="text"
-          :placeholder="debug_value"
-          disabled
-        />
-      </div>
->>>>>>> a044960c6c9625b1b1f6ab1cdef0a929b470245d
       <!--디버그 공간-->
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div class="ml-2">
@@ -296,16 +282,11 @@ const now2 = "전체기간";
               style="width: 50px"
             >
                 <input
-                  class="shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 checked:bg-primary checked:border-primary focus:ring-primary"
+                  class="shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 bg-primary border-primary border-opacity-10 bg-slate-100 focus:bg-primary"
                   id="checkbox"
                   type="checkbox"
-<<<<<<< HEAD
                   :value=todo.NO
                   v-model="checkDebug"
-=======
-                  v-model="check_debug"
-                  value="디버그"
->>>>>>> a044960c6c9625b1b1f6ab1cdef0a929b470245d
                 />
             </Table.Td>
             <Table.Td
