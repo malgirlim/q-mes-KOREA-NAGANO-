@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import _, { isArguments } from "lodash";
-import { ref } from "vue";
+import { ref, Ref } from "vue";
 import Button from "../base-components/Button";
 import { FormInput, FormSelect, FormCheck } from "../base-components/Form";
 import Lucide from "../base-components/Lucide";
@@ -13,11 +13,11 @@ import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
 import { MasterProduct } from "../interfaces/pageInterface";
-import { useTodosApi } from "../composables/useTodosApi";
 
 // 페이징기능
 import { onMounted, watch } from "vue";
 import PaginationComponent from "../components/Pagination/PaginationComponent.vue"; // 페이징설정
+import { NO } from "@vue/shared";
 const currentPage = ref(1); // 현재페이지
 const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
 
@@ -28,8 +28,14 @@ const pageChange = () => {
 
 // api 보내기
 const url = "/api/master/product";
-const { datas, datasAreLoading, loadDatas, searchDatas, numberOfPages } =
-  useSendApi<MasterProduct>(url, currentPage, rowsPerPage);
+const {
+  datas,
+  dataCount,
+  datasAreLoading,
+  loadDatas,
+  searchDatas,
+  numberOfPages,
+} = useSendApi<MasterProduct>(url, currentPage, rowsPerPage);
 
 const searchKey = ref("전체");
 const searchInput = ref("");
@@ -37,15 +43,18 @@ onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오�
 
 // 조회
 const search = () => {
-  console.log(searchKey.value, searchInput.value);
+  // console.log(searchKey.value, searchInput.value);
   searchDatas(searchKey.value, searchInput.value);
+  pageChange();
 };
 
 //등록 Modal
 const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
   insertModal.value = value;
+  insertData = {}; // 변수 초기화
 };
+let insertData: MasterProduct;
 
 //수정 Modal
 const editModal = ref(false);
@@ -93,7 +102,8 @@ const setDebug = () => {
         as="a"
         variant="primary"
         @click="
-          () => {
+          (event) => {
+            event.preventDefault();
             setInsertModal(true);
           }
         "
@@ -202,7 +212,7 @@ const setDebug = () => {
       </div>
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div>
-        {{ datas.length }}개 데이터 조회됨. {{ currentPage }} /
+        {{ dataCount }}개 데이터 조회됨. {{ currentPage }} /
         {{ numberOfPages }} 페이지
         <!-- END: Pagination-->
       </div>
@@ -288,7 +298,7 @@ const setDebug = () => {
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 150px"
             >
-              <div>{{ todo.품번 }}</div>
+              <div>{{ todo.품목코드 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -360,28 +370,25 @@ const setDebug = () => {
     </div>
     <!-- END: Data List -->
   </div>
-  <!-- BEGIN: Insert Modal Content -->
   <!-- BEGIN: FOOTER(COPYRIGHT) -->
   <div style="text-align: right">
     <footer>&copy;2023 QInnotek. All rights reserved.</footer>
   </div>
   <!-- END: FOOTER(COPYRIGHT) -->
-  <Dialog
-    size="md"
-    :open="insertModal"
-    @close="
-      () => {
-        setInsertModal(false);
-      }
-    "
-  >
+  <!-- BEGIN: Insert Modal Content -->
+  <Dialog size="md" :open="insertModal" @close="setInsertModal(false)">
     <Dialog.Panel class="p-10 text-center">
       <!--추가 Modal 내용 시작-->
       <div class="mb-5" style="font-weight: bold">품목 등록</div>
       <div style="text-align: left">
         <div>
           <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertData.품목코드"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
