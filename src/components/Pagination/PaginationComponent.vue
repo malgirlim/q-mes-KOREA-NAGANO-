@@ -1,3 +1,7 @@
+<script lang="ts">
+export default {};
+</script>
+
 <template>
   <div class="pagination-container" aria-label="row pagination">
     <ul v-if="numberOfPages >= 1" class="pagination">
@@ -71,12 +75,12 @@
 
 <script lang="ts" setup>
 import Lucide from "../../base-components/Lucide";
-
 import { toRefs } from "vue";
 
 const props = defineProps({
   numberOfPages: {
     required: true,
+    type: Number,
   },
   modelValue: {
     required: true,
