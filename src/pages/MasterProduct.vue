@@ -34,6 +34,7 @@ const {
   datasAreLoading,
   loadDatas,
   searchDatas,
+  insertData,
   numberOfPages,
 } = useSendApi<MasterProduct>(url, currentPage, rowsPerPage);
 
@@ -52,9 +53,10 @@ const search = () => {
 const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
   insertModal.value = value;
-  insertData = {}; // 변수 초기화
+  console.log(insertModalData);
+  insertModalData = {}; // 변수 초기화
 };
-let insertData: MasterProduct;
+let insertModalData: MasterProduct; // 등록할 변수
 
 //수정 Modal
 const editModal = ref(false);
@@ -126,14 +128,14 @@ const setDebug = () => {
         <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
       >
       <!--디버그 공간-->
-      <Button class="mr-2 shadow-md" as="a" variant="dark" @click=setDebug>
+      <Button class="mr-2 shadow-md" as="a" variant="dark" @click="setDebug">
         <Lucide icon="Cpu" class="w-4 h-4 mr-2" /> Debug</Button
       >
       <div>
         <FormInput
           id="regular-form-5"
           type="text"
-          :placeholder=debug_value
+          :placeholder="debug_value"
           disabled
         />
       </div>
@@ -274,7 +276,11 @@ const setDebug = () => {
             :key="fakerKey"
             class="intro-x"
           > -->
-          <Table.Tr v-for="(todo, index) in datas" :key="index" class="intro-x">
+          <Table.Tr
+            v-for="(todo, index) in datas"
+            :key="todo.NO"
+            class="intro-x"
+          >
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               id="checkbox"
@@ -284,7 +290,7 @@ const setDebug = () => {
                 <FormCheck.Input
                   id="checkbox-switch-1"
                   type="checkbox"
-                  v-model=check_debug
+                  v-model="check_debug"
                   value="디버그"
                 />
               </FormCheck>
@@ -387,40 +393,85 @@ const setDebug = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            v-model="insertData.품목코드"
+            v-model="insertModalData.품목코드"
             placeholder=""
           />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.거래처명"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">품명</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.품명"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">규격</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.규격"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">단위</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.단위"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">안전재고</FormLabel>
-          <FormInput id="vertical-form-2" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-2"
+            type="text"
+            v-model="insertModalData.안전재고"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">원가</FormLabel>
-          <FormInput id="vertical-form-2" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-2"
+            type="text"
+            v-model="insertModalData.원가"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">비고</FormLabel>
-          <FormInput id="vertical-form-2" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-2"
+            type="text"
+            v-model="insertModalData.비고"
+            placeholder=""
+          />
         </div>
         <div class="mt-5 text-right">
-          <Button class="mr-2 shadow-md" variant="primary">확인</Button>
+          <Button
+            class="mr-2 shadow-md"
+            variant="primary"
+            @click="
+              () => {
+                insertData(insertModalData);
+                setInsertModal(false);
+              }
+            "
+            >확인</Button
+          >
           <Button
             class="mr-2 shadow-md"
             variant="outline-primary"
