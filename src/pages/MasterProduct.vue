@@ -75,10 +75,11 @@ const min_year = moment().add(-3, "years").format("YYYY");
 const now2 = "전체기간";
 
 // 디버그 코드
-const check_debug = "3";
+let check_debug = "";
 let debug_value = "";
 
 const setDebug = () => {
+  console.log(check_debug);
   debug_value = check_debug;
 };
 </script>
@@ -115,14 +116,14 @@ const setDebug = () => {
         <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
       >
       <!--디버그 공간-->
-      <Button class="mr-2 shadow-md" as="a" variant="dark" @click="setDebug">
+      <Button class="mr-2 shadow-md" as="a" variant="dark" @click=setDebug>
         <Lucide icon="Cpu" class="w-4 h-4 mr-2" /> Debug</Button
       >
       <div>
         <FormInput
           id="regular-form-5"
           type="text"
-          :placeholder="debug_value"
+          :placeholder=debug_value
           disabled
         />
       </div>
@@ -273,7 +274,7 @@ const setDebug = () => {
                 <FormCheck.Input
                   id="checkbox-switch-1"
                   type="checkbox"
-                  :v-model="debug_value"
+                  v-model=check_debug
                   value="디버그"
                 />
               </FormCheck>

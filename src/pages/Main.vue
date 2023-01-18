@@ -144,7 +144,7 @@ import LineChart from "../components/LineChart";
         </div>
         <!-- END: General Report -->
       </div></div></div></div>
-      <div><div class="mt-10"><h2 class="mr-5 text-lg font-medium truncate">데이터 통계</h2></div>
+      <div><div class="mt-10 intro-y"><h2 class="mr-5 text-lg font-medium truncate">재고 통계</h2></div>
       <div class="p-5 mt-12 intro-y box sm:mt-5">
             <div class="flex flex-col md:flex-row md:items-center">
               <div class="flex">

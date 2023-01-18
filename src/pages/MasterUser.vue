@@ -17,7 +17,6 @@ const setBasicModalPreview = (value: boolean) => {
 </script>
 
 <template>
-  <h2 class="mt-10 text-lg font-medium intro-y">사용자 등록</h2>
   <div class="grid grid-cols-12 gap-6 mt-5">
     <div
       class="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap"
