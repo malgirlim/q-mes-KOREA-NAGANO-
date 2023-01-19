@@ -2,10 +2,23 @@
 export default {
   data() {
     return {
-      checkDebug: []
+      checkList: [],
+      selectList:[]
     }
+  },
+  computed: {
+    allSelected: {
+      //getter
+      get: function() {
+        return this.selectList.length === this.checkList.length;
+      },
+      //setter
+      set: function(e) {
+        this.checkList = e ? this.selectList : [];
+      },
+    },
+  },
   }
-}
 </script>
 
 
@@ -133,7 +146,7 @@ const now2 = "전체기간";
       <!--디버그 공간-->
       <Button class="mr-2 shadow-md" as="a" variant="dark" @click="">
         <Lucide icon="Cpu" class="w-4 h-4 mr-2" /> Debug</Button
-      ><div>Code : {{ checkDebug }}</div>
+      ><div>Code : {{ selectList }}</div>
       <!--디버그 공간-->
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div class="ml-2">
@@ -227,10 +240,12 @@ const now2 = "전체기간";
               class="text-center border-b-0 whitespace-nowrap"
               id="checkbox"
             >
-              <FormCheck.Input
-                id="checkbox-switch-1"
+              <Input
+                class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+                id="checkbox_all"
                 type="checkbox"
-                value=""
+                value="all"
+                v-model="allSelected"
               />
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
@@ -282,12 +297,11 @@ const now2 = "전체기간";
               style="width: 50px"
             >
                 <input
-                  class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed
-"
+                  class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
                   id="checkbox"
                   type="checkbox"
                   :value=todo.NO
-                  v-model="checkDebug"
+                  v-model="selectList"
                 />
             </Table.Td>
             <Table.Td

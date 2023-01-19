@@ -146,33 +146,7 @@ import LineChart from "../components/LineChart";
       </div>
     </div>
   </div>
-  <div>
-    <div class="mt-10">
-      <h2 class="mr-5 text-lg font-medium truncate">데이터 통계</h2>
-    </div>
-    <div class="p-5 mt-12 intro-y box sm:mt-5">
-      <div class="flex flex-col md:flex-row md:items-center">
-        <div class="flex">
-          <div>
-            <div
-              class="text-lg font-medium text-primary dark:text-slate-300 xl:text-xl"
-            >
-              4,710개
-            </div>
-            <div class="mt-0.5 text-slate-500">이번 달</div>
-          </div>
-          <div
-            class="w-px h-12 mx-4 border border-r border-dashed border-slate-200 dark:border-darkmode-300 xl:mx-5"
-          ></div>
-          <div>
-            <div class="text-lg font-medium text-slate-500 xl:text-xl">
-              2,130개
-            </div>
-            <div class="mt-0.5 text-slate-500">지난 달</div>
-          </div>
-        </div>
-        <!-- END: General Report -->
-      </div></div></div>
+
       <div><div class="mt-10 intro-y"><h2 class="mr-5 text-lg font-medium truncate">재고 통계</h2></div>
       <div class="p-5 mt-12 intro-y box sm:mt-5">
             <div class="flex flex-col md:flex-row md:items-center">
