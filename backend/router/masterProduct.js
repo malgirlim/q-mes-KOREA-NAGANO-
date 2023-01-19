@@ -112,7 +112,7 @@ router.post("/edit", async (req, res) => {
       .input("원가", sql.Int, req.body.data.원가)
       .input("비고", sql.NVarChar, req.body.data.비고)
       .query(
-        "exec [QINNOTEK].[dbo].[MASTER_ITEM_UDT_SP] @기본키,@안전재고,@원가,'','',@거래처명,@품명,@품목코드,@규격,@단위,@비고"
+        "exec [QINNOTEK].[dbo].[MASTER_ITEM2_UDT_SP] @기본키,@안전재고,@원가,'','',@거래처명,@품명,@품목코드,@규격,@단위,@비고"
       );
     res.send(JSON.stringify(result.recordset));
   } catch (err) {
