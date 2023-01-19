@@ -17,8 +17,6 @@ import { MasterProduct } from "../interfaces/pageInterface";
 // 페이징기능
 import { onMounted, watch } from "vue";
 import PaginationComponent from "../components/Pagination/PaginationComponent.vue"; // 페이징설정
-import { NO } from "@vue/shared";
-import { Box } from "lucide-vue-next";
 const currentPage = ref(1); // 현재페이지
 const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
 
@@ -39,6 +37,7 @@ const {
   searchDatas,
   insertData,
   editData,
+  deleteData,
   numberOfPages,
 } = useSendApi<MasterProduct>(url, currentPage, rowsPerPage);
 
@@ -76,6 +75,11 @@ const setDeleteConfirmationModal = (value: boolean) => {
   deleteConfirmationModal.value = value;
 };
 const deleteButtonRef = ref(null);
+const deleteDataFunction = async () => {
+  await deleteData(checkDebug.value); // await : 이 함수가 끝나야 다음으로 넘어간다
+  resetCheckBox();
+  search();
+};
 
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
@@ -111,9 +115,9 @@ const resetCheckBox = () => {
   const mBox = document.querySelector<HTMLElement>(
     "input[id=checkbox-switch-1]"
   ) as HTMLInputElement | null; // 오류 안뜨게 하려고 넣어둔것
-  if (!mBox) return;
-  mBox.checked = false;
-  mainCheckBox.value = true;
+  if (!mBox) return; // 오류 안뜨게 하려고 넣어둔것
+  mBox.checked = false; // 메인체크박스 체크해제
+  mainCheckBox.value = true; // 메인체크박스 데이터 초기화
   checkDebug.value = [];
 };
 </script>
@@ -665,6 +669,12 @@ const resetCheckBox = () => {
           type="button"
           class="w-24"
           ref="deleteButtonRef"
+          @click="
+            () => {
+              deleteDataFunction();
+              setDeleteConfirmationModal(false);
+            }
+          "
         >
           삭제
         </Button>

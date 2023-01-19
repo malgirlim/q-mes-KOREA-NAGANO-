@@ -59,6 +59,15 @@ export function useSendApi<T>(
     }
   };
 
+  // 삭제
+  const deleteData = async (data: any) => {
+    try {
+      await axios.post(url + "/delete", { data });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   // 페이징 기능
   const { paginatedArray, numberOfPages } = usePagination<T>({
     rowsPerPage,
@@ -74,6 +83,7 @@ export function useSendApi<T>(
     searchDatas,
     insertData,
     editData,
+    deleteData,
     numberOfPages,
   };
 }
