@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import _, { isArguments } from "lodash";
-import { ref } from "vue";
+import { ref, Ref } from "vue";
 import Button from "../base-components/Button";
 import { FormInput, FormSelect, FormCheck } from "../base-components/Form";
 import Lucide from "../base-components/Lucide";
@@ -10,43 +10,62 @@ import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 
+// API 보내는 함수 및 인터페이스 불러오기
+import { useSendApi } from "../composables/useSendApi";
+import { MasterClient } from "../interfaces/menu/masterInterface";
+
 // 페이징기능
 import { onMounted, watch } from "vue";
 import PaginationComponent from "../components/Pagination/PaginationComponent.vue"; // 페이징설정
-import { useTodosApi } from "../composables/useTodosApi"; // 여기서 데이터 가져옴
 const currentPage = ref(1); // 현재페이지
 const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
-
-const { todos, todosAreLoading, loadTodos, numberOfPages } = useTodosApi(
-  currentPage,
-  rowsPerPage
-);
-
-onMounted(async () => loadTodos());
 
 const pageChange = () => {
   // 한 페이지에 보여질 데이터 갯수 변경 시 1페이지로 이동
   currentPage.value = 1;
 };
 
+// api 보내기
+const url = "/api/master/product";
+const {
+  datas,
+  dataCount,
+  datasAreLoading,
+  loadDatas,
+  searchDatas,
+  insertData,
+  editData,
+  deleteData,
+  numberOfPages,
+} = useSendApi<MasterProduct>(url, currentPage, rowsPerPage);
+
+const searchKey = ref("전체");
+const searchInput = ref("");
+onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오기
+
+// 조회
+const search = () => {
+  // console.log(searchKey.value, searchInput.value);
+  searchDatas(searchKey.value, searchInput.value);
+};
+
 //등록 Modal
 const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
   insertModal.value = value;
+  insertModalData = {}; // 변수 초기화
+  search();
+  pageChange();
 };
+let insertModalData: MasterProduct; // 등록할 변수
 
 //수정 Modal
 const editModal = ref(false);
 const setEditModal = (value: boolean) => {
   editModal.value = value;
+  search();
 };
-
-const editModalDataArr = { content: "", name: "", number: Number() };
-const setEditModalData = (content: string, name: string, number: Number) => {
-  editModalDataArr.content = content;
-  editModalDataArr.name = name;
-  editModalDataArr.number = Number(number);
-};
+let editModalData: MasterProduct; // 수정할 변수
 
 //삭제 Modal
 const deleteConfirmationModal = ref(false);
@@ -54,6 +73,11 @@ const setDeleteConfirmationModal = (value: boolean) => {
   deleteConfirmationModal.value = value;
 };
 const deleteButtonRef = ref(null);
+const deleteDataFunction = async () => {
+  await deleteData(checkDebug.value); // await : 이 함수가 끝나야 다음으로 넘어간다
+  resetCheckBox();
+  search();
+};
 
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
@@ -62,9 +86,37 @@ const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
 const now2 = "전체기간";
 
-const print = () => {
-  // Pass the element id here
-  console.log("print");
+// 체크박스 선택으로 데이터 가져오기
+const checkDebug: any = ref([]); // 체크박스 선택 데이터 저장변수
+
+const mainCheckBox = ref(true); // 메인 체크박스 상태
+const checkAll = (value: boolean) => {
+  // 메인 체크박스가 눌릴 때 모두 체크
+  const checkboxes = document.querySelectorAll("input[id=checkbox]"); // input의 id가 checkbox인 요소를 가져오기
+  // 만약 메인 체크박스가 눌렸다면
+  if (value === true) {
+    checkDebug.value = []; // 체크박스 선택 데이터 초기화
+    checkboxes.forEach((cb: any) => {
+      cb.checked = value; // 모든 체크박스를 메인체크박스에 맞춰서 바꿈
+      checkDebug.value.push(cb.value); // 모든 체크박스의 value를 가져와 저장
+    });
+  } else {
+    checkboxes.forEach((cb: any) => {
+      cb.checked = value;
+      checkDebug.value = [];
+    });
+  }
+};
+
+const resetCheckBox = () => {
+  // 페이징 넘기면 체크박스 데이터 초기화
+  const mBox = document.querySelector<HTMLElement>(
+    "input[id=checkbox-switch-1]"
+  ) as HTMLInputElement | null; // 오류 안뜨게 하려고 넣어둔것
+  if (!mBox) return; // 오류 안뜨게 하려고 넣어둔것
+  mBox.checked = false; // 메인체크박스 체크해제
+  mainCheckBox.value = true; // 메인체크박스 데이터 초기화
+  checkDebug.value = [];
 };
 </script>
 
