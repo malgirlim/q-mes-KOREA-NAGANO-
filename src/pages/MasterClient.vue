@@ -135,16 +135,23 @@ const resetCheckBox = () => {
             setInsertModal(true);
           }
         "
-      > <Lucide icon="FilePlus" class="w-4 h-4 mr-2" /> 
+      >
+        <Lucide icon="FilePlus" class="w-4 h-4 mr-2" />
         등록
       </Button>
-      <Button class="mr-2 shadow-md" as="a" variant="danger"  @click="
-                    (event) => {
-                      event.preventDefault();
-                      setDeleteConfirmationModal(true);
-                    }
-                  ">
-        <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button>
+      <Button
+        class="mr-2 shadow-md"
+        as="a"
+        variant="danger"
+        @click="
+          (event) => {
+            event.preventDefault();
+            setDeleteConfirmationModal(true);
+          }
+        "
+      >
+        <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
+      >
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div class="mr-2">
         <a href="" class="flex items-center ml-auto text-primary">
@@ -250,8 +257,9 @@ const resetCheckBox = () => {
       <Table class="border-spacing-y-[10px] border-separate -mt-2">
         <Table.Thead>
           <Table.Tr>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"
-            id="checkbox"
+            <Table.Th
+              class="text-center border-b-0 whitespace-nowrap"
+              id="checkbox"
             >
             <Input
                 class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
@@ -275,8 +283,12 @@ const resetCheckBox = () => {
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               대표자
             </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"> 사업자 번호 </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"> 연락처 </Table.Th>
+            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+              사업자 번호
+            </Table.Th>
+            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+              연락처
+            </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               이메일
             </Table.Th>
@@ -306,7 +318,7 @@ const resetCheckBox = () => {
             :key="todo.NO"
             class="intro-x"
           >
-          <Table.Td
+            <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               id="checkbox"
               style="width: 50px"
