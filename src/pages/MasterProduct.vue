@@ -18,12 +18,15 @@ import { MasterProduct } from "../interfaces/pageInterface";
 import { onMounted, watch } from "vue";
 import PaginationComponent from "../components/Pagination/PaginationComponent.vue"; // 페이징설정
 import { NO } from "@vue/shared";
+import { Box } from "lucide-vue-next";
 const currentPage = ref(1); // 현재페이지
 const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
 
 const pageChange = () => {
   // 한 페이지에 보여질 데이터 갯수 변경 시 1페이지로 이동
   currentPage.value = 1;
+
+  // 메인 체크박스 초기화 및 전페이지에 선택된 데이터들 초기화
 };
 
 // api 보내기
@@ -81,7 +84,38 @@ const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
 const now2 = "전체기간";
 
-const checkDebug = ref([]);
+// 체크박스 선택으로 데이터 가져오기
+const checkDebug: any = ref([]); // 체크박스 선택 데이터 저장변수
+
+const mainCheckBox = ref(true); // 메인 체크박스 상태
+const checkAll = (value: boolean) => {
+  // 메인 체크박스가 눌릴 때 모두 체크
+  const checkboxes = document.querySelectorAll("input[id=checkbox]"); // input의 id가 checkbox인 요소를 가져오기
+  // 만약 메인 체크박스가 눌렸다면
+  if (value === true) {
+    checkDebug.value = []; // 체크박스 선택 데이터 초기화
+    checkboxes.forEach((cb: any) => {
+      cb.checked = value; // 모든 체크박스를 메인체크박스에 맞춰서 바꿈
+      checkDebug.value.push(cb.value); // 모든 체크박스의 value를 가져와 저장
+    });
+  } else {
+    checkboxes.forEach((cb: any) => {
+      cb.checked = value;
+      checkDebug.value = [];
+    });
+  }
+};
+
+const resetCheckBox = () => {
+  // 페이징 넘기면 체크박스 데이터 초기화
+  const mBox = document.querySelector<HTMLElement>(
+    "input[id=checkbox-switch-1]"
+  ) as HTMLInputElement | null; // 오류 안뜨게 하려고 넣어둔것
+  if (!mBox) return;
+  mBox.checked = false;
+  mainCheckBox.value = true;
+  checkDebug.value = [];
+};
 </script>
 
 <template>
@@ -202,6 +236,7 @@ const checkDebug = ref([]);
           class="pagination-component"
           v-model="currentPage"
           :numberOfPages="numberOfPages"
+          @click="resetCheckBox()"
         />
       </div>
       <div class="hidden mx-auto md:block text-slate-500"></div>
@@ -226,7 +261,13 @@ const checkDebug = ref([]);
               <FormCheck.Input
                 id="checkbox-switch-1"
                 type="checkbox"
-                value=""
+                :value="mainCheckBox"
+                @click="
+                  () => {
+                    checkAll(mainCheckBox);
+                    mainCheckBox = !mainCheckBox;
+                  }
+                "
               />
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
