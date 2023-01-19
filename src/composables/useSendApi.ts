@@ -50,6 +50,15 @@ export function useSendApi<T>(
     }
   };
 
+  // 수정
+  const editData = async (data: T) => {
+    try {
+      await axios.post(url + "/edit", { data });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   // 페이징 기능
   const { paginatedArray, numberOfPages } = usePagination<T>({
     rowsPerPage,
@@ -64,6 +73,7 @@ export function useSendApi<T>(
     loadDatas,
     searchDatas,
     insertData,
+    editData,
     numberOfPages,
   };
 }

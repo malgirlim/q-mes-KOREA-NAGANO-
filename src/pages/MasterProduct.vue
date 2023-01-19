@@ -35,6 +35,7 @@ const {
   loadDatas,
   searchDatas,
   insertData,
+  editData,
   numberOfPages,
 } = useSendApi<MasterProduct>(url, currentPage, rowsPerPage);
 
@@ -46,15 +47,15 @@ onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오�
 const search = () => {
   // console.log(searchKey.value, searchInput.value);
   searchDatas(searchKey.value, searchInput.value);
-  pageChange();
 };
 
 //등록 Modal
 const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
   insertModal.value = value;
-  console.log(insertModalData);
   insertModalData = {}; // 변수 초기화
+  search();
+  pageChange();
 };
 let insertModalData: MasterProduct; // 등록할 변수
 
@@ -62,14 +63,9 @@ let insertModalData: MasterProduct; // 등록할 변수
 const editModal = ref(false);
 const setEditModal = (value: boolean) => {
   editModal.value = value;
+  search();
 };
-
-const editModalDataArr = { content: "", name: "", number: Number() };
-const setEditModalData = (content: string, name: string, number: Number) => {
-  editModalDataArr.content = content;
-  editModalDataArr.name = name;
-  editModalDataArr.number = Number(number);
-};
+let editModalData: MasterProduct; // 수정할 변수
 
 //삭제 Modal
 const deleteConfirmationModal = ref(false);
@@ -140,10 +136,22 @@ const checkDebug = ref([]);
             type="text"
             class="w-56 pr-10 !box"
             v-model="searchInput"
-            @keyup.enter="search"
+            @keyup.enter="
+              () => {
+                search();
+                pageChange();
+              }
+            "
             placeholder="검색어를 입력해주세요"
           />
-          <button @click="search">
+          <button
+            @click="
+              {
+                search();
+                pageChange();
+              }
+            "
+          >
             <Lucide
               icon="Search"
               class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
@@ -341,10 +349,10 @@ const checkDebug = ref([]);
                   class="flex items-center mr-3"
                   href="#"
                   @click="
-                    (event) => {
-                      event.preventDefault();
+                    () => {
+                      // event.preventDefault();
                       setEditModal(true);
-                      // setEditModalData();
+                      editModalData = todo;
                     }
                   "
                 >
@@ -488,7 +496,7 @@ const checkDebug = ref([]);
           <FormInput
             id="vertical-form-1"
             type="text"
-            :modelValue="editModalDataArr.content"
+            v-model="editModalData.품목코드"
             placeholder=""
           />
         </div>
@@ -497,7 +505,7 @@ const checkDebug = ref([]);
           <FormInput
             id="vertical-form-1"
             type="text"
-            :modelValue="editModalDataArr.name"
+            v-model="editModalData.거래처명"
             placeholder=""
           />
         </div>
@@ -506,7 +514,7 @@ const checkDebug = ref([]);
           <FormInput
             id="vertical-form-1"
             type="text"
-            :modelValue="editModalDataArr.name"
+            v-model="editModalData.품명"
             placeholder=""
           />
         </div>
@@ -515,7 +523,7 @@ const checkDebug = ref([]);
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="200mm"
+            v-model="editModalData.규격"
             placeholder=""
           />
         </div>
@@ -524,7 +532,7 @@ const checkDebug = ref([]);
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="EA"
+            v-model="editModalData.단위"
             placeholder=""
           />
         </div>
@@ -533,7 +541,7 @@ const checkDebug = ref([]);
           <FormInput
             id="vertical-form-2"
             type="text"
-            modelValue="300"
+            v-model="editModalData.안전재고"
             placeholder=""
           />
         </div>
@@ -542,7 +550,7 @@ const checkDebug = ref([]);
           <FormInput
             id="vertical-form-2"
             type="text"
-            modelValue="168,000"
+            v-model="editModalData.원가"
             placeholder=""
           />
         </div>
@@ -551,12 +559,22 @@ const checkDebug = ref([]);
           <FormInput
             id="vertical-form-2"
             type="text"
-            modelValue="비고란 입니다."
+            v-model="editModalData.비고"
             placeholder=""
           />
         </div>
         <div class="mt-5 text-right">
-          <Button class="mr-2 shadow-md" variant="primary">확인</Button>
+          <Button
+            class="mr-2 shadow-md"
+            variant="primary"
+            @click="
+              () => {
+                editData(editModalData);
+                setEditModal(false);
+              }
+            "
+            >확인</Button
+          >
           <Button
             class="mr-2 shadow-md"
             variant="outline-primary"
