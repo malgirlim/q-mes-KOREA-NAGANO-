@@ -12,7 +12,7 @@ import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
-import { MasterProduct } from "../interfaces/pageInterface";
+import { MasterProduct } from "../interfaces/menu/MasterInterface";
 
 // 페이징기능
 import { onMounted, watch } from "vue";
