@@ -111,7 +111,7 @@ const checkAll = (value: boolean) => {
 const resetCheckBox = () => {
   // 페이징 넘기면 체크박스 데이터 초기화
   const mBox = document.querySelector<HTMLElement>(
-    "input[id=checkbox-switch-1]"
+    "input[id=checkbox_all]"
   ) as HTMLInputElement | null; // 오류 안뜨게 하려고 넣어둔것
   if (!mBox) return; // 오류 안뜨게 하려고 넣어둔것
   mBox.checked = false; // 메인체크박스 체크해제
@@ -345,7 +345,7 @@ const resetCheckBox = () => {
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 200px"
+              style="width: 150px"
             >
               <div>{{ todo.거래처명 }}</div>
             </Table.Td>
@@ -434,63 +434,63 @@ const resetCheckBox = () => {
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
+          <FormLabel htmlFor="vertical-form-2">거래처명</FormLabel>
           <FormInput
-            id="vertical-form-1"
+            id="vertical-form-2"
             type="text"
             v-model="insertModalData.거래처명"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">품명</FormLabel>
+          <FormLabel htmlFor="vertical-form-3">품명</FormLabel>
           <FormInput
-            id="vertical-form-1"
+            id="vertical-form-3"
             type="text"
             v-model="insertModalData.품명"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">규격</FormLabel>
+          <FormLabel htmlFor="vertical-form-4">규격</FormLabel>
           <FormInput
-            id="vertical-form-1"
+            id="vertical-form-4"
             type="text"
             v-model="insertModalData.규격"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">단위</FormLabel>
+          <FormLabel htmlFor="vertical-form-5">단위</FormLabel>
           <FormInput
-            id="vertical-form-1"
+            id="vertical-form-5"
             type="text"
             v-model="insertModalData.단위"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">안전재고</FormLabel>
+          <FormLabel htmlFor="vertical-form-6">안전재고</FormLabel>
           <FormInput
-            id="vertical-form-2"
+            id="vertical-form-6"
             type="text"
             v-model="insertModalData.안전재고"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">원가</FormLabel>
+          <FormLabel htmlFor="vertical-form-7">원가</FormLabel>
           <FormInput
-            id="vertical-form-2"
+            id="vertical-form-7"
             type="text"
             v-model="insertModalData.원가"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">비고</FormLabel>
+          <FormLabel htmlFor="vertical-form-8">비고</FormLabel>
           <FormInput
-            id="vertical-form-2"
+            id="vertical-form-8"
             type="text"
             v-model="insertModalData.비고"
             placeholder=""
@@ -547,63 +547,63 @@ const resetCheckBox = () => {
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
+          <FormLabel htmlFor="vertical-form-2">거래처명</FormLabel>
           <FormInput
-            id="vertical-form-1"
+            id="vertical-form-2"
             type="text"
             v-model="editModalData.거래처명"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">품명</FormLabel>
+          <FormLabel htmlFor="vertical-form-3">품명</FormLabel>
           <FormInput
-            id="vertical-form-1"
+            id="vertical-form-3"
             type="text"
             v-model="editModalData.품명"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">규격</FormLabel>
+          <FormLabel htmlFor="vertical-form-4">규격</FormLabel>
           <FormInput
-            id="vertical-form-1"
+            id="vertical-form-4"
             type="text"
             v-model="editModalData.규격"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">단위</FormLabel>
+          <FormLabel htmlFor="vertical-form-5">단위</FormLabel>
           <FormInput
-            id="vertical-form-1"
+            id="vertical-form-5"
             type="text"
             v-model="editModalData.단위"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">안전재고</FormLabel>
+          <FormLabel htmlFor="vertical-form-6">안전재고</FormLabel>
           <FormInput
-            id="vertical-form-2"
+            id="vertical-form-6"
             type="text"
             v-model="editModalData.안전재고"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">원가</FormLabel>
+          <FormLabel htmlFor="vertical-form-7">원가</FormLabel>
           <FormInput
-            id="vertical-form-2"
+            id="vertical-form-7"
             type="text"
             v-model="editModalData.원가"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">비고</FormLabel>
+          <FormLabel htmlFor="vertical-form-8">비고</FormLabel>
           <FormInput
-            id="vertical-form-2"
+            id="vertical-form-8"
             type="text"
             v-model="editModalData.비고"
             placeholder=""

@@ -26,7 +26,7 @@ const pageChange = () => {
 };
 
 // api 보내기
-const url = "/api/master/product";
+const url = "/api/master/client";
 const {
   datas,
   dataCount,
@@ -37,7 +37,7 @@ const {
   editData,
   deleteData,
   numberOfPages,
-} = useSendApi<MasterProduct>(url, currentPage, rowsPerPage);
+} = useSendApi<MasterClient>(url, currentPage, rowsPerPage);
 
 const searchKey = ref("전체");
 const searchInput = ref("");
@@ -57,7 +57,7 @@ const setInsertModal = (value: boolean) => {
   search();
   pageChange();
 };
-let insertModalData: MasterProduct; // 등록할 변수
+let insertModalData: MasterClient; // 등록할 변수
 
 //수정 Modal
 const editModal = ref(false);
@@ -65,7 +65,7 @@ const setEditModal = (value: boolean) => {
   editModal.value = value;
   search();
 };
-let editModalData: MasterProduct; // 수정할 변수
+let editModalData: MasterClient; // 수정할 변수
 
 //삭제 Modal
 const deleteConfirmationModal = ref(false);
@@ -130,7 +130,8 @@ const resetCheckBox = () => {
         as="a"
         variant="primary"
         @click="
-          () => {
+          (event) => {
+            event.preventDefault();
             setInsertModal(true);
           }
         "
@@ -145,6 +146,11 @@ const resetCheckBox = () => {
                   ">
         <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button>
       <div class="hidden mx-auto md:block text-slate-500"></div>
+      <div class="mr-2">
+        <a href="" class="flex items-center ml-auto text-primary">
+          <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
+        </a>
+      </div>
       <div class="ml-2">
         <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
@@ -160,9 +166,22 @@ const resetCheckBox = () => {
           <FormInput
             type="text"
             class="w-56 pr-10 !box"
+            v-model="searchInput"
+            @keyup.enter="
+              () => {
+                search();
+                pageChange();
+              }
+            "
             placeholder="검색어를 입력해주세요"
           />
-          <button @click="">
+          <button @click="
+              {
+                search();
+                pageChange();
+              }
+              "
+              >
             <Lucide
               icon="Search"
               class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
@@ -192,7 +211,7 @@ const resetCheckBox = () => {
             </span>
           </Menu.Button>
           <Menu.Items class="w-40">
-            <Menu.Item @click="print">
+            <Menu.Item>
               <Lucide icon="Printer" class="w-4 h-4 mr-2" />
               <Print />
             </Menu.Item>
@@ -213,11 +232,12 @@ const resetCheckBox = () => {
           class="pagination-component"
           v-model="currentPage"
           :numberOfPages="numberOfPages"
+          @click="resetCheckBox()"
         />
       </div>
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div>
-        {{ todos.length }}개 데이터 조회됨. {{ currentPage }} /
+        {{ dataCount }}개 데이터 조회됨. {{ currentPage }} /
         {{ numberOfPages }} 페이지
         <!-- END: Pagination-->
       </div>
@@ -233,7 +253,18 @@ const resetCheckBox = () => {
             <Table.Th class="text-center border-b-0 whitespace-nowrap"
             id="checkbox"
             >
-              <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
+            <Input
+                class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+                id="checkbox_all"
+                type="checkbox"
+                :value="mainCheckBox"
+                @click="
+                  () => {
+                    checkAll(mainCheckBox);
+                    mainCheckBox = !mainCheckBox;
+                  }
+                "
+              />
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               순번
@@ -271,8 +302,8 @@ const resetCheckBox = () => {
             class="intro-x"
           > -->
           <Table.Tr
-            v-for="(todo, index) in todos"
-            :key="todo.content"
+            v-for="(todo, index) in datas"
+            :key="todo.NO"
             class="intro-x"
           >
           <Table.Td
@@ -280,9 +311,13 @@ const resetCheckBox = () => {
               id="checkbox"
               style="width: 50px"
               >
-              <FormCheck>
-                <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
-              </FormCheck> 
+              <input
+                class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+                id="checkbox"
+                type="checkbox"
+                :value="todo.NO"
+                v-model="checkDebug"
+              />
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -294,62 +329,62 @@ const resetCheckBox = () => {
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 100px"
             >
-            <div>(주)큐이노텍</div>
+            <div>{{ todo.거래처명 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 100px"
             >
-              <div>최순우</div>
+              <div>{{ todo.대표자 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md bg-white text-center border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 150px"
             >
-              <div>315-81-37335</div>
+              <div>{{ todo.사업자번호 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-50 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 150px"
             >
-              <div>041-553-1569</div>
+              <div>{{ todo.연락처 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 150px"
             >
-              <div>qinnotek@gmail.com</div>
+              <div>{{ todo.이메일 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 400px"
             >
-              <div>충남 천안시 서북구 직산읍 4산단5길 28, 2층</div>
+              <div>{{ todo.주소 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 200px"
             >
-              <div>비고란 입니다.</div>
+              <div>{{ todo.비고 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
               style="width: 100px"
               id="edit"
             >
-              <div class="flex items-center justify-center">
+              <div class="flex items-center justify-center text-danger">
                 <a
                   class="flex items-center mr-3"
                   href="#"
                   @click="
-                    (event) => {
-                      event.preventDefault();
+                    () => {
+                      // event.preventDefault();
                       setEditModal(true);
-                      setEditModalData(todo.content, todo.name, todo.number);
+                      editModalData = todo;
                     }
                   "
                 >
-                  <Lucide icon="CheckSquare" class="w-4 h-4 mr-1" />
+                  <Lucide icon="Edit" class="w-4 h-4 mr-1" />
                   수정
                 </a>
               </div>
@@ -381,34 +416,58 @@ const resetCheckBox = () => {
       <div style="text-align: left">
         <div>
           <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput id="vertical-form-1" type="text" 
+          v-model="insertModalData.거래처명"
+          placeholder="" />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">대표자</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput id="vertical-form-1" type="text" 
+          v-model="insertModalData.대표자"
+          placeholder="" />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">사업자 번호</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput id="vertical-form-1" type="text" 
+          v-model="insertModalData.사업자번호"
+          placeholder="" />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">연락처</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput id="vertical-form-1" type="text" 
+          v-model="insertModalData.연락처"
+          placeholder="" />
+
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">이메일</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput id="vertical-form-1" type="text" 
+          v-model="insertModalData.이메일"
+          placeholder="" />
+
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">주소</FormLabel>
-          <FormInput id="vertical-form-2" type="text" placeholder="" />
+          <FormInput id="vertical-form-2" type="text" 
+          v-model="insertModalData.주소"
+          placeholder="" />
+
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">비고</FormLabel>
-          <FormInput id="vertical-form-2" type="text" placeholder="" />
+          <FormInput id="vertical-form-2" type="text" 
+          v-model="insertModalData.비고"
+          placeholder="" />
         </div>
         <div class="mt-5 text-right">
-          <Button class="mr-2 shadow-md" variant="primary">확인</Button>
+          <Button class="mr-2 shadow-md" variant="primary"
+          @click="
+              () => {
+                insertData(insertModalData);
+                setInsertModal(false);
+              }
+            "
+            >확인</Button>
           <Button
             class="mr-2 shadow-md"
             variant="outline-primary"
@@ -443,7 +502,7 @@ const resetCheckBox = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="(주)큐이노텍"
+            v-model="editModalData.거래처명"
             placeholder=""
           />
         </div>
@@ -452,7 +511,7 @@ const resetCheckBox = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="최순우"
+            v-model="editModalData.대표자"
             placeholder=""
           />
         </div>
@@ -461,7 +520,7 @@ const resetCheckBox = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="315-81-37335"
+            v-model="editModalData.사업자번호"
             placeholder=""
           />
         </div>
@@ -470,7 +529,7 @@ const resetCheckBox = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="041-553-1569"
+            v-model="editModalData.연락처"
             placeholder=""
           />
         </div>
@@ -479,7 +538,7 @@ const resetCheckBox = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="qinnotek@gmail.com"
+            v-model="editModalData.이메일"
             placeholder=""
           />
         </div>
@@ -488,7 +547,7 @@ const resetCheckBox = () => {
           <FormInput
             id="vertical-form-2"
             type="text"
-            modelValue="충남 천안시 서북구 직산읍 4산단5길 28, 2층"
+            v-model="editModalData.주소"
             placeholder=""
           />
         </div>
@@ -497,12 +556,19 @@ const resetCheckBox = () => {
           <FormInput
             id="vertical-form-2"
             type="text"
-            modelValue="비고란 입니다."
+            v-model="editModalData.비고"
             placeholder=""
           />
         </div>
         <div class="mt-5 text-right">
-          <Button class="mr-2 shadow-md" variant="primary">확인</Button>
+          <Button class="mr-2 shadow-md" variant="primary"
+          @click="
+              () => {
+                editData(editModalData);
+                setEditModal(false);
+              }
+            "
+            >확인</Button>
           <Button
             class="mr-2 shadow-md"
             variant="outline-primary"
@@ -552,6 +618,12 @@ const resetCheckBox = () => {
           type="button"
           class="w-24"
           ref="deleteButtonRef"
+          @click="
+            () => {
+              deleteDataFunction();
+              setDeleteConfirmationModal(false);
+            }
+          "
         >
           삭제
         </Button>

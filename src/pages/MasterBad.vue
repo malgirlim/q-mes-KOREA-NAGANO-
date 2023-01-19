@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import _, { isArguments } from "lodash";
-import { ref } from "vue";
+import { ref, Ref } from "vue";
 import Button from "../base-components/Button";
 import { FormInput, FormSelect, FormCheck } from "../base-components/Form";
 import Lucide from "../base-components/Lucide";
@@ -10,43 +10,62 @@ import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 
+// API 보내는 함수 및 인터페이스 불러오기
+import { useSendApi } from "../composables/useSendApi";
+import { MasterBad } from "../interfaces/menu/MasterInterface";
+
 // 페이징기능
 import { onMounted, watch } from "vue";
 import PaginationComponent from "../components/Pagination/PaginationComponent.vue"; // 페이징설정
-import { useTodosApi } from "../composables/useTodosApi"; // 여기서 데이터 가져옴
 const currentPage = ref(1); // 현재페이지
 const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
-
-const { todos, todosAreLoading, loadTodos, numberOfPages } = useTodosApi(
-  currentPage,
-  rowsPerPage
-);
-
-onMounted(async () => loadTodos());
 
 const pageChange = () => {
   // 한 페이지에 보여질 데이터 갯수 변경 시 1페이지로 이동
   currentPage.value = 1;
 };
 
+// api 보내기
+const url = "/api/master/bad";
+const {
+  datas,
+  dataCount,
+  datasAreLoading,
+  loadDatas,
+  searchDatas,
+  insertData,
+  editData,
+  deleteData,
+  numberOfPages,
+} = useSendApi<MasterBad>(url, currentPage, rowsPerPage);
+
+const searchKey = ref("전체");
+const searchInput = ref("");
+onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오기
+
+// 조회
+const search = () => {
+  // console.log(searchKey.value, searchInput.value);
+  searchDatas(searchKey.value, searchInput.value);
+};
+
 //등록 Modal
 const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
   insertModal.value = value;
+  insertModalData = {}; // 변수 초기화
+  search();
+  pageChange();
 };
+let insertModalData: MasterBad; // 등록할 변수
 
 //수정 Modal
 const editModal = ref(false);
 const setEditModal = (value: boolean) => {
   editModal.value = value;
+  search();
 };
-
-const editModalDataArr = { content: "", name: "", number: Number() };
-const setEditModalData = (content: string, name: string, number: Number) => {
-  editModalDataArr.content = content;
-  editModalDataArr.name = name;
-  editModalDataArr.number = Number(number);
-};
+let editModalData: MasterBad; // 수정할 변수
 
 //삭제 Modal
 const deleteConfirmationModal = ref(false);
@@ -54,6 +73,11 @@ const setDeleteConfirmationModal = (value: boolean) => {
   deleteConfirmationModal.value = value;
 };
 const deleteButtonRef = ref(null);
+const deleteDataFunction = async () => {
+  await deleteData(checkDebug.value); // await : 이 함수가 끝나야 다음으로 넘어간다
+  resetCheckBox();
+  search();
+};
 
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
@@ -62,9 +86,37 @@ const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
 const now2 = "전체기간";
 
-const print = () => {
-  // Pass the element id here
-  console.log("print");
+// 체크박스 선택으로 데이터 가져오기
+const checkDebug: any = ref([]); // 체크박스 선택 데이터 저장변수
+
+const mainCheckBox = ref(true); // 메인 체크박스 상태
+const checkAll = (value: boolean) => {
+  // 메인 체크박스가 눌릴 때 모두 체크
+  const checkboxes = document.querySelectorAll("input[id=checkbox]"); // input의 id가 checkbox인 요소를 가져오기
+  // 만약 메인 체크박스가 눌렸다면
+  if (value === true) {
+    checkDebug.value = []; // 체크박스 선택 데이터 초기화
+    checkboxes.forEach((cb: any) => {
+      cb.checked = value; // 모든 체크박스를 메인체크박스에 맞춰서 바꿈
+      checkDebug.value.push(cb.value); // 모든 체크박스의 value를 가져와 저장
+    });
+  } else {
+    checkboxes.forEach((cb: any) => {
+      cb.checked = value;
+      checkDebug.value = [];
+    });
+  }
+};
+
+const resetCheckBox = () => {
+  // 페이징 넘기면 체크박스 데이터 초기화
+  const mBox = document.querySelector<HTMLElement>(
+    "input[id=checkbox_all]"
+  ) as HTMLInputElement | null; // 오류 안뜨게 하려고 넣어둔것
+  if (!mBox) return; // 오류 안뜨게 하려고 넣어둔것
+  mBox.checked = false; // 메인체크박스 체크해제
+  mainCheckBox.value = true; // 메인체크박스 데이터 초기화
+  checkDebug.value = [];
 };
 </script>
 
@@ -78,7 +130,8 @@ const print = () => {
         as="a"
         variant="primary"
         @click="
-          () => {
+          (event) => {
+            event.preventDefault();
             setInsertModal(true);
           }
         "
@@ -93,6 +146,11 @@ const print = () => {
                   ">
         <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button>
       <div class="hidden mx-auto md:block text-slate-500"></div>
+         <div class="mr-2">
+        <a href="" class="flex items-center ml-auto text-primary">
+          <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
+        </a>
+      </div>
       <div class="ml-2">
         <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
@@ -106,6 +164,13 @@ const print = () => {
           <FormInput
             type="text"
             class="w-56 pr-10 !box"
+            v-model="searchInput"
+            @keyup.enter="
+              () => {
+                search();
+                pageChange();
+              }
+            "
             placeholder="검색어를 입력해주세요"
           />
           <button @click="">
@@ -138,7 +203,7 @@ const print = () => {
             </span>
           </Menu.Button>
           <Menu.Items class="w-40">
-            <Menu.Item @click="print">
+            <Menu.Item>
               <Lucide icon="Printer" class="w-4 h-4 mr-2" />
               <Print />
             </Menu.Item>
@@ -159,11 +224,12 @@ const print = () => {
           class="pagination-component"
           v-model="currentPage"
           :numberOfPages="numberOfPages"
+          @click="resetCheckBox()"
         />
       </div>
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div>
-        {{ todos.length }}개 데이터 조회됨. {{ currentPage }} /
+        {{ dataCount }}개 데이터 조회됨. {{ currentPage }} /
         {{ numberOfPages }} 페이지
         <!-- END: Pagination-->
       </div>
@@ -179,7 +245,18 @@ const print = () => {
             <Table.Th class="border-b-0 whitespace-nowrap"
             id="checkbox"
             >
-              <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
+              <Input
+                class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+                id="checkbox_all"
+                type="checkbox"
+                :value="mainCheckBox"
+                @click="
+                  () => {
+                    checkAll(mainCheckBox);
+                    mainCheckBox = !mainCheckBox;
+                  }
+                "
+              />
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               순번
@@ -207,8 +284,8 @@ const print = () => {
             class="intro-x"
           > -->
           <Table.Tr
-            v-for="(todo, index) in todos"
-            :key="todo.content"
+            v-for="(todo, index) in datas"
+            :key="todo.NO"
             class="intro-x"
           >
           <Table.Td
@@ -216,9 +293,13 @@ const print = () => {
               id="checkbox"
               style="width: 50px"
               >
-              <FormCheck>
-                <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
-              </FormCheck> 
+              <input
+                class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+                id="checkbox"
+                type="checkbox"
+                :value="todo.NO"
+                v-model="checkDebug"
+              />
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -230,26 +311,26 @@ const print = () => {
               class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 200px"
             >
-              <div>오염</div>
+              <div>{{ todo.불량명 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 200px"
             >
-              <div>원자재 오염</div>
+              <div>{{ todo.불량내용 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 400px"
             >
-              <div>비고란 입니다.</div>
+              <div>{{ todo.비고 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
               style="width: 100px"
               id="edit"
             >
-              <div class="flex items-center justify-center">
+              <div class="flex items-center justify-center text-danger">
                 <a
                   class="flex items-center mr-3"
                   href="#"
@@ -257,11 +338,11 @@ const print = () => {
                     (event) => {
                       event.preventDefault();
                       setEditModal(true);
-                      setEditModalData(todo.content, todo.name, todo.number);
+                      editModalData = todo;
                     }
                   "
                 >
-                  <Lucide icon="CheckSquare" class="w-4 h-4 mr-1" />
+                  <Lucide icon="Edit" class="w-4 h-4 mr-1" />
                   수정
                 </a>
               </div>
@@ -293,18 +374,31 @@ const print = () => {
       <div style="text-align: left">
         <div>
           <FormLabel htmlFor="vertical-form-1">불량명</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput id="vertical-form-1" type="text" 
+          v-model="insertModalData.불량명"
+          placeholder="" />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">불량내용</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormLabel htmlFor="vertical-form-2">불량내용</FormLabel>
+          <FormInput id="vertical-form-2" type="text" 
+          v-model="insertModalData.불량내용"
+          placeholder="" />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">비고</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormLabel htmlFor="vertical-form-3">비고</FormLabel>
+          <FormInput id="vertical-form-3" type="text" 
+          v-model="insertModalData.비고"
+          placeholder="" />
         </div>
         <div class="mt-5 text-right">
-          <Button class="mr-2 shadow-md" variant="primary">확인</Button>
+          <Button class="mr-2 shadow-md" variant="primary"
+          @click="
+              () => {
+                insertData(insertModalData);
+                setInsertModal(false);
+              }
+            "
+            >확인</Button>
           <Button
             class="mr-2 shadow-md"
             variant="outline-primary"
@@ -339,30 +433,37 @@ const print = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="오염"
+            v-model="editModalData.불량명"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">불량내용</FormLabel>
+          <FormLabel htmlFor="vertical-form-2">불량내용</FormLabel>
           <FormInput
-            id="vertical-form-1"
+            id="vertical-form-2"
             type="text"
-            modelValue="원자재 오염"
+            v-model="editModalData.불량내용"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">비고</FormLabel>
+          <FormLabel htmlFor="vertical-form-3">비고</FormLabel>
           <FormInput
-            id="vertical-form-1"
+            id="vertical-form-3"
             type="text"
-            modelValue="비고란 입니다."
+            v-model="editModalData.비고"
             placeholder=""
           />
         </div>
         <div class="mt-5 text-right">
-          <Button class="mr-2 shadow-md" variant="primary">확인</Button>
+          <Button class="mr-2 shadow-md" variant="primary"
+          @click="
+              () => {
+                editData(editModalData);
+                setEditModal(false);
+              }
+            "
+            >확인</Button>
           <Button
             class="mr-2 shadow-md"
             variant="outline-primary"
@@ -412,6 +513,12 @@ const print = () => {
           type="button"
           class="w-24"
           ref="deleteButtonRef"
+          @click="
+            () => {
+              deleteDataFunction();
+              setDeleteConfirmationModal(false);
+            }
+          "
         >
           삭제
         </Button>
