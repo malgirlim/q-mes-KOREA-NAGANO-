@@ -17,7 +17,7 @@ export default defineConfig({
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: (tag) => ["FormLabel"].includes(tag),
+          isCustomElement: (tag) => ["FormLabel", "Input"].includes(tag),
         },
       },
     }),
