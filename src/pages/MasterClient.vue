@@ -82,16 +82,23 @@ const print = () => {
             setInsertModal(true);
           }
         "
-      > <Lucide icon="FilePlus" class="w-4 h-4 mr-2" /> 
+      >
+        <Lucide icon="FilePlus" class="w-4 h-4 mr-2" />
         등록
       </Button>
-      <Button class="mr-2 shadow-md" as="a" variant="danger"  @click="
-                    (event) => {
-                      event.preventDefault();
-                      setDeleteConfirmationModal(true);
-                    }
-                  ">
-        <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button>
+      <Button
+        class="mr-2 shadow-md"
+        as="a"
+        variant="danger"
+        @click="
+          (event) => {
+            event.preventDefault();
+            setDeleteConfirmationModal(true);
+          }
+        "
+      >
+        <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
+      >
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div class="ml-2">
         <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
@@ -110,7 +117,7 @@ const print = () => {
             class="w-56 pr-10 !box"
             placeholder="검색어를 입력해주세요"
           />
-          <button @click="">
+          <button>
             <Lucide
               icon="Search"
               class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
@@ -178,10 +185,15 @@ const print = () => {
       <Table class="border-spacing-y-[10px] border-separate -mt-2">
         <Table.Thead>
           <Table.Tr>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"
-            id="checkbox"
+            <Table.Th
+              class="text-center border-b-0 whitespace-nowrap"
+              id="checkbox"
             >
-              <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
+              <FormCheck.Input
+                id="checkbox-switch-1"
+                type="checkbox"
+                value=""
+              />
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               순번
@@ -192,8 +204,12 @@ const print = () => {
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               대표자
             </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"> 사업자 번호 </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"> 연락처 </Table.Th>
+            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+              사업자 번호
+            </Table.Th>
+            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+              연락처
+            </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               이메일
             </Table.Th>
@@ -223,14 +239,18 @@ const print = () => {
             :key="todo.content"
             class="intro-x"
           >
-          <Table.Td
+            <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               id="checkbox"
               style="width: 50px"
-              >
+            >
               <FormCheck>
-                <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
-              </FormCheck> 
+                <FormCheck.Input
+                  id="checkbox-switch-1"
+                  type="checkbox"
+                  value=""
+                />
+              </FormCheck>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -242,7 +262,7 @@ const print = () => {
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 100px"
             >
-            <div>(주)큐이노텍</div>
+              <div>(주)큐이노텍</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
