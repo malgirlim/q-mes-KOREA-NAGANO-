@@ -153,13 +153,12 @@ const resetCheckBox = () => {
         <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
       >
       <div class="hidden mx-auto md:block text-slate-500"></div>
-      <div class="mr-2">  
+      <div class="mr-2">
         <a href="" class="flex items-center ml-auto text-primary">
-        <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
+          <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
         </a>
       </div>
       <div class="ml-2">
-      
         <FormSelect v-model="searchKey" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
           <option>품목코드</option>
