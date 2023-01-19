@@ -154,11 +154,14 @@ const resetCheckBox = () => {
       >
         <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
       >
-      <!--디버그 공간-->
-      <div>Code : {{ checkDebug }}</div>
-      <!--디버그 공간-->
       <div class="hidden mx-auto md:block text-slate-500"></div>
+      <div class="mr-2">  
+        <a href="" class="flex items-center ml-auto text-primary">
+        <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
+        </a>
+      </div>
       <div class="ml-2">
+      
         <FormSelect v-model="searchKey" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
           <option>품목코드</option>
@@ -293,7 +296,7 @@ const resetCheckBox = () => {
               안전재고
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              원가
+              원가(₩)
             </Table.Th>
             <Table.Th class="text-center border-b-0 whitespace-nowrap">
               비고
@@ -371,13 +374,13 @@ const resetCheckBox = () => {
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 50px"
             >
-              <div>{{ todo.안전재고 }}</div>
+              <div>{{ todo.안전재고?.toLocaleString() }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               style="width: 50px"
             >
-              <div>{{ todo.원가 }}</div>
+              <div>{{ todo.원가?.toLocaleString() }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -390,7 +393,7 @@ const resetCheckBox = () => {
               style="width: 100px"
               id="edit"
             >
-              <div class="flex items-center justify-center">
+              <div class="flex items-center justify-center text-danger">
                 <a
                   class="flex items-center mr-3"
                   href="#"
@@ -402,7 +405,7 @@ const resetCheckBox = () => {
                     }
                   "
                 >
-                  <Lucide icon="CheckSquare" class="w-4 h-4 mr-1" />
+                  <Lucide icon="Edit" class="w-4 h-4 mr-1" />
                   수정
                 </a>
               </div>
