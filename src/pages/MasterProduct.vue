@@ -23,8 +23,6 @@ const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
 const pageChange = () => {
   // 한 페이지에 보여질 데이터 갯수 변경 시 1페이지로 이동
   currentPage.value = 1;
-
-  // 메인 체크박스 초기화 및 전페이지에 선택된 데이터들 초기화
 };
 
 // api 보내기
