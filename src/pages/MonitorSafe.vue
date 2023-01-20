@@ -254,7 +254,7 @@ const safe_stock = Math.random() < 0.5
     <!-- END: Data List -->
   </div>
   <!-- BEGIN: FOOTER(COPYRIGHT) -->
-  <div style="text-align: right">
+  <div class="intro-y" style="text-align: right">
     <footer>&copy;2023 QInnotek. All rights reserved.</footer>
   </div>
   <!-- END: FOOTER(COPYRIGHT) -->

@@ -1,4 +1,4 @@
-// 재고조회 - 원자재 재고 조회
+// 재고 조회 - 원자재 재고 조회
 export interface MonitorStock {
   NO?: Number;
   품목코드?: String;
@@ -10,7 +10,7 @@ export interface MonitorStock {
   비고?: String;
 }
 
-// 재고조회 - 원자재 불량 조회
+// 재고 조회 - 원자재 불량 조회
 export interface MonitorBad {
   NO?: Number;
   품목코드?: String;
@@ -24,7 +24,7 @@ export interface MonitorBad {
   비고?: String;
 }
 
-// 재고조회 - 안전재고 미달 조회
+// 재고 조회 - 안전재고 미달 조회
 export interface MonitorSafe {
   NO?: Number;
   폼목코드?: String;

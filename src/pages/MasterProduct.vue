@@ -118,6 +118,15 @@ const resetCheckBox = () => {
   mainCheckBox.value = true; // 메인체크박스 데이터 초기화
   checkDebug.value = [];
 };
+// 테이블 열 크기 조정
+// 체크박스, 순번, 품목코드, 거래처명, 품명, 
+// 규격, 단위, 안전재고, 원가, 비고, 
+// 편집
+let table_width = 
+["width: 50px","width: 100px","width: 150px","width: 150px","width: 300px",
+"width: 200px","width: 50px","width: 50px","width: 50px","width: 200px",
+"width: 100px"];
+
 </script>
 
 <template>
@@ -255,12 +264,14 @@ const resetCheckBox = () => {
       class="col-span-12 overflow-auto intro-y lg:overflow-visible"
       id="printMe"
     >
-      <Table class="border-spacing-y-[10px] border-separate -mt-2">
+      <div class="mr-3">
+      <Table class="border-spacing-y-[8px] border-separate -mt-2">
         <Table.Thead>
           <Table.Tr>
             <Table.Th
               class="text-center border-b-0 whitespace-nowrap"
               id="checkbox"
+              :style=table_width[0]
             >
               <Input
                 class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
@@ -275,37 +286,55 @@ const resetCheckBox = () => {
                 "
               />
             </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+            <Table.Th class="text-center border-b-0 whitespace-nowrap"
+            :style=table_width[1]>
               순번
             </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+            <Table.Th class="text-center border-b-0 whitespace-nowrap"
+            :style=table_width[2]>
               품목코드
             </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+            <Table.Th class="text-center border-b-0 whitespace-nowrap"
+            :style=table_width[3]>
               거래처명
             </Table.Th>
-            <Table.Th class="border-b-0 whitespace-nowrap"> 품명 </Table.Th>
-            <Table.Th class="border-b-0 whitespace-nowrap"> 규격 </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+            <Table.Th class="border-b-0 whitespace-nowrap"
+            :style=table_width[4]> 
+              품명 
+            </Table.Th>
+            <Table.Th class="border-b-0 whitespace-nowrap"
+            :style=table_width[5]> 
+              규격 
+            </Table.Th>
+            <Table.Th class="text-center border-b-0 whitespace-nowrap"
+            :style=table_width[6]>
               단위
             </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+            <Table.Th class="text-center border-b-0 whitespace-nowrap"
+            :style=table_width[7]>
               안전재고
             </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+            <Table.Th class="text-center border-b-0 whitespace-nowrap"
+            :style=table_width[8]>
               원가(₩)
             </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
+            <Table.Th class="text-center border-b-0 whitespace-nowrap"
+            :style=table_width[9]>
               비고
             </Table.Th>
             <Table.Th
               class="text-center border-b-0 whitespace-nowrap"
               id="edit"
+              :style=table_width[10]
             >
               편집
             </Table.Th>
           </Table.Tr>
         </Table.Thead>
+        </Table>
+        </div>
+        <div style="overflow-y:scroll; overflow-x:hidden; height:520px;">
+        <Table class="border-spacing-y-[8px] border-separate -mt-2">
         <Table.Tbody>
           <!-- <Table.Tr
           <Table.Tr
@@ -321,7 +350,7 @@ const resetCheckBox = () => {
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
               id="checkbox"
-              style="width: 50px"
+              :style=table_width[0]
             >
               <input
                 class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
@@ -333,61 +362,61 @@ const resetCheckBox = () => {
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 50px"
+              :style=table_width[1]
             >
               <div>{{ index + 1 + (currentPage - 1) * rowsPerPage }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 150px"
+              :style=table_width[2]
             >
               <div>{{ todo.품목코드 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 150px"
+              :style=table_width[3]
             >
               <div>{{ todo.거래처명 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 300px"
+              :style=table_width[4]
             >
               <div>{{ todo.품명 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 300px"
+              :style=table_width[5]
             >
               <div>{{ todo.규격 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 50px"
+              :style=table_width[6]
             >
               <div>{{ todo.단위 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 50px"
+              :style=table_width[7]
             >
               <div>{{ todo.안전재고?.toLocaleString() }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 50px"
+              :style=table_width[8]
             >
               <div>{{ todo.원가?.toLocaleString() }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 200px"
+              :style=table_width[9]
             >
               <div>{{ todo.비고 }}</div>
             </Table.Td>
             <Table.Td
               class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
-              style="width: 100px"
+              :style=table_width[10]
               id="edit"
             >
               <div class="flex items-center justify-center text-danger">
@@ -411,10 +440,11 @@ const resetCheckBox = () => {
         </Table.Tbody>
       </Table>
     </div>
+    </div>
+    </div>
     <!-- END: Data List -->
-  </div>
   <!-- BEGIN: FOOTER(COPYRIGHT) -->
-  <div style="text-align: right">
+  <div class="intro-y" style="text-align: right">
     <footer>&copy;2023 QInnotek. All rights reserved.</footer>
   </div>
   <!-- END: FOOTER(COPYRIGHT) -->

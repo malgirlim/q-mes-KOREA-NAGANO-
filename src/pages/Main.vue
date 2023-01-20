@@ -180,6 +180,10 @@ import LineChart from "../components/LineChart";
               <LineChart :height="275" class="mt-6 -mb-6" />
             </div>
           </div>
-
+ <!-- BEGIN: FOOTER(COPYRIGHT) -->
+ <div class="intro-y mt-3" style="text-align: right">
+    <footer>&copy;2023 QInnotek. All rights reserved.</footer>
+  </div>
+  <!-- END: FOOTER(COPYRIGHT) -->
     </div>
 </template>
