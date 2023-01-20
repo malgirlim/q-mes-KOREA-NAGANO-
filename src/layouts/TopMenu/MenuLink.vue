@@ -36,7 +36,7 @@ const props = defineProps<MenuProps>();
         })(props.menu.pageName)
   "
     :class="[
-      'h-[50px] flex items-center px-5 mr-1 text-slate-600 relative rounded-full xl:rounded-xl',
+      'h-[45px] flex items-center px-5 mr-1 text-slate-600 relative rounded-full xl:rounded-xl',
       {
         'mt-[3px]': props.level == 'first',
         'bg-slate-100 text-primary dark:bg-darkmode-700':

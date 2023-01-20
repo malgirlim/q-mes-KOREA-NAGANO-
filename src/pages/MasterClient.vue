@@ -409,7 +409,7 @@ const resetCheckBox = () => {
   </div>
   <!-- BEGIN: Insert Modal Content -->
   <!-- BEGIN: FOOTER(COPYRIGHT) -->
-  <div style="text-align: right">
+  <div class="intro-y" style="text-align: right">
     <footer>&copy;2023 QInnotek. All rights reserved.</footer>
   </div>
   <!-- END: FOOTER(COPYRIGHT) -->
