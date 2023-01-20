@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 // const database = require("./database");
-const { sql, pool } = require("../mssql");
+const { sql, pool } = require("../../mssql");
 
 const router = express.Router();
 router.use(bodyParser.json());

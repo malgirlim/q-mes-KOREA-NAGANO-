@@ -306,6 +306,9 @@ const resetCheckBox = () => {
             </Table.Th>
           </Table.Tr>
         </Table.Thead>
+        <!-- </Table>
+
+      <Table class="border-spacing-y-[10px] border-separate -mt-2"> -->
         <Table.Tbody>
           <!-- <Table.Tr
           <Table.Tr
