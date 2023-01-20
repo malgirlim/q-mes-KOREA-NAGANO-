@@ -265,14 +265,14 @@ let table_width =
       id="printMe"
     >
       <div class="mr-3">
+        <div style="overflow-y:scroll; overflow-x:hidden; height:520px;">
       <Table class="border-spacing-y-[8px] border-separate -mt-2">
-        <Table.Thead>
+        <Table.Thead style="position: sticky; top:0px; order:1;">
           <Table.Tr>
             <Table.Th
               class="text-center border-b-0 whitespace-nowrap"
               id="checkbox"
-              :style=table_width[0]
-            >
+              :style=table_width[0]>
               <Input
                 class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
                 id="checkbox_all"
@@ -331,11 +331,8 @@ let table_width =
             </Table.Th>
           </Table.Tr>
         </Table.Thead>
-        </Table>
-        </div>
-        <div style="overflow-y:scroll; overflow-x:hidden; height:520px;">
-        <Table class="border-spacing-y-[8px] border-separate -mt-2">
-        <Table.Tbody>
+      
+        <Table.Tbody style="order:0;">
           <!-- <Table.Tr
           <Table.Tr
             v-for="(faker, fakerKey) in _.take(fakerData, 10)"
@@ -439,6 +436,7 @@ let table_width =
           </Table.Tr>
         </Table.Tbody>
       </Table>
+    </div>
     </div>
     </div>
     </div>
