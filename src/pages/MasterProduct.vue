@@ -119,14 +119,22 @@ const resetCheckBox = () => {
   checkDebug.value = [];
 };
 // 테이블 열 크기 조정
-// 체크박스, 순번, 품목코드, 거래처명, 품명, 
-// 규격, 단위, 안전재고, 원가, 비고, 
+// 체크박스, 순번, 품목코드, 거래처명, 품명,
+// 규격, 단위, 안전재고, 원가, 비고,
 // 편집
-let table_width = 
-["width: 50px","width: 100px","width: 150px","width: 150px","width: 300px",
-"width: 200px","width: 50px","width: 50px","width: 50px","width: 200px",
-"width: 100px"];
-
+let table_width = [
+  "width: 50px",
+  "width: 100px",
+  "width: 150px",
+  "width: 150px",
+  "width: 300px",
+  "width: 200px",
+  "width: 50px",
+  "width: 50px",
+  "width: 50px",
+  "width: 200px",
+  "width: 100px",
+];
 </script>
 
 <template>
@@ -339,108 +347,107 @@ let table_width =
             :key="fakerKey"
             class="intro-x"
           > -->
-          <Table.Tr
-            v-for="(todo, index) in datas"
-            :key="todo.NO"
-            class="intro-x"
-          >
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              id="checkbox"
-              :style=table_width[0]
+            <Table.Tr
+              v-for="(todo, index) in datas"
+              :key="todo.NO"
+              class="intro-x"
             >
-              <input
-                class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 id="checkbox"
-                type="checkbox"
-                :value="todo.NO"
-                v-model="checkDebug"
-              />
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              :style=table_width[1]
-            >
-              <div>{{ index + 1 + (currentPage - 1) * rowsPerPage }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              :style=table_width[2]
-            >
-              <div>{{ todo.품목코드 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              :style=table_width[3]
-            >
-              <div>{{ todo.거래처명 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              :style=table_width[4]
-            >
-              <div>{{ todo.품명 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              :style=table_width[5]
-            >
-              <div>{{ todo.규격 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              :style=table_width[6]
-            >
-              <div>{{ todo.단위 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              :style=table_width[7]
-            >
-              <div>{{ todo.안전재고?.toLocaleString() }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              :style=table_width[8]
-            >
-              <div>{{ todo.원가?.toLocaleString() }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              :style=table_width[9]
-            >
-              <div>{{ todo.비고 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
-              :style=table_width[10]
-              id="edit"
-            >
-              <div class="flex items-center justify-center text-danger">
-                <a
-                  class="flex items-center mr-3"
-                  href="#"
-                  @click="
-                    () => {
-                      // event.preventDefault();
-                      setEditModal(true);
-                      editModalData = todo;
-                    }
-                  "
-                >
-                  <Lucide icon="Edit" class="w-4 h-4 mr-1" />
-                  수정
-                </a>
-              </div>
-            </Table.Td>
-          </Table.Tr>
-        </Table.Tbody>
-      </Table>
+                :style="table_width[0]"
+              >
+                <input
+                  class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+                  id="checkbox"
+                  type="checkbox"
+                  :value="todo.NO"
+                  v-model="checkDebug"
+                />
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[1]"
+              >
+                <div>{{ index + 1 + (currentPage - 1) * rowsPerPage }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[2]"
+              >
+                <div>{{ todo.품목코드 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[3]"
+              >
+                <div>{{ todo.거래처명 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[4]"
+              >
+                <div>{{ todo.품명 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[5]"
+              >
+                <div>{{ todo.규격 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[6]"
+              >
+                <div>{{ todo.단위 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[7]"
+              >
+                <div>{{ todo.안전재고?.toLocaleString() }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[8]"
+              >
+                <div>{{ todo.원가?.toLocaleString() }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[9]"
+              >
+                <div>{{ todo.비고 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
+                :style="table_width[10]"
+                id="edit"
+              >
+                <div class="flex items-center justify-center text-danger">
+                  <a
+                    class="flex items-center mr-3"
+                    href="#"
+                    @click="
+                      () => {
+                        // event.preventDefault();
+                        setEditModal(true);
+                        editModalData = todo;
+                      }
+                    "
+                  >
+                    <Lucide icon="Edit" class="w-4 h-4 mr-1" />
+                    수정
+                  </a>
+                </div>
+              </Table.Td>
+            </Table.Tr>
+          </Table.Tbody>
+        </Table>
+      </div>
     </div>
-    </div>
-    </div>
-    </div>
-    <!-- END: Data List -->
+  </div>
+  <!-- END: Data List -->
   <!-- BEGIN: FOOTER(COPYRIGHT) -->
   <div class="intro-y" style="text-align: right">
     <footer>&copy;2023 QInnotek. All rights reserved.</footer>
