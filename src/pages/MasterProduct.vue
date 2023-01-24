@@ -262,7 +262,7 @@ let table_width = [
       </div>
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div>
-        {{ dataCount }}개 데이터 조회됨. {{ currentPage }} /
+        {{ rowsPerPage }} / {{ dataCount }}개 데이터 조회됨. {{ currentPage }} /
         {{ numberOfPages }} 페이지
         <!-- END: Pagination-->
       </div>
@@ -272,76 +272,100 @@ let table_width = [
       class="col-span-12 overflow-auto intro-y lg:overflow-visible"
       id="printMe"
     >
-      <div class="mr-3">
-        <div style="overflow-y:scroll; overflow-x:hidden; height:520px;">
-      <Table class="border-spacing-y-[8px] border-separate -mt-2">
-        <Table.Thead style="position: sticky; top:0px; order:1;">
-          <Table.Tr>
-            <Table.Th
-              class="text-center border-b-0 whitespace-nowrap"
-              id="checkbox"
-              :style=table_width[0]>
-              <Input
-                class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
-                id="checkbox_all"
-                type="checkbox"
-                :value="mainCheckBox"
-                @click="
-                  () => {
-                    checkAll(mainCheckBox);
-                    mainCheckBox = !mainCheckBox;
-                  }
-                "
-              />
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"
-            :style=table_width[1]>
-              순번
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"
-            :style=table_width[2]>
-              품목코드
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"
-            :style=table_width[3]>
-              거래처명
-            </Table.Th>
-            <Table.Th class="border-b-0 whitespace-nowrap"
-            :style=table_width[4]> 
-              품명 
-            </Table.Th>
-            <Table.Th class="border-b-0 whitespace-nowrap"
-            :style=table_width[5]> 
-              규격 
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"
-            :style=table_width[6]>
-              단위
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"
-            :style=table_width[7]>
-              안전재고
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"
-            :style=table_width[8]>
-              원가(₩)
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"
-            :style=table_width[9]>
-              비고
-            </Table.Th>
-            <Table.Th
-              class="text-center border-b-0 whitespace-nowrap"
-              id="edit"
-              :style=table_width[10]
-            >
-              편집
-            </Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-      
-        <Table.Tbody style="order:0;">
-          <!-- <Table.Tr
+      <div
+        class="mr-3"
+        style="overflow-y: scroll; overflow-x: hidden; height: 520px"
+      >
+        <Table class="border-spacing-y-[8px] border-separate -mt-2">
+          <Table.Thead
+            class="bg-slate-100"
+            style="position: sticky; top: 0px; z-index: 2"
+          >
+            <Table.Tr>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                id="checkbox"
+                :style="table_width[0]"
+              >
+                <Input
+                  class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+                  id="checkbox_all"
+                  type="checkbox"
+                  :value="mainCheckBox"
+                  @click="
+                    () => {
+                      checkAll(mainCheckBox);
+                      mainCheckBox = !mainCheckBox;
+                    }
+                  "
+                />
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[1]"
+              >
+                순번
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[2]"
+              >
+                품목코드
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[3]"
+              >
+                거래처명
+              </Table.Th>
+              <Table.Th
+                class="border-b-0 whitespace-nowrap"
+                :style="table_width[4]"
+              >
+                품명
+              </Table.Th>
+              <Table.Th
+                class="border-b-0 whitespace-nowrap"
+                :style="table_width[5]"
+              >
+                규격
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[6]"
+              >
+                단위
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[7]"
+              >
+                안전재고
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[8]"
+              >
+                원가(₩)
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[9]"
+              >
+                비고
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                id="edit"
+                :style="table_width[10]"
+              >
+                편집
+              </Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+
+          <Table.Tbody style="position: relative; z-index: 1">
+            <!-- <Table.Tr
           <Table.Tr
             v-for="(faker, fakerKey) in _.take(fakerData, 10)"
             :key="fakerKey"
