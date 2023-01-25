@@ -27,10 +27,10 @@ export function useSendApi<T>(
   };
 
   // 조건 조회
-  const searchDatas = async (key: String, input: String) => {
+  const searchDatas = async (date: String, key: String, input: String) => {
     datasAreLoading.value = true;
     try {
-      await axios.post(url, { key, input }).then((res) => {
+      await axios.post(url, { date, key, input }).then((res) => {
         datas.value = res.data;
         dataCount.value = datas.value.length;
       });
