@@ -46,7 +46,7 @@ onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오�
 // 조회
 const search = () => {
   // console.log(searchKey.value, searchInput.value);
-  searchDatas(searchKey.value, searchInput.value);
+  searchDatas("", searchKey.value, searchInput.value);
 };
 
 //등록 Modal
