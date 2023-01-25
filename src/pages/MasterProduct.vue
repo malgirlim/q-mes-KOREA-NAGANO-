@@ -122,7 +122,7 @@ const resetCheckBox = () => {
 // 체크박스, 순번, 품목코드, 거래처명, 품명,
 // 규격, 단위, 안전재고, 원가, 비고,
 // 편집
-let table_width = [
+const table_width = [
   "width: 50px",
   "width: 100px",
   "width: 150px",
@@ -473,7 +473,7 @@ let table_width = [
   </div>
   <!-- END: Data List -->
   <!-- BEGIN: FOOTER(COPYRIGHT) -->
-  <div class="intro-y" style="text-align: right">
+  <div class="intro-y mt-5" style="text-align: right">
     <footer>&copy;2023 QInnotek. All rights reserved.</footer>
   </div>
   <!-- END: FOOTER(COPYRIGHT) -->
