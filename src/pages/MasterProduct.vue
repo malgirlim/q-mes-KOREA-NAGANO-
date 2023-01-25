@@ -274,7 +274,7 @@ let table_width = [
     >
       <div
         class="mr-3"
-        style="overflow-y: scroll; overflow-x: hidden; height: 520px"
+        style="overflow-y: scroll; overflow-x: hidden; height: 570px"
       >
         <Table class="border-spacing-y-[8px] border-separate -mt-2">
           <Table.Thead
