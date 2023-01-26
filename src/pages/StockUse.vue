@@ -1,53 +1,72 @@
 <script setup lang="ts">
 import _, { isArguments } from "lodash";
-import { ref } from "vue";
+import { ref, Ref } from "vue";
 import Button from "../base-components/Button";
 import { FormInput, FormSelect, FormCheck } from "../base-components/Form";
-import Litepicker from "../base-components/Litepicker";
 import Lucide from "../base-components/Lucide";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
 import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
+import Litepicker from "../base-components/Litepicker";
+
+// API 보내는 함수 및 인터페이스 불러오기
+import { useSendApi } from "../composables/useSendApi";
+import { StockUse } from "../interfaces/menu/StockInterface";
 
 // 페이징기능
 import { onMounted, watch } from "vue";
 import PaginationComponent from "../components/Pagination/PaginationComponent.vue"; // 페이징설정
-import { useTodosApi } from "../composables/useTodosApi"; // 여기서 데이터 가져옴
 const currentPage = ref(1); // 현재페이지
 const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
-
-const { todos, todosAreLoading, loadTodos, numberOfPages } = useTodosApi(
-  currentPage,
-  rowsPerPage
-);
-
-onMounted(async () => loadTodos());
 
 const pageChange = () => {
   // 한 페이지에 보여질 데이터 갯수 변경 시 1페이지로 이동
   currentPage.value = 1;
 };
 
+// api 보내기
+const url = "/api/stock/use";
+const {
+  datas,
+  dataCount,
+  datasAreLoading,
+  loadDatas,
+  searchDatas,
+  insertData,
+  editData,
+  deleteData,
+  numberOfPages,
+} = useSendApi<StockUse>(url, currentPage, rowsPerPage);
+
+const searchKey = ref("전체");
+const searchInput = ref("");
+onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오기
+
+// 조회
+const search = () => {
+  // console.log(searchKey.value, searchInput.value);
+  searchDatas("", searchKey.value, searchInput.value);
+};
+
 //등록 Modal
 const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
   insertModal.value = value;
+  insertModalData = {}; // 변수 초기화
+  search();
+  pageChange();
 };
+let insertModalData: StockUse; // 등록할 변수
 
 //수정 Modal
 const editModal = ref(false);
 const setEditModal = (value: boolean) => {
   editModal.value = value;
+  search();
 };
-
-const editModalDataArr = { content: "", name: "", number: Number() };
-const setEditModalData = (content: string, name: string, number: Number) => {
-  editModalDataArr.content = content;
-  editModalDataArr.name = name;
-  editModalDataArr.number = Number(number);
-};
+let editModalData: StockUse; // 수정할 변수
 
 //삭제 Modal
 const deleteConfirmationModal = ref(false);
@@ -55,6 +74,11 @@ const setDeleteConfirmationModal = (value: boolean) => {
   deleteConfirmationModal.value = value;
 };
 const deleteButtonRef = ref(null);
+const deleteDataFunction = async () => {
+  await deleteData(checkDebug.value); // await : 이 함수가 끝나야 다음으로 넘어간다
+  resetCheckBox();
+  search();
+};
 
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
@@ -63,10 +87,52 @@ const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
 const now2 = "전체기간";
 
-const print = () => {
-  // Pass the element id here
-  console.log("print");
+// 체크박스 선택으로 데이터 가져오기
+const checkDebug: any = ref([]); // 체크박스 선택 데이터 저장변수
+
+const mainCheckBox = ref(true); // 메인 체크박스 상태
+const checkAll = (value: boolean) => {
+  // 메인 체크박스가 눌릴 때 모두 체크
+  const checkboxes = document.querySelectorAll("input[id=checkbox]"); // input의 id가 checkbox인 요소를 가져오기
+  // 만약 메인 체크박스가 눌렸다면
+  if (value === true) {
+    checkDebug.value = []; // 체크박스 선택 데이터 초기화
+    checkboxes.forEach((cb: any) => {
+      cb.checked = value; // 모든 체크박스를 메인체크박스에 맞춰서 바꿈
+      checkDebug.value.push(cb.value); // 모든 체크박스의 value를 가져와 저장
+    });
+  } else {
+    checkboxes.forEach((cb: any) => {
+      cb.checked = value;
+      checkDebug.value = [];
+    });
+  }
 };
+
+const resetCheckBox = () => {
+  // 페이징 넘기면 체크박스 데이터 초기화
+  const mBox = document.querySelector<HTMLElement>(
+    "input[id=checkbox_all]"
+  ) as HTMLInputElement | null; // 오류 안뜨게 하려고 넣어둔것
+  if (!mBox) return; // 오류 안뜨게 하려고 넣어둔것
+  mBox.checked = false; // 메인체크박스 체크해제
+  mainCheckBox.value = true; // 메인체크박스 데이터 초기화
+  checkDebug.value = [];
+};
+// 테이블 열 크기 조정 (원자재 사용 등록)
+const table_width = [
+  "width: 50px", // 체크박스
+  "width: 50px", // 순번
+  "width: 150px", // 출고일시
+  "width: 200px", // 품목코드
+  "width: 150px", // 거래처명
+  "width: 300px", // 품명
+  "width: 150px", // 규격
+  "width: 50px", // 단위
+  "width: 50px", // 출고수
+  "width: 200px", // 비고
+  "width: 100px", // 편집
+];
 </script>
 
 <template>
@@ -79,21 +145,34 @@ const print = () => {
         as="a"
         variant="primary"
         @click="
-          () => {
+          (event) => {
+            event.preventDefault();
             setInsertModal(true);
           }
         "
-      > <Lucide icon="FilePlus" class="w-4 h-4 mr-2" /> 
+      >
+        <Lucide icon="FilePlus" class="w-4 h-4 mr-2" />
         등록
       </Button>
-      <Button class="mr-2 shadow-md" as="a" variant="danger"  @click="
-                    (event) => {
-                      event.preventDefault();
-                      setDeleteConfirmationModal(true);
-                    }
-                  ">
-        <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button>
+      <Button
+        class="mr-2 shadow-md"
+        as="a"
+        variant="danger"
+        @click="
+          (event) => {
+            event.preventDefault();
+            setDeleteConfirmationModal(true);
+          }
+        "
+      >
+        <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
+      >
       <div class="hidden mx-auto md:block text-slate-500"></div>
+      <div class="mr-2">
+        <a href="" class="flex items-center ml-auto text-primary">
+          <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
+        </a>
+      </div>
       <div class="text-center">
         <div>
           <Litepicker
@@ -139,9 +218,23 @@ const print = () => {
           <FormInput
             type="text"
             class="w-56 pr-10 !box"
+            v-model="searchInput"
+            @keyup.enter="
+              () => {
+                search();
+                pageChange();
+              }
+            "
             placeholder="검색어를 입력해주세요"
           />
-          <button @click="">
+          <button
+            @click="
+              {
+                search();
+                pageChange();
+              }
+            "
+          >
             <Lucide
               icon="Search"
               class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
@@ -171,7 +264,7 @@ const print = () => {
             </span>
           </Menu.Button>
           <Menu.Items class="w-40">
-            <Menu.Item @click="print">
+            <Menu.Item>
               <Lucide icon="Printer" class="w-4 h-4 mr-2" />
               <Print />
             </Menu.Item>
@@ -192,12 +285,15 @@ const print = () => {
           class="pagination-component"
           v-model="currentPage"
           :numberOfPages="numberOfPages"
+          @click="resetCheckBox()"
         />
       </div>
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div>
-        {{ todos.length }}개 데이터 조회됨. {{ currentPage }} /
-        {{ numberOfPages }} 페이지
+        <span class="mr-3">[ {{ dataCount }}개 데이터 조회됨 ] </span>
+        <span class="mr-5"
+          >[ {{ currentPage }} / {{ numberOfPages }} 페이지 ]</span
+        >
         <!-- END: Pagination-->
       </div>
     </div>
@@ -206,151 +302,207 @@ const print = () => {
       class="col-span-12 overflow-auto intro-y lg:overflow-visible"
       id="printMe"
     >
-      <Table class="border-spacing-y-[10px] border-separate -mt-2">
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap"
-            id="checkbox"
-            >
-              <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              순번
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              출고일시
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              품목코드
-            </Table.Th>
-            <Table.Th class="border-b-0 whitespace-nowrap"> 거래처명 </Table.Th>
-            <Table.Th class="border-b-0 whitespace-nowrap"> 품명 </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              규격
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              단위
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              출고수
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              비고
-            </Table.Th>
-            <Table.Th
-              class="text-center border-b-0 whitespace-nowrap"
-              id="edit"
-            >
-              편집
-            </Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          <!-- <Table.Tr
+      <div
+        class="mr-3"
+        style="overflow-y: scroll; overflow-x: hidden; height: 580px"
+      >
+        <Table class="border-spacing-y-[8px] border-separate -mt-2">
+          <Table.Thead
+            class="bg-slate-100"
+            style="position: sticky; top: 0px; z-index: 2"
+          >
+            <Table.Tr>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                id="checkbox"
+                :style="table_width[0]"
+              >
+                <Input
+                  class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+                  id="checkbox_all"
+                  type="checkbox"
+                  :value="mainCheckBox"
+                  @click="
+                    () => {
+                      checkAll(mainCheckBox);
+                      mainCheckBox = !mainCheckBox;
+                    }
+                  "
+                />
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[1]"
+              >
+                순번
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[2]"
+              >
+                출고일시
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[3]"
+              >
+                품목코드
+              </Table.Th>
+              <Table.Th
+                class="border-b-0 whitespace-nowrap"
+                :style="table_width[4]"
+              >
+                거래처명
+              </Table.Th>
+              <Table.Th
+                class="border-b-0 whitespace-nowrap"
+                :style="table_width[5]"
+              >
+                품명
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[6]"
+              >
+                규격
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[7]"
+              >
+                단위
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[8]"
+              >
+                출고수
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[9]"
+              >
+                비고
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                id="edit"
+                :style="table_width[10]"
+              >
+                편집
+              </Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody style="position: relative; z-index: 1">
+            <!-- <Table.Tr
           <Table.Tr
             v-for="(faker, fakerKey) in _.take(fakerData, 10)"
             :key="fakerKey"
             class="intro-x"
           > -->
-          <Table.Tr
-            v-for="(todo, index) in todos"
-            :key="todo.content"
-            class="intro-x"
-          >
-          <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              id="checkbox"
-              style="width: 50px"
+            <Table.Tr
+              v-for="(todo, index) in datas"
+              :key="todo.NO"
+              class="intro-x"
+            >
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                id="checkbox"
+                :style="table_width[0]"
               >
-              <FormCheck>
-                <FormCheck.Input id="checkbox-switch-1" type="checkbox" value="" />
-              </FormCheck> 
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 50px"
-            >
-              <div>{{ index + 1 + (currentPage - 1) * rowsPerPage }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 150px"
-            >
-            <div>2023-01-17(화)</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 200px"
-            >
-            <div>{{ todo.content }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 150px"
-            >
-              <div>(주)큐이노텍</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 300px"
-            >
-              <div>{{ todo.name }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 150px"
-            >
-              <div>300mm</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 50px"
-            >
-              <div>EA</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 50px"
-            >
-              <div>100</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 200px"
-            >
-              <div>비고란 입니다.</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
-              style="width: 100px"
-              id="edit"
-            >
-              <div class="flex items-center justify-center">
-                <a
-                  class="flex items-center mr-3"
-                  href="#"
-                  @click="
-                    (event) => {
-                      event.preventDefault();
-                      setEditModal(true);
-                      setEditModalData(todo.content, todo.name, todo.number);
-                    }
-                  "
-                >
-                  <Lucide icon="CheckSquare" class="w-4 h-4 mr-1" />
-                  수정
-                </a>
-              </div>
-            </Table.Td>
-          </Table.Tr>
-        </Table.Tbody>
-      </Table>
+                <input
+                  class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+                  id="checkbox"
+                  type="checkbox"
+                  :value="todo.NO"
+                  v-model="checkDebug"
+                />
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[1]"
+              >
+                <div>{{ index + 1 + (currentPage - 1) * rowsPerPage }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[2]"
+              >
+                <div>{{ todo.출고일시 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[3]"
+              >
+                <div>{{ todo.품목코드 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[4]"
+              >
+                <div>{{ todo.거래처명 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[5]"
+              >
+                <div>{{ todo.품명 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[6]"
+              >
+                <div>{{ todo.규격 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[7]"
+              >
+                <div>{{ todo.단위 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[8]"
+              >
+                <div>{{ todo.출고수?.toLocaleString() }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[9]"
+              >
+                <div>{{ todo.비고 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
+                :style="table_width[10]"
+                id="edit"
+              >
+                <div class="flex items-center justify-center text-danger">
+                  <a
+                    class="flex items-center mr-3"
+                    href="#"
+                    @click="
+                      () => {
+                        setEditModal(true);
+                        editModalData = todo;
+                      }
+                    "
+                  >
+                    <Lucide icon="Edit" class="w-4 h-4 mr-1" />
+                    수정
+                  </a>
+                </div>
+              </Table.Td>
+            </Table.Tr>
+          </Table.Tbody>
+        </Table>
+      </div>
     </div>
     <!-- END: Data List -->
   </div>
   <!-- BEGIN: Insert Modal Content -->
   <!-- BEGIN: FOOTER(COPYRIGHT) -->
-  <div class="intro-y" style="text-align: right">
+  <div class="intro-y mt-5 mr-5" style="text-align: right">
     <footer>&copy;2023 QInnotek. All rights reserved.</footer>
   </div>
   <!-- END: FOOTER(COPYRIGHT) -->
@@ -378,34 +530,79 @@ const print = () => {
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.품목코드"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.거래처명"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">품명</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.품명"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">규격</FormLabel>
-          <FormInput id="vertical-form-1" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.규격"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">단위</FormLabel>
-          <FormInput id="vertical-form-2" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-2"
+            type="text"
+            v-model="insertModalData.단위"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">출고수</FormLabel>
-          <FormInput id="vertical-form-2" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-2"
+            type="text"
+            v-model="insertModalData.출고수"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">비고</FormLabel>
-          <FormInput id="vertical-form-2" type="text" placeholder="" />
+          <FormInput
+            id="vertical-form-2"
+            type="text"
+            v-model="insertModalData.비고"
+            placeholder=""
+          />
         </div>
         <div class="mt-5 text-right">
-          <Button class="mr-2 shadow-md" variant="primary">확인</Button>
+          <Button
+            class="mr-2 shadow-md"
+            variant="primary"
+            @click="
+              () => {
+                insertData(insertModalData);
+                setInsertModal(false);
+              }
+            "
+            >확인</Button
+          >
           <Button
             class="mr-2 shadow-md"
             variant="outline-primary"
@@ -440,7 +637,7 @@ const print = () => {
           <FormInput
             id="vertical-form-1"
             type="date"
-            modelValue="2022-01-17"
+            v-model="editModalData.출고일시"
             placeholder=""
           />
         </div>
@@ -449,7 +646,7 @@ const print = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            :modelValue="editModalDataArr.content"
+            v-model="editModalData.품목코드"
             placeholder=""
           />
         </div>
@@ -458,7 +655,7 @@ const print = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="(주)큐이노텍"
+            v-model="editModalData.거래처명"
             placeholder=""
           />
         </div>
@@ -467,7 +664,7 @@ const print = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            :modelValue="editModalDataArr.name"
+            v-model="editModalData.품명"
             placeholder=""
           />
         </div>
@@ -476,7 +673,7 @@ const print = () => {
           <FormInput
             id="vertical-form-1"
             type="text"
-            modelValue="300mm"
+            v-model="editModalData.규격"
             placeholder=""
           />
         </div>
@@ -485,7 +682,7 @@ const print = () => {
           <FormInput
             id="vertical-form-2"
             type="text"
-            modelValue="EA"
+            v-model="editModalData.단위"
             placeholder=""
           />
         </div>
@@ -494,7 +691,7 @@ const print = () => {
           <FormInput
             id="vertical-form-2"
             type="text"
-            modelValue="100"
+            v-model="editModalData.출고수"
             placeholder=""
           />
         </div>
@@ -503,12 +700,22 @@ const print = () => {
           <FormInput
             id="vertical-form-2"
             type="text"
-            modelValue="비고란 입니다."
+            v-model="editModalData.비고"
             placeholder=""
           />
         </div>
         <div class="mt-5 text-right">
-          <Button class="mr-2 shadow-md" variant="primary">확인</Button>
+          <Button
+            class="mr-2 shadow-md"
+            variant="primary"
+            @click="
+              () => {
+                editData(editModalData);
+                setEditModal(false);
+              }
+            "
+            >확인</Button
+          >
           <Button
             class="mr-2 shadow-md"
             variant="outline-primary"
@@ -558,6 +765,12 @@ const print = () => {
           type="button"
           class="w-24"
           ref="deleteButtonRef"
+          @click="
+            () => {
+              deleteDataFunction();
+              setDeleteConfirmationModal(false);
+            }
+          "
         >
           삭제
         </Button>

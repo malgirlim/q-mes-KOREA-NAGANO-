@@ -9,10 +9,11 @@ import Table from "../base-components/Table";
 import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
+import Litepicker from "../base-components/Litepicker";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
-import { MasterClient } from "../interfaces/menu/masterInterface";
+import { MasterClient } from "../interfaces/menu/MasterInterface";
 
 // 페이징기능
 import { onMounted, watch } from "vue";
@@ -46,7 +47,7 @@ onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오�
 // 조회
 const search = () => {
   // console.log(searchKey.value, searchInput.value);
-  searchDatas(searchKey.value, searchInput.value);
+  searchDatas("", searchKey.value, searchInput.value);
 };
 
 //등록 Modal
@@ -111,13 +112,26 @@ const checkAll = (value: boolean) => {
 const resetCheckBox = () => {
   // 페이징 넘기면 체크박스 데이터 초기화
   const mBox = document.querySelector<HTMLElement>(
-    "input[id=checkbox-switch-1]"
+    "input[id=checkbox_all]"
   ) as HTMLInputElement | null; // 오류 안뜨게 하려고 넣어둔것
   if (!mBox) return; // 오류 안뜨게 하려고 넣어둔것
   mBox.checked = false; // 메인체크박스 체크해제
   mainCheckBox.value = true; // 메인체크박스 데이터 초기화
   checkDebug.value = [];
 };
+// 테이블 열 크기 조정 (거래처 등록)
+const table_width = [
+  "width: 50px", // 체크박스
+  "width: 100px", // 순번
+  "width: 150px", // 거래처명
+  "width: 150px", // 대표자
+  "width: 300px", // 사업자 번호
+  "width: 300px", // 연락처
+  "width: 50px", // 이메일
+  "width: 50px", // 주소
+  "width: 50px", // 비고
+  "width: 200px", // 편집
+];
 </script>
 
 <template>
@@ -161,10 +175,11 @@ const resetCheckBox = () => {
       <div class="ml-2">
         <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
-          <option>품목코드</option>
           <option>거래처명</option>
-          <option>품명</option>
-          <option>규격</option>
+          <option>대표자</option>
+          <option>사업자번호</option>
+          <option>연락처</option>
+          <option>이메일</option>
           <option>비고</option>
         </FormSelect>
       </div>
@@ -182,13 +197,14 @@ const resetCheckBox = () => {
             "
             placeholder="검색어를 입력해주세요"
           />
-          <button @click="
+          <button
+            @click="
               {
                 search();
                 pageChange();
               }
-              "
-              >
+            "
+          >
             <Lucide
               icon="Search"
               class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
@@ -244,8 +260,10 @@ const resetCheckBox = () => {
       </div>
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div>
-        {{ dataCount }}개 데이터 조회됨. {{ currentPage }} /
-        {{ numberOfPages }} 페이지
+        <span class="mr-3">[ {{ dataCount }}개 데이터 조회됨 ] </span>
+        <span class="mr-5"
+          >[ {{ currentPage }} / {{ numberOfPages }} 페이지 ]</span
+        >
         <!-- END: Pagination-->
       </div>
     </div>
@@ -254,162 +272,196 @@ const resetCheckBox = () => {
       class="col-span-12 overflow-auto intro-y lg:overflow-visible"
       id="printMe"
     >
-      <Table class="border-spacing-y-[10px] border-separate -mt-2">
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th
-              class="text-center border-b-0 whitespace-nowrap"
-              id="checkbox"
-            >
-            <Input
-                class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
-                id="checkbox_all"
-                type="checkbox"
-                :value="mainCheckBox"
-                @click="
-                  () => {
-                    checkAll(mainCheckBox);
-                    mainCheckBox = !mainCheckBox;
-                  }
-                "
-              />
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              순번
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              거래처명
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              대표자
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              사업자 번호
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              연락처
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              이메일
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              주소
-            </Table.Th>
-            <Table.Th class="text-center border-b-0 whitespace-nowrap">
-              비고
-            </Table.Th>
-            <Table.Th
-              class="text-center border-b-0 whitespace-nowrap"
-              id="edit"
-            >
-              편집
-            </Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          <!-- <Table.Tr
+      <div
+        class="mr-3"
+        style="overflow-y: scroll; overflow-x: hidden; height: 580px"
+      >
+        <Table class="border-spacing-y-[8px] border-separate -mt-2">
+          <Table.Thead
+            class="bg-slate-100"
+            style="position: sticky; top: 0px; z-index: 2"
+          >
+            <Table.Tr>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                id="checkbox"
+                :style="table_width[0]"
+              >
+                <Input
+                  class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+                  id="checkbox_all"
+                  type="checkbox"
+                  :value="mainCheckBox"
+                  @click="
+                    () => {
+                      checkAll(mainCheckBox);
+                      mainCheckBox = !mainCheckBox;
+                    }
+                  "
+                />
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[1]"
+              >
+                순번
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[2]"
+              >
+                거래처명
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[3]"
+              >
+                대표자
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[4]"
+              >
+                사업자 번호
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[5]"
+              >
+                연락처
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[6]"
+              >
+                이메일
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[7]"
+              >
+                주소
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[8]"
+              >
+                비고
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[9]"
+                id="edit"
+              >
+                편집
+              </Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody style="position: relative; z-index: 1">
+            <!-- <Table.Tr
           <Table.Tr
             v-for="(faker, fakerKey) in _.take(fakerData, 10)"
             :key="fakerKey"
             class="intro-x"
           > -->
-          <Table.Tr
-            v-for="(todo, index) in datas"
-            :key="todo.NO"
-            class="intro-x"
-          >
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              id="checkbox"
-              style="width: 50px"
-              >
-              <input
-                class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+            <Table.Tr
+              v-for="(todo, index) in datas"
+              :key="todo.NO"
+              class="intro-x"
+            >
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 id="checkbox"
-                type="checkbox"
-                :value="todo.NO"
-                v-model="checkDebug"
-              />
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 50px"
-            >
-              <div>{{ index + 1 + (currentPage - 1) * rowsPerPage }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 100px"
-            >
-            <div>{{ todo.거래처명 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 100px"
-            >
-              <div>{{ todo.대표자 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md bg-white text-center border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 150px"
-            >
-              <div>{{ todo.사업자번호 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-50 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 150px"
-            >
-              <div>{{ todo.연락처 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 150px"
-            >
-              <div>{{ todo.이메일 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 400px"
-            >
-              <div>{{ todo.주소 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-              style="width: 200px"
-            >
-              <div>{{ todo.비고 }}</div>
-            </Table.Td>
-            <Table.Td
-              class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
-              style="width: 100px"
-              id="edit"
-            >
-              <div class="flex items-center justify-center text-danger">
-                <a
-                  class="flex items-center mr-3"
-                  href="#"
-                  @click="
-                    () => {
-                      // event.preventDefault();
-                      setEditModal(true);
-                      editModalData = todo;
-                    }
-                  "
-                >
-                  <Lucide icon="Edit" class="w-4 h-4 mr-1" />
-                  수정
-                </a>
-              </div>
-            </Table.Td>
-          </Table.Tr>
-        </Table.Tbody>
-      </Table>
+                :style="table_width[0]"
+              >
+                <input
+                  class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 [&[type='checkbox']]:checked:bg-primary [&[type='checkbox']]:checked:border-primary [&[type='checkbox']]:checked:border-opacity-10 [&:disabled:not(:checked)]:bg-slate-100 [&:disabled:not(:checked)]:cursor-not-allowed [&:disabled:checked]:opacity-70 [&:disabled:checked]:cursor-not-allowed"
+                  id="checkbox"
+                  type="checkbox"
+                  :value="todo.NO"
+                  v-model="checkDebug"
+                />
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[1]"
+              >
+                <div>{{ index + 1 + (currentPage - 1) * rowsPerPage }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[2]"
+              >
+                <div>{{ todo.거래처명 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[3]"
+              >
+                <div>{{ todo.대표자 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md bg-white text-center border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[4]"
+              >
+                <div>{{ todo.사업자번호 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-50 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[5]"
+              >
+                <div>{{ todo.연락처 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[6]"
+              >
+                <div>{{ todo.이메일 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[7]"
+              >
+                <div>{{ todo.주소 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[8]"
+              >
+                <div>{{ todo.비고 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
+                :style="table_width[9]"
+                id="edit"
+              >
+                <div class="flex items-center justify-center text-danger">
+                  <a
+                    class="flex items-center mr-3"
+                    href="#"
+                    @click="
+                      () => {
+                        // event.preventDefault();
+                        setEditModal(true);
+                        editModalData = todo;
+                      }
+                    "
+                  >
+                    <Lucide icon="Edit" class="w-4 h-4 mr-1" />
+                    수정
+                  </a>
+                </div>
+              </Table.Td>
+            </Table.Tr>
+          </Table.Tbody>
+        </Table>
+      </div>
     </div>
     <!-- END: Data List -->
   </div>
   <!-- BEGIN: Insert Modal Content -->
   <!-- BEGIN: FOOTER(COPYRIGHT) -->
-  <div class="intro-y" style="text-align: right">
+  <div class="intro-y mt-5 mr-5" style="text-align: right">
     <footer>&copy;2023 QInnotek. All rights reserved.</footer>
   </div>
   <!-- END: FOOTER(COPYRIGHT) -->
@@ -428,58 +480,79 @@ const resetCheckBox = () => {
       <div style="text-align: left">
         <div>
           <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
-          <FormInput id="vertical-form-1" type="text" 
-          v-model="insertModalData.거래처명"
-          placeholder="" />
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.거래처명"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">대표자</FormLabel>
-          <FormInput id="vertical-form-1" type="text" 
-          v-model="insertModalData.대표자"
-          placeholder="" />
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.대표자"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">사업자 번호</FormLabel>
-          <FormInput id="vertical-form-1" type="text" 
-          v-model="insertModalData.사업자번호"
-          placeholder="" />
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.사업자번호"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">연락처</FormLabel>
-          <FormInput id="vertical-form-1" type="text" 
-          v-model="insertModalData.연락처"
-          placeholder="" />
-
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.연락처"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">이메일</FormLabel>
-          <FormInput id="vertical-form-1" type="text" 
-          v-model="insertModalData.이메일"
-          placeholder="" />
-
+          <FormInput
+            id="vertical-form-1"
+            type="text"
+            v-model="insertModalData.이메일"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">주소</FormLabel>
-          <FormInput id="vertical-form-2" type="text" 
-          v-model="insertModalData.주소"
-          placeholder="" />
-
+          <FormInput
+            id="vertical-form-2"
+            type="text"
+            v-model="insertModalData.주소"
+            placeholder=""
+          />
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">비고</FormLabel>
-          <FormInput id="vertical-form-2" type="text" 
-          v-model="insertModalData.비고"
-          placeholder="" />
+          <FormInput
+            id="vertical-form-2"
+            type="text"
+            v-model="insertModalData.비고"
+            placeholder=""
+          />
         </div>
         <div class="mt-5 text-right">
-          <Button class="mr-2 shadow-md" variant="primary"
-          @click="
+          <Button
+            class="mr-2 shadow-md"
+            variant="primary"
+            @click="
               () => {
                 insertData(insertModalData);
                 setInsertModal(false);
               }
             "
-            >확인</Button>
+            >확인</Button
+          >
           <Button
             class="mr-2 shadow-md"
             variant="outline-primary"
@@ -573,14 +646,17 @@ const resetCheckBox = () => {
           />
         </div>
         <div class="mt-5 text-right">
-          <Button class="mr-2 shadow-md" variant="primary"
-          @click="
+          <Button
+            class="mr-2 shadow-md"
+            variant="primary"
+            @click="
               () => {
                 editData(editModalData);
                 setEditModal(false);
               }
             "
-            >확인</Button>
+            >확인</Button
+          >
           <Button
             class="mr-2 shadow-md"
             variant="outline-primary"

@@ -34,6 +34,6 @@ export interface MonitorSafe {
   단위?: String;
   안전재고?: Number;
   재고수?: Number;
-  안전재고보유?: String;
+  안전재고보유?: Boolean;
   비고?: String;
 }

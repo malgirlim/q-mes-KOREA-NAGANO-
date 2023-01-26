@@ -9,6 +9,7 @@ import Table from "../base-components/Table";
 import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
+import Litepicker from "../base-components/Litepicker";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
@@ -118,22 +119,19 @@ const resetCheckBox = () => {
   mainCheckBox.value = true; // 메인체크박스 데이터 초기화
   checkDebug.value = [];
 };
-// 테이블 열 크기 조정
-// 체크박스, 순번, 품목코드, 거래처명, 품명,
-// 규격, 단위, 안전재고, 원가, 비고,
-// 편집
+// 테이블 열 크기 조정 (품목 등록)
 const table_width = [
-  "width: 50px",
-  "width: 100px",
-  "width: 150px",
-  "width: 150px",
-  "width: 300px",
-  "width: 200px",
-  "width: 50px",
-  "width: 50px",
-  "width: 50px",
-  "width: 200px",
-  "width: 100px",
+  "width: 50px", // 체크박스
+  "width: 100px", // 순번
+  "width: 150px", // 품목코드
+  "width: 150px", // 거래처명
+  "width: 300px", // 품명
+  "width: 300px", // 규격
+  "width: 50px", // 단위
+  "width: 50px", // 안전재고
+  "width: 50px", // 원가
+  "width: 200px", // 비고
+  "width: 100px", // 편집
 ];
 </script>
 
@@ -262,8 +260,10 @@ const table_width = [
       </div>
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div>
-        {{ rowsPerPage }} / {{ dataCount }}개 데이터 조회됨. {{ currentPage }} /
-        {{ numberOfPages }} 페이지
+        <span class="mr-3">[ {{ dataCount }}개 데이터 조회됨 ] </span>
+        <span class="mr-5"
+          >[ {{ currentPage }} / {{ numberOfPages }} 페이지 ]</span
+        >
         <!-- END: Pagination-->
       </div>
     </div>
@@ -473,7 +473,7 @@ const table_width = [
   </div>
   <!-- END: Data List -->
   <!-- BEGIN: FOOTER(COPYRIGHT) -->
-  <div class="intro-y mt-5" style="text-align: right">
+  <div class="intro-y mt-5 mr-5" style="text-align: right">
     <footer>&copy;2023 QInnotek. All rights reserved.</footer>
   </div>
   <!-- END: FOOTER(COPYRIGHT) -->
