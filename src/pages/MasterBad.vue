@@ -13,7 +13,7 @@ import Litepicker from "../base-components/Litepicker";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
-import { MasterBad } from "../interfaces/menu/MasterInterface";
+import { MasterBad } from "../interfaces/menu/masterInterface";
 
 // 페이징기능
 import { onMounted, watch } from "vue";
@@ -190,7 +190,14 @@ const table_width = [
             "
             placeholder="검색어를 입력해주세요"
           />
-          <button @click="">
+          <button
+            @click="
+              {
+                search();
+                pageChange();
+              }
+            "
+          >
             <Lucide
               icon="Search"
               class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"

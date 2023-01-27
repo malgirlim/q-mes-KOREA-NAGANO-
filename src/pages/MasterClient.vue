@@ -173,7 +173,7 @@ const table_width = [
         </a>
       </div>
       <div class="ml-2">
-        <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
+        <FormSelect v-model="searchKey" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
           <option>거래처명</option>
           <option>대표자</option>

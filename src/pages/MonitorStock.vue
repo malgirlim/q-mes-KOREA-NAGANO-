@@ -13,7 +13,7 @@ import Litepicker from "../base-components/Litepicker";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
-import { MonitorStock } from "../interfaces/menu/MonitorInterface";
+import { MonitorStock } from "../interfaces/menu/monitorInterface";
 
 // 페이징기능
 import { onMounted, watch } from "vue";
