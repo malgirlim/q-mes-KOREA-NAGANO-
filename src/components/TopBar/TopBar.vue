@@ -20,7 +20,7 @@ export default {
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import Lucide from "../../base-components/Lucide";
-import logoUrl from "../../assets/images/logo.svg";
+import logoUrl from "../../assets/images/logo.png";
 import Breadcrumb from "../../base-components/Breadcrumb";
 import { FormInput } from "../../base-components/Form";
 import { Menu, Popover } from "../../base-components/Headless";
@@ -65,6 +65,7 @@ const hideSearchDropdown = () => {
           alt="Enigma Tailwind HTML Admin Template"
           class="w-6"
           :src="logoUrl"
+          style="width: 30px; height: 30px"
         />
         <span
           :class="[
@@ -95,7 +96,8 @@ const hideSearchDropdown = () => {
         </Breadcrumb.Link>
       </Breadcrumb>
       <!-- END: Breadcrumb -->
-      <!-- BEGIN: Search -->
+
+      <!-- BEGIN: Search
       <div class="relative mr-3 intro-x sm:mr-6">
         <div class="relative hidden sm:block">
           <FormInput
@@ -201,8 +203,8 @@ const hideSearchDropdown = () => {
           </div>
         </TransitionRoot>
       </div>
-      <!-- END: Search -->
-      <!-- BEGIN: Notifications -->
+      END: Search -->
+      <!-- BEGIN: Notifications
       <Popover class="mr-4 intro-x sm:mr-6">
         <Popover.Button
           class="relative text-white/70 outline-none block before:content-[''] before:w-[8px] before:h-[8px] before:rounded-full before:absolute before:top-[-2px] before:right-0 before:bg-danger"
@@ -245,8 +247,8 @@ const hideSearchDropdown = () => {
           </div>
         </Popover.Panel>
       </Popover>
-      <!-- END: Notifications -->
-      <!-- BEGIN: Account Menu -->
+      END: Notifications -->
+      <!-- BEGIN: Account Menu
       <Menu>
         <Menu.Button
           class="block w-8 h-8 overflow-hidden rounded-full shadow-lg image-fit zoom-in intro-x"
@@ -284,7 +286,7 @@ const hideSearchDropdown = () => {
           </Menu.Item>
         </Menu.Items>
       </Menu>
-      <!-- END: Account Menu -->
+      END: Account Menu -->
     </div>
   </div>
 </template>
