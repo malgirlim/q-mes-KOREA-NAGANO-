@@ -1,6 +1,11 @@
 // 기준정보 - 사용자 등록
 export interface MasterUser {
   NO?: Number;
+  이름?: String;
+  아이디?: String;
+  부서?: String;
+  연락처?: String;
+  이메일?: String;
 }
 
 // 기준정보 - 품목 등록
@@ -28,7 +33,7 @@ export interface MasterClient {
   이메일?: String;
   주소?: String;
   비고?: String;
- }
+}
 
 // 기준정보 - 불량 내용 등록
 export interface MasterBad {

@@ -1,8 +1,48 @@
 <script setup lang="ts">
+import { ref, Ref } from "vue";
 import _ from "lodash";
 import Lucide from "../base-components/Lucide";
 import Tippy from "../base-components/Tippy";
-import LineChart from "../components/LineChart";
+import LineChart1 from "../components/LineChart1";
+import LineChart2 from "../components/LineChart2";
+import LineChart3 from "../components/LineChart3";
+import LineChart4 from "../components/LineChart4";
+import moment from "moment";
+
+// 날짜 구하기
+const now = moment().format("YYYY-MM-DD");
+
+// 차트 표시 변환용
+
+let chart1 = ref(true);
+let chart2 = ref(false);
+let chart3 = ref(false);
+let chart4 = ref(false);
+
+const changeChart1 = () => {
+  chart1.value = true;
+  chart2.value = false;
+  chart3.value = false;
+  chart4.value = false;
+};
+const changeChart2 = () => {
+  chart1.value = false;
+  chart2.value = true;
+  chart3.value = false;
+  chart4.value = false;
+};
+const changeChart3 = () => {
+  chart1.value = false;
+  chart2.value = false;
+  chart3.value = true;
+  chart4.value = false;
+};
+const changeChart4 = () => {
+  chart1.value = false;
+  chart2.value = false;
+  chart3.value = false;
+  chart4.value = true;
+};
 </script>
 
 <template>
@@ -14,8 +54,9 @@ import LineChart from "../components/LineChart";
           <div class="col-span-12 mt-8">
             <div class="flex items-center h-10 intro-y">
               <h2 class="mr-5 text-lg font-medium truncate">
-                실시간 재고 현황
+                {{ now }} 현재 재고 현황
               </h2>
+
               <a href="" class="flex items-center ml-auto text-primary">
                 <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
               </a>
@@ -28,7 +69,7 @@ import LineChart from "../components/LineChart";
                     'before:content-[\'\'] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70',
                   ]"
                 >
-                  <div class="p-5 box">
+                  <div class="p-5 box" @click="changeChart1">
                     <div class="flex">
                       <Lucide
                         icon="PackagePlus"
@@ -57,7 +98,7 @@ import LineChart from "../components/LineChart";
                     'before:content-[\'\'] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70',
                   ]"
                 >
-                  <div class="p-5 box">
+                  <div class="p-5 box" @click="changeChart2">
                     <div class="flex">
                       <Lucide
                         icon="PackageMinus"
@@ -86,7 +127,7 @@ import LineChart from "../components/LineChart";
                     'before:content-[\'\'] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70',
                   ]"
                 >
-                  <div class="p-5 box">
+                  <div class="p-5 box" @click="changeChart3">
                     <div class="flex">
                       <Lucide
                         icon="PackageX"
@@ -115,7 +156,7 @@ import LineChart from "../components/LineChart";
                     'before:content-[\'\'] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70',
                   ]"
                 >
-                  <div class="p-5 box">
+                  <div class="p-5 box" @click="changeChart4">
                     <div class="flex">
                       <Lucide
                         icon="Siren"
@@ -146,44 +187,146 @@ import LineChart from "../components/LineChart";
       </div>
     </div>
   </div>
-
-      <div><div class="mt-10 intro-y"><h2 class="mr-5 text-lg font-medium truncate">재고 통계</h2></div>
-      <div class="p-5 mt-12 intro-y box sm:mt-5">
-            <div class="flex flex-col md:flex-row md:items-center">
-              <div class="flex">
-                <div>
-                  <div
-                    class="text-lg font-medium text-primary dark:text-slate-300 xl:text-xl"
-                  >
-                    4,710개
-                  </div>
-                  <div class="mt-0.5 text-slate-500">이번 달</div>
-                </div>
-                <div
-                  class="w-px h-12 mx-4 border border-r border-dashed border-slate-200 dark:border-darkmode-300 xl:mx-5"
-                ></div>
-                <div>
-                  <div class="text-lg font-medium text-slate-500 xl:text-xl">
-                    2,130개
-                  </div>
-                  <div class="mt-0.5 text-slate-500">지난 달</div>
-                </div>
-              </div>
-            </div>
+  <!-- BEGIN: Chart -->
+  <div>
+    <div class="mt-10 intro-y"></div>
+    <!--1번 차트-->
+    <div v-if="chart1" class="p-5 mt-12 intro-y box sm:mt-5">
+      <div class="flex flex-col md:flex-row md:items-center">
+        <div class="flex">
+          <div>
             <div
-              :class="[
-                'relative',
-                'before:content-[\'\'] before:block before:absolute before:w-16 before:left-0 before:top-0 before:bottom-0 before:ml-10 before:mb-7 before:bg-gradient-to-r before:from-white before:via-white/80 before:to-transparent before:dark:from-darkmode-600',
-                'after:content-[\'\'] after:block after:absolute after:w-16 after:right-0 after:top-0 after:bottom-0 after:mb-7 after:bg-gradient-to-l after:from-white after:via-white/80 after:to-transparent after:dark:from-darkmode-600',
-              ]"
+              class="text-lg font-medium text-primary dark:text-slate-300 xl:text-xl"
             >
-              <LineChart :height="275" class="mt-6 -mb-6" />
+              4,710개
             </div>
+            <div class="mt-0.5 text-slate-500">이번 달</div>
           </div>
- <!-- BEGIN: FOOTER(COPYRIGHT) -->
- <div class="intro-y mt-3" style="text-align: right">
-    <footer>&copy;2023 QInnotek. All rights reserved.</footer>
-  </div>
-  <!-- END: FOOTER(COPYRIGHT) -->
+          <div
+            class="w-px h-12 mx-4 border border-r border-dashed border-slate-200 dark:border-darkmode-300 xl:mx-5"
+          ></div>
+          <div>
+            <div class="text-lg font-medium text-slate-500 xl:text-xl">
+              2,130개
+            </div>
+            <div class="mt-0.5 text-slate-500">지난 달</div>
+          </div>
+        </div>
+      </div>
+      <div
+        :class="[
+          'relative',
+          'before:content-[\'\'] before:block before:absolute before:w-16 before:left-0 before:top-0 before:bottom-0 before:ml-10 before:mb-7 before:bg-gradient-to-r before:from-white before:via-white/80 before:to-transparent before:dark:from-darkmode-600',
+          'after:content-[\'\'] after:block after:absolute after:w-16 after:right-0 after:top-0 after:bottom-0 after:mb-7 after:bg-gradient-to-l after:from-white after:via-white/80 after:to-transparent after:dark:from-darkmode-600',
+        ]"
+      >
+        <div><LineChart1 :height="275" class="mt-6 -mb-6" /></div>
+      </div>
     </div>
+    <!--2번 차트-->
+    <div v-if="chart2" class="p-5 mt-12 intro-y box sm:mt-5">
+      <div class="flex flex-col md:flex-row md:items-center">
+        <div class="flex">
+          <div>
+            <div
+              class="text-lg font-medium text-primary dark:text-slate-300 xl:text-xl"
+            >
+              310개
+            </div>
+            <div class="mt-0.5 text-slate-500">이번 달</div>
+          </div>
+          <div
+            class="w-px h-12 mx-4 border border-r border-dashed border-slate-200 dark:border-darkmode-300 xl:mx-5"
+          ></div>
+          <div>
+            <div class="text-lg font-medium text-slate-500 xl:text-xl">
+              320개
+            </div>
+            <div class="mt-0.5 text-slate-500">지난 달</div>
+          </div>
+        </div>
+      </div>
+      <div
+        :class="[
+          'relative',
+          'before:content-[\'\'] before:block before:absolute before:w-16 before:left-0 before:top-0 before:bottom-0 before:ml-10 before:mb-7 before:bg-gradient-to-r before:from-white before:via-white/80 before:to-transparent before:dark:from-darkmode-600',
+          'after:content-[\'\'] after:block after:absolute after:w-16 after:right-0 after:top-0 after:bottom-0 after:mb-7 after:bg-gradient-to-l after:from-white after:via-white/80 after:to-transparent after:dark:from-darkmode-600',
+        ]"
+      >
+        <div><LineChart2 :height="275" class="mt-6 -mb-6" /></div>
+      </div>
+    </div>
+    <!--3번 차트-->
+    <div v-if="chart3" class="p-5 mt-12 intro-y box sm:mt-5">
+      <div class="flex flex-col md:flex-row md:items-center">
+        <div class="flex">
+          <div>
+            <div
+              class="text-lg font-medium text-primary dark:text-slate-300 xl:text-xl"
+            >
+              10개
+            </div>
+            <div class="mt-0.5 text-slate-500">이번 달</div>
+          </div>
+          <div
+            class="w-px h-12 mx-4 border border-r border-dashed border-slate-200 dark:border-darkmode-300 xl:mx-5"
+          ></div>
+          <div>
+            <div class="text-lg font-medium text-slate-500 xl:text-xl">
+              20개
+            </div>
+            <div class="mt-0.5 text-slate-500">지난 달</div>
+          </div>
+        </div>
+      </div>
+      <div
+        :class="[
+          'relative',
+          'before:content-[\'\'] before:block before:absolute before:w-16 before:left-0 before:top-0 before:bottom-0 before:ml-10 before:mb-7 before:bg-gradient-to-r before:from-white before:via-white/80 before:to-transparent before:dark:from-darkmode-600',
+          'after:content-[\'\'] after:block after:absolute after:w-16 after:right-0 after:top-0 after:bottom-0 after:mb-7 after:bg-gradient-to-l after:from-white after:via-white/80 after:to-transparent after:dark:from-darkmode-600',
+        ]"
+      >
+        <div><LineChart3 :height="275" class="mt-6 -mb-6" /></div>
+      </div>
+    </div>
+    <!--4번 차트-->
+    <div v-if="chart4" class="p-5 mt-12 intro-y box sm:mt-5">
+      <div class="flex flex-col md:flex-row md:items-center">
+        <div class="flex">
+          <div>
+            <div
+              class="text-lg font-medium text-primary dark:text-slate-300 xl:text-xl"
+            >
+              32개
+            </div>
+            <div class="mt-0.5 text-slate-500">이번 달</div>
+          </div>
+          <div
+            class="w-px h-12 mx-4 border border-r border-dashed border-slate-200 dark:border-darkmode-300 xl:mx-5"
+          ></div>
+          <div>
+            <div class="text-lg font-medium text-slate-500 xl:text-xl">
+              22개
+            </div>
+            <div class="mt-0.5 text-slate-500">지난 달</div>
+          </div>
+        </div>
+      </div>
+      <div
+        :class="[
+          'relative',
+          'before:content-[\'\'] before:block before:absolute before:w-16 before:left-0 before:top-0 before:bottom-0 before:ml-10 before:mb-7 before:bg-gradient-to-r before:from-white before:via-white/80 before:to-transparent before:dark:from-darkmode-600',
+          'after:content-[\'\'] after:block after:absolute after:w-16 after:right-0 after:top-0 after:bottom-0 after:mb-7 after:bg-gradient-to-l after:from-white after:via-white/80 after:to-transparent after:dark:from-darkmode-600',
+        ]"
+      >
+        <div><LineChart4 :height="275" class="mt-6 -mb-6" /></div>
+      </div>
+    </div>
+    <!-- END: Chart -->
+    <!-- BEGIN: FOOTER(COPYRIGHT) -->
+    <div class="intro-y mt-3" style="text-align: right">
+      <footer>&copy;2023 QInnotek. All rights reserved.</footer>
+    </div>
+    <!-- END: FOOTER(COPYRIGHT) -->
+  </div>
 </template>
