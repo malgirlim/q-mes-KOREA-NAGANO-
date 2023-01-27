@@ -15,10 +15,10 @@ app.use("/api/memos", memoRouter);
 app.use("/api/master", masterRouter);
 
 // 재고관리 - router/stock/stockRouter.js
-app.use("/api/master", stockRouter);
+app.use("/api/stock", stockRouter);
 
 // 재고조회 - router/monitor/monitorRouter.js
-app.use("/api/master", monitorRouter);
+app.use("/api/monitor", monitorRouter);
 
 app.listen(port, () => {
   console.log(`Q-MES app listening on port ${port}`);
