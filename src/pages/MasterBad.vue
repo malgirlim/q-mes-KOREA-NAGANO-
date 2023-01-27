@@ -55,8 +55,6 @@ const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
   insertModal.value = value;
   insertModalData = {}; // 변수 초기화
-  search();
-  pageChange();
 };
 let insertModalData: MasterBad; // 등록할 변수
 
@@ -458,6 +456,8 @@ const table_width = [
               () => {
                 insertData(insertModalData);
                 setInsertModal(false);
+                search();
+                pageChange();
               }
             "
             >확인</Button

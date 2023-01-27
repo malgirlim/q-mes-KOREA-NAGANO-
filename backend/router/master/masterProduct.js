@@ -24,7 +24,6 @@ router.get("/", async (req, res) => {
     res.status(500);
     res.send(err.message);
   }
-  // res.send("GET 전송완료");
 });
 
 router.post("/", async (req, res) => {
@@ -40,7 +39,6 @@ router.post("/", async (req, res) => {
     res.status(500);
     res.send(err.message);
   }
-  // res.send("GET 전송완료");
 });
 
 // 등록
@@ -86,14 +84,13 @@ router.post("/receive", async (req, res) => {
         !req.body.data.비고 ? "" : req.body.data.비고
       )
       .query(
-        "exec [QINNOTEK].[dbo].[MASTER_ITEM_INS_SP] 0,@안전재고,@원가,'','',@거래처명,@품명,@품목코드,@규격,@단위,@비고"
+        "exec [QMES].[dbo].[MASTER_ITEM_INS_SP] 0,@안전재고,@원가,'','',@거래처명,@품명,@품목코드,@규격,@단위,@비고"
       );
     res.send("등록완료");
   } catch (err) {
     res.status(500);
     res.send(err.message);
   }
-  // res.send("GET 전송완료");
 });
 
 // 수정
@@ -119,7 +116,6 @@ router.post("/edit", async (req, res) => {
     res.status(500);
     res.send(err.message);
   }
-  // res.send("GET 전송완료");
 });
 
 // 삭제
@@ -130,7 +126,7 @@ router.post("/delete", async (req, res) => {
       // insert
       await Pool.request()
         .input("key", sql.Int, req.body.data[i])
-        .query(`exec [QINNOTEK].[dbo].[MASTER_ITEM_DEL_SP] @key`);
+        .query(`exec [QMES].[dbo].[MASTER_ITEM_DEL_SP] @key`);
     }
     res.send("삭제완료");
   } catch (err) {

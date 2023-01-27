@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
     const Pool = await pool;
     // select
     const result = await Pool.request().query(
-      "exec [QMES].[dbo].[MASTER_ACCOUNT_READ_SP] '전체',''"
+      "exec [QMES].[dbo].[MASTER_USER_READ_SP] '전체',''"
     );
     res.send(JSON.stringify(result.recordset));
   } catch (err) {
@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
     const result = await Pool.request()
       .input("key", sql.NVarChar, req.body.key)
       .input("input", sql.NVarChar, req.body.input)
-      .query("exec [QMES].[dbo].[MASTER_ACCOUNT_READ_SP] @key,@input");
+      .query("exec [QMES].[dbo].[MASTER_USER_READ_SP] @key,@input");
     res.send(JSON.stringify(result.recordset));
   } catch (err) {
     res.status(500);
@@ -85,7 +85,7 @@ router.post("/receive", async (req, res) => {
         !req.body.data.이메일 ? "" : req.body.data.이메일
       )
       .query(
-        "exec [QINNOTEK].[dbo].[MASTER_ACCOUNT_INS_SP] 0,@거래처명,@사업자번호,@주소,@연락처,@대표자,@비고,@이메일"
+        "exec [QMES].[dbo].[MASTER_USER_INS_SP] 0,@거래처명,@사업자번호,@주소,@연락처,@대표자,@비고,@이메일"
       );
     res.send("등록완료");
   } catch (err) {
@@ -110,7 +110,7 @@ router.post("/edit", async (req, res) => {
       .input("주소", sql.NVarChar, req.body.data.주소)
       .input("비고", sql.NVarChar, req.body.data.비고)
       .query(
-        "exec [QMES].[dbo].[MASTER_ACCOUNT_UDT_SP] @기본키,@거래처명,@대표자,@사업자번호,@연락처,@이메일,@주소,@비고"
+        "exec [QMES].[dbo].[MASTER_USER_UDT_SP] @기본키,@거래처명,@대표자,@사업자번호,@연락처,@이메일,@주소,@비고"
       );
     res.send("수정완료");
   } catch (err) {
@@ -128,7 +128,7 @@ router.post("/delete", async (req, res) => {
       // insert
       await Pool.request()
         .input("key", sql.Int, req.body.data[i])
-        .query(`exec [QINNOTEK].[dbo].[MASTER_ACCOUNT_DEL_SP] @key`);
+        .query(`exec [QMES].[dbo].[MASTER_USER_DEL_SP] @key`);
     }
     res.send("삭제완료");
   } catch (err) {

@@ -13,7 +13,7 @@ import Litepicker from "../base-components/Litepicker";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
-import { StockUse } from "../interfaces/menu/StockInterface";
+import { StockUse } from "../interfaces/menu/stockInterface";
 
 // 페이징기능
 import { onMounted, watch } from "vue";
@@ -47,7 +47,7 @@ onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오�
 // 조회
 const search = () => {
   // console.log(searchKey.value, searchInput.value);
-  searchDatas("", searchKey.value, searchInput.value);
+  searchDatas(now2.value, searchKey.value, searchInput.value);
 };
 
 //등록 Modal
@@ -55,8 +55,6 @@ const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
   insertModal.value = value;
   insertModalData = {}; // 변수 초기화
-  search();
-  pageChange();
 };
 let insertModalData: StockUse; // 등록할 변수
 
@@ -85,7 +83,12 @@ const now = moment().format("YYYY-MM-DD");
 const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
 const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
-const now2 = "전체기간";
+const now2 = ref("전체기간");
+// now2가 변경되면 실행
+watch([now2], (newValue, oldValue) => {
+  search();
+  pageChange();
+});
 
 // 체크박스 선택으로 데이터 가져오기
 const checkDebug: any = ref([]); // 체크박스 선택 데이터 저장변수
@@ -193,7 +196,7 @@ const table_width = [
               format: 'YY/MM/DD',
               delimiter: ' - ',
               buttonText: {
-                reset: '',
+                reset: '새로고침',
                 apply: '적용',
                 cancel: '취소',
               },
@@ -599,6 +602,8 @@ const table_width = [
               () => {
                 insertData(insertModalData);
                 setInsertModal(false);
+                search();
+                pageChange();
               }
             "
             >확인</Button

@@ -58,8 +58,6 @@ const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
   insertModal.value = value;
   insertModalData = {}; // 변수 초기화
-  search();
-  pageChange();
 };
 let insertModalData: MasterUser; // 등록할 변수
 
@@ -372,6 +370,8 @@ const resetCheckBox = () => {
                 () => {
                   insertData(insertModalData);
                   setInsertModal(false);
+                  search();
+                  pageChange();
                 }
               "
               >확인</Button
