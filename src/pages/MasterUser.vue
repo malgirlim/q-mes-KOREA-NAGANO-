@@ -123,6 +123,7 @@ const resetCheckBox = () => {
 </script>
 
 <template>
+  <!-- style="height: calc(100vh - 250px)" : 브라우저 화면 창크기에 맞게 변경됨 : 100vh - 브라우저 창 크기 -->
   <div class="grid grid-cols-12 gap-1 mt-1">
     <div
       class="flex flex-wrap items-center col-span-12 mt-2 mb-2 intro-y sm:flex-nowrap"
