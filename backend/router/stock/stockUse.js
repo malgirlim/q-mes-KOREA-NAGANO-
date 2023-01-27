@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
 });
 
 // 등록
-router.post("/receive", async (req, res) => {
+router.post("/insert", async (req, res) => {
   try {
     const Pool = await pool;
     // select
@@ -89,9 +89,9 @@ router.post("/receive", async (req, res) => {
         !req.body.data.단위 ? "" : req.body.data.단위
       )
       .input(
-        "입고수",
+        "출고수",
         sql.Int,
-        !req.body.data.입고수 ? 0 : req.body.data.입고수
+        !req.body.data.출고수 ? 0 : req.body.data.출고수
       )
       .input(
         "비고",
@@ -99,14 +99,13 @@ router.post("/receive", async (req, res) => {
         !req.body.data.비고 ? "" : req.body.data.비고
       )
       .query(
-        "exec [QMES].[dbo].[MANAGE_ITEM_DELIVER_INS_SP] @입고일시,@품목코드,@거래처명,@품명,@규격,@단위,@입고수,@비고"
+        "exec [QMES].[dbo].[MANAGE_ITEM_DELIVER_INS_SP] @출고일시,@품목코드,@거래처명,@품명,@규격,@단위,@출고수,@비고"
       );
     res.send("등록완료");
   } catch (err) {
     res.status(500);
     res.send(err.message);
   }
-  // res.send("GET 전송완료");
 });
 
 // 수정
@@ -116,23 +115,22 @@ router.post("/edit", async (req, res) => {
     // select
     const result = await Pool.request()
       .input("기본키", sql.Int, req.body.data.NO)
-      .input("입고일시", sql.DateTime, req.body.data.입고일시)
+      .input("출고일시", sql.DateTime, req.body.data.출고일시)
       .input("품목코드", sql.NVarChar, req.body.data.품목코드)
       .input("거래처명", sql.NVarChar, req.body.data.거래처명)
       .input("품명", sql.NVarChar, req.body.data.품명)
       .input("규격", sql.NVarChar, req.body.data.규격)
       .input("단위", sql.NVarChar, req.body.data.단위)
-      .input("입고수", sql.Int, req.body.data.입고수)
+      .input("출고수", sql.Int, req.body.data.출고수)
       .input("비고", sql.NVarChar, req.body.data.비고)
       .query(
-        "exec [QMES].[dbo].[MANAGE_ITEM_DELIVER_UDT_SP] @기본키,@입고일시,@품목코드,@거래처명,@품명,@규격,@단위,@입고수,@비고"
+        "exec [QMES].[dbo].[MANAGE_ITEM_DELIVER_UDT_SP] @기본키,@출고일시,@품목코드,@거래처명,@품명,@규격,@단위,@출고수,@비고"
       );
     res.send("수정완료");
   } catch (err) {
     res.status(500);
     res.send(err.message);
   }
-  // res.send("GET 전송완료");
 });
 
 // 삭제

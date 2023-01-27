@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
 });
 
 // 등록
-router.post("/receive", async (req, res) => {
+router.post("/insert", async (req, res) => {
   try {
     const Pool = await pool;
     // select

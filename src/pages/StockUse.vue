@@ -527,7 +527,7 @@ const table_width = [
           <FormInput
             id="vertical-form-1"
             type="date"
-            :modelValue="now"
+            v-model="insertModalData.출고일시"
             placeholder=""
           />
         </div>

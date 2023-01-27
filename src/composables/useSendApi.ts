@@ -44,7 +44,7 @@ export function useSendApi<T>(
   // 등록
   const insertData = async (data: T) => {
     try {
-      await axios.post(url + "/receive", { data });
+      await axios.post(url + "/insert", { data });
     } catch (err) {
       console.log(err);
     }

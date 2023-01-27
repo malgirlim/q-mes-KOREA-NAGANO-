@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
 });
 
 // 등록
-router.post("/receive", async (req, res) => {
+router.post("/insert", async (req, res) => {
   try {
     const Pool = await pool;
     // select
@@ -106,7 +106,6 @@ router.post("/receive", async (req, res) => {
     res.status(500);
     res.send(err.message);
   }
-  // res.send("GET 전송완료");
 });
 
 // 수정
