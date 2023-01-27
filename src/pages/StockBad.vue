@@ -550,7 +550,7 @@ const table_width = [
           <FormLabel htmlFor="vertical-form-1">불량일시</FormLabel>
           <FormInput
             id="vertical-form-1"
-            type="text"
+            type="date"
             v-model="insertModalData.불량일시"
             placeholder=""
           />
