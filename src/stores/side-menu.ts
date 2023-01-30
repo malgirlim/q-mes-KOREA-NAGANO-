@@ -78,12 +78,27 @@ export const useSideMenuStore = defineStore("sideMenu", {
             pageName: "side-menu-stock-bad",
             title: "원자재 불량 등록",
           },
+          {
+            icon: "Hammer",
+            pageName: "top-menu-master-process",
+            title: "공정 등록",
+          },
+          {
+            icon: "LocateFixed",
+            pageName: "top-menu-master-location",
+            title: "원자재 위치 등록",
+          },
+          {
+            icon: "PackageOpen",
+            pageName: "top-menu-master-bom",
+            title: "BOM 등록",
+          },
         ],
       },
       {
         icon: "Monitor",
         pageName: "",
-        title: "재고 조회",
+        title: "모니터링",
         subMenu: [
           {
             icon: "PackageSearch",
@@ -98,7 +113,7 @@ export const useSideMenuStore = defineStore("sideMenu", {
           {
             icon: "Siren",
             pageName: "side-menu-monitor-safe",
-            title: "안전재고 미달 조회",
+            title: "안전재고 미달 통보",
           },
         ],
       },

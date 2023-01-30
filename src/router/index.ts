@@ -8,6 +8,9 @@ import MasterUser from "../pages/MasterUser.vue";
 import MasterProduct from "../pages/MasterProduct.vue";
 import MasterClient from "../pages/MasterClient.vue";
 import MasterBad from "../pages/MasterBad.vue";
+import MasterProcess from "../pages/MasterProcess.vue";
+import MasterLocation from "../pages/MasterLocation.vue";
+import MasterBom from "../pages/MasterBom.vue";
 import StockReceive from "../pages/StockReceive.vue";
 import StockUse from "../pages/StockUse.vue";
 import StockBad from "../pages/StockBad.vue";
@@ -15,16 +18,15 @@ import MonitorStock from "../pages/MonitorStock.vue";
 import MonitorBad from "../pages/MonitorBad.vue";
 import MonitorSafe from "../pages/MonitorSafe.vue";
 
-
 const routes = [
   {
     path: "/side-menu",
     component: SideMenu,
     children: [
-         {
+      {
         path: "master/user",
         name: "side-menu-master-user",
-	meta: {
+        meta: {
           pagename: "사용자 등록",
           category: "기준 정보",
         },
@@ -33,7 +35,7 @@ const routes = [
       {
         path: "master/product",
         name: "side-menu-master-product",
-	meta: {
+        meta: {
           pagename: "품목 등록",
           category: "기준 정보",
         },
@@ -42,7 +44,7 @@ const routes = [
       {
         path: "master/client",
         name: "side-menu-master-client",
-	meta: {
+        meta: {
           pagename: "거래처 등록",
           category: "기준 정보",
         },
@@ -51,16 +53,43 @@ const routes = [
       {
         path: "master/bad",
         name: "side-menu-master-bad",
-	meta: {
+        meta: {
           pagename: "불량 내용 등록",
           category: "기준 정보",
         },
         component: MasterBad,
       },
       {
+        path: "master/process",
+        name: "side-menu-master-process",
+        meta: {
+          pagename: "공정 등록",
+          category: "기준 정보",
+        },
+        component: MasterProcess,
+      },
+      {
+        path: "master/location",
+        name: "side-menu-master-location",
+        meta: {
+          pagename: "원자재 위치 등록",
+          category: "기준 정보",
+        },
+        component: MasterLocation,
+      },
+      {
+        path: "master/bom",
+        name: "side-menu-master-bom",
+        meta: {
+          pagename: "BOM 등록",
+          category: "기준 정보",
+        },
+        component: MasterBom,
+      },
+      {
         path: "stock/receive",
         name: "side-menu-stock-receive",
-	meta: {
+        meta: {
           pagename: "원자재 입고 등록",
           category: "재고 관리",
         },
@@ -69,7 +98,7 @@ const routes = [
       {
         path: "stock/use",
         name: "side-menu-stock-use",
-	meta: {
+        meta: {
           pagename: "원자재 사용 등록",
           category: "재고 관리",
         },
@@ -78,7 +107,7 @@ const routes = [
       {
         path: "stock/bad",
         name: "side-menu-stock-bad",
-	meta: {
+        meta: {
           pagename: "원자재 불량 등록",
           category: "재고 관리",
         },
@@ -87,27 +116,27 @@ const routes = [
       {
         path: "monitor/stock",
         name: "side-menu-monitor-stock",
-	meta: {
+        meta: {
           pagename: "원자재 재고 조회",
-          category: "재고 조회",
+          category: "모니터링",
         },
         component: MonitorStock,
       },
       {
         path: "monitor/bad",
         name: "side-menu-monitor-bad",
-	meta: {
+        meta: {
           pagename: "원자재 불량 조회",
-          category: "재고 조회",
+          category: "모니터링",
         },
         component: MonitorBad,
       },
       {
         path: "monitor/safe",
         name: "side-menu-monitor-safe",
-	meta: {
-          pagename: "안전재고 미달 조회",
-          category: "재고 조회",
+        meta: {
+          pagename: "안전재고 미달 통보",
+          category: "모니터링",
         },
         component: MonitorSafe,
       },
@@ -125,7 +154,7 @@ const routes = [
       {
         path: "master/user",
         name: "simple-menu-master-user",
-	meta: {
+        meta: {
           pagename: "사용자 등록",
           category: "기준 정보",
         },
@@ -134,7 +163,7 @@ const routes = [
       {
         path: "master/product",
         name: "simple-menu-master-product",
-	meta: {
+        meta: {
           pagename: "품목 등록",
           category: "기준 정보",
         },
@@ -143,7 +172,7 @@ const routes = [
       {
         path: "master/client",
         name: "simple-menu-master-client",
-	meta: {
+        meta: {
           pagename: "거래처 등록",
           category: "기준 정보",
         },
@@ -152,16 +181,43 @@ const routes = [
       {
         path: "master/bad",
         name: "simple-menu-master-bad",
-	meta: {
+        meta: {
           pagename: "불량 내용 등록",
           category: "기준 정보",
         },
         component: MasterBad,
       },
       {
+        path: "master/process",
+        name: "simple-menu-master-process",
+        meta: {
+          pagename: "공정 등록",
+          category: "기준 정보",
+        },
+        component: MasterProcess,
+      },
+      {
+        path: "master/location",
+        name: "simple-menu-master-location",
+        meta: {
+          pagename: "원자재 위치 등록",
+          category: "기준 정보",
+        },
+        component: MasterLocation,
+      },
+      {
+        path: "master/bom",
+        name: "simple-menu-master-bom",
+        meta: {
+          pagename: "BOM 등록",
+          category: "기준 정보",
+        },
+        component: MasterBom,
+      },
+      {
         path: "stock/receive",
         name: "simple-menu-stock-receive",
-	meta: {
+        meta: {
           pagename: "원자재 입고 등록",
           category: "재고 관리",
         },
@@ -170,7 +226,7 @@ const routes = [
       {
         path: "stock/use",
         name: "simple-menu-stock-use",
-	meta: {
+        meta: {
           pagename: "원자재 사용 등록",
           category: "재고 관리",
         },
@@ -179,7 +235,7 @@ const routes = [
       {
         path: "stock/bad",
         name: "simple-menu-stock-bad",
-	meta: {
+        meta: {
           pagename: "원자재 불량 등록",
           category: "재고 관리",
         },
@@ -188,27 +244,27 @@ const routes = [
       {
         path: "monitor/stock",
         name: "simple-menu-monitor-stock",
-	meta: {
+        meta: {
           pagename: "원자재 재고 조회",
-          category: "재고 조회",
+          category: "모니터링",
         },
         component: MonitorStock,
       },
       {
         path: "monitor/bad",
         name: "simple-menu-monitor-bad",
-	meta: {
+        meta: {
           pagename: "원자재 불량 조회",
-          category: "재고 조회",
+          category: "모니터링",
         },
         component: MonitorBad,
       },
       {
         path: "monitor/safe",
         name: "simple-menu-monitor-safe",
-	meta: {
-          pagename: "안전재고 미달 조회",
-          category: "재고 조회",
+        meta: {
+          pagename: "안전재고 미달 통보",
+          category: "모니터링",
         },
         component: MonitorSafe,
       },
@@ -226,7 +282,7 @@ const routes = [
       {
         path: "master/user",
         name: "top-menu-master-user",
-	meta: {
+        meta: {
           pagename: "사용자 등록",
           category: "기준 정보",
         },
@@ -235,7 +291,7 @@ const routes = [
       {
         path: "master/product",
         name: "top-menu-master-product",
-	meta: {
+        meta: {
           pagename: "품목 등록",
           category: "기준 정보",
         },
@@ -244,7 +300,7 @@ const routes = [
       {
         path: "master/client",
         name: "top-menu-master-client",
-	meta: {
+        meta: {
           pagename: "거래처 등록",
           category: "기준 정보",
         },
@@ -253,16 +309,43 @@ const routes = [
       {
         path: "master/bad",
         name: "top-menu-master-bad",
-	meta: {
+        meta: {
           pagename: "불량 내용 등록",
           category: "기준 정보",
         },
         component: MasterBad,
       },
       {
+        path: "master/process",
+        name: "top-menu-master-process",
+        meta: {
+          pagename: "공정 등록",
+          category: "기준 정보",
+        },
+        component: MasterProcess,
+      },
+      {
+        path: "master/location",
+        name: "top-menu-master-location",
+        meta: {
+          pagename: "원자재 위치 등록",
+          category: "기준 정보",
+        },
+        component: MasterLocation,
+      },
+      {
+        path: "master/bom",
+        name: "top-menu-master-bom",
+        meta: {
+          pagename: "BOM 등록",
+          category: "기준 정보",
+        },
+        component: MasterBom,
+      },
+      {
         path: "stock/receive",
         name: "top-menu-stock-receive",
-	meta: {
+        meta: {
           pagename: "원자재 입고 등록",
           category: "재고 관리",
         },
@@ -271,7 +354,7 @@ const routes = [
       {
         path: "stock/use",
         name: "top-menu-stock-use",
-	meta: {
+        meta: {
           pagename: "원자재 사용 등록",
           category: "재고 관리",
         },
@@ -280,7 +363,7 @@ const routes = [
       {
         path: "stock/bad",
         name: "top-menu-stock-bad",
-	meta: {
+        meta: {
           pagename: "원자재 불량 등록",
           category: "재고 관리",
         },
@@ -289,27 +372,27 @@ const routes = [
       {
         path: "monitor/stock",
         name: "top-menu-monitor-stock",
-	meta: {
+        meta: {
           pagename: "원자재 재고 조회",
-          category: "재고 조회",
+          category: "모니터링",
         },
         component: MonitorStock,
       },
       {
         path: "monitor/bad",
         name: "top-menu-monitor-bad",
-	meta: {
+        meta: {
           pagename: "원자재 불량 조회",
-          category: "재고 조회",
+          category: "모니터링",
         },
         component: MonitorBad,
       },
       {
         path: "monitor/safe",
         name: "top-menu-monitor-safe",
-	meta: {
-          pagename: "안전재고 미달 조회",
-          category: "재고 조회",
+        meta: {
+          pagename: "안전재고 미달 통보",
+          category: "모니터링",
         },
         component: MonitorSafe,
       },

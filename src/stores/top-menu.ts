@@ -46,6 +46,21 @@ export const useTopMenuStore = defineStore("topMenu", {
             pageName: "top-menu-master-bad",
             title: "불량 내용 등록",
           },
+          {
+            icon: "Hammer",
+            pageName: "top-menu-master-process",
+            title: "공정 등록",
+          },
+          {
+            icon: "LocateFixed",
+            pageName: "top-menu-master-location",
+            title: "원자재 위치 등록",
+          },
+          {
+            icon: "PackageOpen",
+            pageName: "top-menu-master-bom",
+            title: "BOM 등록",
+          },
         ],
       },
       {
@@ -73,7 +88,7 @@ export const useTopMenuStore = defineStore("topMenu", {
       {
         icon: "Monitor",
         pageName: "",
-        title: "재고 조회",
+        title: "모니터링",
         subMenu: [
           {
             icon: "PackageSearch",
@@ -88,7 +103,7 @@ export const useTopMenuStore = defineStore("topMenu", {
           {
             icon: "Siren",
             pageName: "top-menu-monitor-safe",
-            title: "안전재고 미달 조회",
+            title: "안전재고 미달 통보",
           },
         ],
       },

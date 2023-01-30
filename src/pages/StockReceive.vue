@@ -90,6 +90,8 @@ watch([now2], (newValue, oldValue) => {
   pageChange();
 });
 
+// 날짜 리셋
+
 // 체크박스 선택으로 데이터 가져오기
 const checkDebug: any = ref([]); // 체크박스 선택 데이터 저장변수
 
@@ -136,6 +138,7 @@ const table_width = [
   "width: 200px", // 비고
   "width: 100px", // 편집
 ];
+// Toast
 </script>
 
 <template>
@@ -177,6 +180,9 @@ const table_width = [
           <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
         </a>
       </div>
+      <div class="mr-2">
+        <Button @click="">ddss</Button>
+      </div>
       <div class="text-center">
         <div>
           <Litepicker
@@ -197,7 +203,7 @@ const table_width = [
               format: 'YY/MM/DD',
               delimiter: ' - ',
               buttonText: {
-                reset: '새로고침',
+                reset: '초기화',
                 apply: '적용',
                 cancel: '취소',
               },
