@@ -13,7 +13,7 @@ import Litepicker from "../base-components/Litepicker";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
-import { MasterProduct } from "../interfaces/menu/masterInterface";
+import { MasterProduct } from "../interfaces/menu/MasterInterface";
 
 // 페이징기능
 import { onMounted, watch } from "vue";
@@ -135,7 +135,7 @@ const table_width = [
 
 <template>
   <!-- style="height: calc(100vh - 250px)" : 브라우저 화면 창크기에 맞게 변경됨 : 100vh - 브라우저 창 크기 -->
-  <div class="grid grid-cols-12 gap-1 mt-1">
+  <div class="grid grid-cols-12 gap-1 mt-1" style="height: calc(100vh - 250px)">
     <div
       class="flex flex-wrap items-center col-span-12 mt-2 mb-2 intro-y sm:flex-nowrap"
     >
@@ -271,10 +271,11 @@ const table_width = [
     <div
       class="col-span-12 overflow-auto intro-y lg:overflow-visible"
       id="printMe"
+      style="height: calc(100vh - 350px)"
     >
       <div
         class="mr-3"
-        style="overflow-y: scroll; overflow-x: hidden; height: 580px"
+        style="overflow-y: scroll; overflow-x: hidden; height: 100%"
       >
         <Table class="border-spacing-y-[8px] border-separate -mt-2">
           <Table.Thead
