@@ -68,7 +68,8 @@ const table_width = [
   "width: 50px", // 불량수
   "width: 50px", // 불량명
   "width: 50px", // 불량내용
-  "width: 200px", // 비고
+  "width: 200px", // 원가
+  "width: 200px", // 불량금액
 ];
 </script>
 
@@ -118,12 +119,7 @@ const table_width = [
         <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
           <option>품목코드</option>
-          <option>거래처명</option>
-          <option>품명</option>
-          <option>규격</option>
           <option>불량명</option>
-          <option>불량내용</option>
-          <option>비고</option>
         </FormSelect>
       </div>
       <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-2">
@@ -283,7 +279,13 @@ const table_width = [
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[9]"
               >
-                비고
+                원가
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[10]"
+              >
+                불량금액
               </Table.Th>
             </Table.Tr>
           </Table.Thead>
@@ -339,7 +341,7 @@ const table_width = [
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[6]"
               >
-                <div>{{ todo.불량수 }}</div>
+                <div>{{ todo.불량수?.toLocaleString() }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -357,7 +359,13 @@ const table_width = [
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[9]"
               >
-                <div>{{ todo.비고 }}</div>
+                <div>{{ todo.원가?.toLocaleString() }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[10]"
+              >
+                <div>{{ todo.불량금액?.toLocaleString() }}</div>
               </Table.Td>
             </Table.Tr>
           </Table.Tbody>

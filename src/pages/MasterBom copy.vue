@@ -13,7 +13,7 @@ import Litepicker from "../base-components/Litepicker";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
-import { MasterProcess } from "../interfaces/menu/masterInterface";
+import { MasterBad } from "../interfaces/menu/masterInterface";
 
 // 페이징기능
 import { onMounted, watch } from "vue";
@@ -27,7 +27,7 @@ const pageChange = () => {
 };
 
 // api 보내기
-const url = "/api/master/process";
+const url = "/api/master/bad";
 const {
   datas,
   dataCount,
@@ -38,7 +38,7 @@ const {
   editData,
   deleteData,
   numberOfPages,
-} = useSendApi<MasterProcess>(url, currentPage, rowsPerPage);
+} = useSendApi<MasterBad>(url, currentPage, rowsPerPage);
 
 const searchKey = ref("전체");
 const searchInput = ref("");
@@ -56,7 +56,7 @@ const setInsertModal = (value: boolean) => {
   insertModal.value = value;
   insertModalData = {}; // 변수 초기화
 };
-let insertModalData: MasterProcess; // 등록할 변수
+let insertModalData: MasterBad; // 등록할 변수
 
 //수정 Modal
 const editModal = ref(false);
@@ -64,7 +64,7 @@ const setEditModal = (value: boolean) => {
   editModal.value = value;
   search();
 };
-let editModalData: MasterProcess; // 수정할 변수
+let editModalData: MasterBad; // 수정할 변수
 
 //삭제 Modal
 const deleteConfirmationModal = ref(false);
@@ -121,8 +121,8 @@ const resetCheckBox = () => {
 const table_width = [
   "width: 50px", // 체크박스
   "width: 100px", // 순번
-  "width: 150px", // 공정명
-  "width: 300px", // 공정내용
+  "width: 150px", // 불량명
+  "width: 300px", // 불량내용
   "width: 300px", // 비고
   "width: 100px", // 편집
 ];
@@ -170,8 +170,8 @@ const table_width = [
       <div class="ml-2">
         <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
           <option>전체</option>
-          <option>공정명</option>
-          <option>공정내용</option>
+          <option>불량명</option>
+          <option>불량내용</option>
           <option>비고</option>
         </FormSelect>
       </div>
@@ -303,13 +303,13 @@ const table_width = [
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[2]"
               >
-                공정명
+                불량명
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[3]"
               >
-                공정내용
+                불량내용
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
@@ -361,13 +361,13 @@ const table_width = [
                 class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[2]"
               >
-                <div>{{ todo.공정명 }}</div>
+                <div>{{ todo.불량명 }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[3]"
               >
-                <div>{{ todo.공정내용 }}</div>
+                <div>{{ todo.불량내용 }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -421,23 +421,23 @@ const table_width = [
   >
     <Dialog.Panel class="p-10 text-center">
       <!--추가 Modal 내용 시작-->
-      <div class="mb-5" style="font-weight: bold">공정 등록</div>
+      <div class="mb-5" style="font-weight: bold">불량 내용 등록</div>
       <div style="text-align: left">
         <div>
-          <FormLabel htmlFor="vertical-form-1">공정명</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">불량명</FormLabel>
           <FormInput
             id="vertical-form-1"
             type="text"
-            v-model="insertModalData.공정명"
+            v-model="insertModalData.불량명"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">공정내용</FormLabel>
+          <FormLabel htmlFor="vertical-form-2">불량내용</FormLabel>
           <FormInput
             id="vertical-form-2"
             type="text"
-            v-model="insertModalData.공정내용"
+            v-model="insertModalData.불량내용"
             placeholder=""
           />
         </div>
@@ -494,20 +494,20 @@ const table_width = [
       <div class="mb-5" style="font-weight: bold">수정</div>
       <div style="text-align: left">
         <div>
-          <FormLabel htmlFor="vertical-form-1">공정명</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">불량명</FormLabel>
           <FormInput
             id="vertical-form-1"
             type="text"
-            v-model="editModalData.공정명"
+            v-model="editModalData.불량명"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">공정내용</FormLabel>
+          <FormLabel htmlFor="vertical-form-2">불량내용</FormLabel>
           <FormInput
             id="vertical-form-2"
             type="text"
-            v-model="editModalData.공정내용"
+            v-model="editModalData.불량내용"
             placeholder=""
           />
         </div>

@@ -42,3 +42,27 @@ export interface MasterBad {
   불량내용?: String;
   비고?: String;
 }
+
+// 기준정보 - 공정 등록
+export interface MasterProcess {
+  NO?: Number;
+  공정명?: String;
+  공정내용?: String;
+  비고?: String;
+}
+
+// 기준정보 - 원자재 위치 등록
+export interface MasterLocation {
+  NO?: Number;
+  품목코드?: String;
+  위치?: String;
+  비고?: String;
+}
+
+// 기준정보 - BOM 구성 화면 (우측화면)
+export interface MasterBom {
+  NO?: Number;
+  품목코드?: String;
+  원자재코드?: String;
+  수량?: Number;
+}

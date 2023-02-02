@@ -57,7 +57,7 @@ const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
 const now2 = "전체기간";
 
-// 테이블 열 크기 조정 (안전재고 미달 조회)
+// 테이블 열 크기 조정 (안전재고 미달 통보)
 const table_width = [
   "width: 50px", // 순번
   "width: 200px", // 품목코드
@@ -65,14 +65,11 @@ const table_width = [
   "width: 300px", // 품명
   "width: 300px", // 규격
   "width: 50px", // 단위
-  "width: 50px", // 안전재고
   "width: 50px", // 재고수
+  "width: 50px", // 안전재고
+  "width: 50px", // 부족재고수
   "width: 50px", // 안전재고보유
-  "width: 200px", // 비고
 ];
-
-// 안전재고여부 확인 (임시)
-const safe_stock = Math.random() < 0.5;
 </script>
 
 <template>
@@ -93,9 +90,6 @@ const safe_stock = Math.random() < 0.5;
           <option>품목코드</option>
           <option>거래처명</option>
           <option>품명</option>
-          <option>규격</option>
-          <option>안전재고보유</option>
-          <option>비고</option>
         </FormSelect>
       </div>
       <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-2">
@@ -237,25 +231,25 @@ const safe_stock = Math.random() < 0.5;
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[6]"
               >
-                안전재고
+                재고수
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[7]"
               >
-                재고수
+                안전재고수
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[8]"
               >
-                안전재고보유
+                부족재고수
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[9]"
               >
-                비고
+                안전재고보유
               </Table.Th>
             </Table.Tr>
           </Table.Thead>
@@ -308,37 +302,31 @@ const safe_stock = Math.random() < 0.5;
                 <div>{{ todo.단위 }}</div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center text-danger bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[6]"
               >
-                <div>{{ todo.안전재고 }}</div>
+                <div>{{ todo.재고수 }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[7]"
               >
-                <div>{{ todo.재고수 }}</div>
+                <div>{{ todo.안전재고수 }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white text-danger border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[8]"
+              >
+                <div>{{ todo.부족재고수 }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-                :style="table_width[8]"
+                :style="table_width[10]"
               >
-                <div
-                  :class="[
-                    'flex items-center justify-center',
-                    { 'text-success': safe_stock },
-                    { 'text-danger': !safe_stock },
-                  ]"
-                >
+                <div class="flex items-center justify-center text-danger">
                   <Lucide icon="CheckSquare" class="w-4 h-4 mr-2" />
-                  {{ safe_stock ? "충분" : "부족" }}
+                  부족
                 </div>
-              </Table.Td>
-              <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-                :style="table_width[9]"
-              >
-                <div>{{ todo.비고 }}.</div>
               </Table.Td>
             </Table.Tr>
           </Table.Tbody>
