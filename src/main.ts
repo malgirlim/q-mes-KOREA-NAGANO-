@@ -2,6 +2,8 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
+import Vue3Toasity from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 import "./assets/css/app.css";
 
 import VueHtmlToPaper from "vue-html-to-paper";
@@ -23,5 +25,8 @@ createApp(App)
   .use(router)
   .use(createPinia())
   .use(VueHtmlToPaper, options)
+  .use(Vue3Toasity, {
+    autoClose: 10000,
+  })
   .mount("#app");
 // createApp(App).use(router).use(createPinia()).mount("#app");

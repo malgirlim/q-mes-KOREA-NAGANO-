@@ -139,6 +139,10 @@ const table_width = [
   "width: 100px", // 편집
 ];
 // Toast
+const notify = () => {
+  toast("test");
+  return { notify };
+};
 </script>
 
 <template>
@@ -179,9 +183,6 @@ const table_width = [
         <a href="" class="flex items-center ml-auto text-primary">
           <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
         </a>
-      </div>
-      <div class="mr-2">
-        <Button @click="">ddss</Button>
       </div>
       <div class="text-center">
         <div>

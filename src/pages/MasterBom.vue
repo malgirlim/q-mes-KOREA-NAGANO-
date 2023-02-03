@@ -432,7 +432,7 @@ const table_width2 = [
         >
           <div class="hidden mx-auto md:block text-slate-500"></div>
           <div class="mt-6">
-            <span class="mr-3">[ {{ dataCount }}개 데이터 조회됨 ] </span>
+            <span class="mr-3">[ {{ bom.dataCount }}개 데이터 조회됨 ] </span>
 
             <!-- END: Pagination-->
           </div>
@@ -599,32 +599,32 @@ const table_width2 = [
       >
         <Dialog.Panel class="p-10 text-center">
           <!--추가 Modal 내용 시작-->
-          <div class="mb-5" style="font-weight: bold">불량 내용 등록</div>
+          <div class="mb-5" style="font-weight: bold">원자재 등록</div>
           <div style="text-align: left">
             <div>
-              <FormLabel htmlFor="vertical-form-1">불량명</FormLabel>
+              <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
               <FormInput
                 id="vertical-form-1"
                 type="text"
-                v-model="insertModalData.불량명"
+                v-model="insertModalData.품목코드"
                 placeholder=""
               />
             </div>
             <div class="mt-3">
-              <FormLabel htmlFor="vertical-form-2">불량내용</FormLabel>
+              <FormLabel htmlFor="vertical-form-2">원자재코드</FormLabel>
               <FormInput
                 id="vertical-form-2"
                 type="text"
-                v-model="insertModalData.불량내용"
+                v-model="insertModalData.원자재코드"
                 placeholder=""
               />
             </div>
             <div class="mt-3">
-              <FormLabel htmlFor="vertical-form-3">비고</FormLabel>
+              <FormLabel htmlFor="vertical-form-3">수량</FormLabel>
               <FormInput
                 id="vertical-form-3"
                 type="text"
-                v-model="insertModalData.비고"
+                v-model="insertModalData.수량"
                 placeholder=""
               />
             </div>
@@ -672,29 +672,29 @@ const table_width2 = [
           <div class="mb-5" style="font-weight: bold">수정</div>
           <div style="text-align: left">
             <div>
-              <FormLabel htmlFor="vertical-form-1">불량명</FormLabel>
+              <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
               <FormInput
                 id="vertical-form-1"
                 type="text"
-                v-model="editModalData.불량명"
+                v-model="editModalData.품목코드"
                 placeholder=""
               />
             </div>
             <div class="mt-3">
-              <FormLabel htmlFor="vertical-form-2">불량내용</FormLabel>
+              <FormLabel htmlFor="vertical-form-2">원자재코드</FormLabel>
               <FormInput
                 id="vertical-form-2"
                 type="text"
-                v-model="editModalData.불량내용"
+                v-model="editModalData.원자재코드"
                 placeholder=""
               />
             </div>
             <div class="mt-3">
-              <FormLabel htmlFor="vertical-form-3">비고</FormLabel>
+              <FormLabel htmlFor="vertical-form-3">수량</FormLabel>
               <FormInput
                 id="vertical-form-3"
                 type="text"
-                v-model="editModalData.비고"
+                v-model="editModalData.수량"
                 placeholder=""
               />
             </div>

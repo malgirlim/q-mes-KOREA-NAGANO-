@@ -8,6 +8,8 @@ import LineChart2 from "../components/LineChart2";
 import LineChart3 from "../components/LineChart3";
 import LineChart4 from "../components/LineChart4";
 import moment from "moment";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
@@ -38,11 +40,13 @@ const changeChart3 = () => {
   chart4.value = false;
 };
 const changeChart4 = () => {
+  toast.error("안전재고 미달 1건이 있습니다.");
   chart1.value = false;
   chart2.value = false;
   chart3.value = false;
   chart4.value = true;
 };
+toast.error("안전재고 미달 1건이 있습니다.");
 </script>
 
 <template>
