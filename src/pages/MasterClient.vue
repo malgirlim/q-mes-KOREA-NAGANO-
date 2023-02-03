@@ -120,11 +120,11 @@ const resetCheckBox = () => {
 // 테이블 열 크기 조정 (거래처 등록)
 const table_width = [
   "width: 50px", // 체크박스
-  "width: 100px", // 순번
+  "width: 50px", // 순번
   "width: 200px", // 거래처명
-  "width: 50px", // 대표자
-  "width: 100px", // 사업자 번호
-  "width: 100px", // 연락처
+  "width: 150px", // 대표자
+  "width: 150px", // 사업자 번호
+  "width: 150px", // 연락처
   "width: 100px", // 이메일
   "width: 500px", // 주소
   "width: 200px", // 비고
@@ -389,7 +389,7 @@ const table_width = [
                 <div>{{ index + 1 + (currentPage - 1) * rowsPerPage }}</div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md w-10 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[2]"
               >
                 <div>{{ todo.거래처명 }}</div>
@@ -404,28 +404,67 @@ const table_width = [
                 class="first:rounded-l-md last:rounded-r-md bg-white text-center border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[4]"
               >
-                <div>{{ todo.사업자번호 }}</div>
+                <div>
+                  {{
+                    todo.사업자번호?.replace(
+                      /(\d{3})(\d{2})(\d{5})/,
+                      "$1-$2-$3"
+                    )
+                  }}
+                </div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-50 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[5]"
               >
-                <div>{{ todo.연락처 }}</div>
+                <div v-if="todo.연락처?.length == 8">
+                  {{ todo.연락처?.replace(/(\d{4})(\d{4})/, "$1-$2") }}
+                </div>
+                <div v-else-if="todo.연락처?.length == 9">
+                  {{
+                    todo.연락처?.replace(/(\d{2})(\d{3})(\d{4})/, "$1-$2-$3")
+                  }}
+                </div>
+                <div
+                  v-else-if="
+                    todo.연락처?.length == 10 &&
+                    todo.연락처?.slice(0, 1) == '02'
+                  "
+                >
+                  {{
+                    todo.연락처?.replace(/(\d{2})(\d{4})(\d{4})/, "$1-$2-$3")
+                  }}
+                </div>
+                <div
+                  v-else-if="
+                    todo.연락처?.length == 10 &&
+                    todo.연락처?.slice(0, 1) != '02'
+                  "
+                >
+                  {{
+                    todo.연락처?.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+                  }}
+                </div>
+                <div v-else-if="todo.연락처?.length == 11">
+                  {{
+                    todo.연락처?.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+                  }}
+                </div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md w-5 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[6]"
               >
                 <div>{{ todo.이메일 }}</div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md w-10 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[7]"
               >
                 <div>{{ todo.주소 }}</div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md w-10 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[8]"
               >
                 <div>{{ todo.비고 }}</div>

@@ -120,7 +120,7 @@ const resetCheckBox = () => {
 // 테이블 열 크기 조정 (품목 등록)
 const table_width = [
   "width: 50px", // 체크박스
-  "width: 100px", // 순번
+  "width: 50px", // 순번
   "width: 150px", // 품목코드
   "width: 150px", // 거래처명
   "width: 300px", // 품명
@@ -128,7 +128,7 @@ const table_width = [
   "width: 50px", // 단위
   "width: 50px", // 안전재고
   "width: 50px", // 원가
-  "width: 200px", // 비고
+  "width: 150px", // 비고
   "width: 100px", // 편집
 ];
 </script>

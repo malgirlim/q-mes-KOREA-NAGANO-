@@ -83,7 +83,8 @@ const now = moment().format("YYYY-MM-DD");
 const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
 const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
-const now2 = ref("전체기간");
+let now2 = ref("전체기간");
+
 // now2가 변경되면 실행
 watch([now2], (newValue, oldValue) => {
   search();
@@ -91,6 +92,11 @@ watch([now2], (newValue, oldValue) => {
 });
 
 // 날짜 리셋
+const reset_date = () => {
+  now2.value = "전체기간";
+  const litepicker_init = document.querySelector("#litepicker") as any;
+  litepicker_init.value = "전체기간";
+};
 
 // 체크박스 선택으로 데이터 가져오기
 const checkDebug: any = ref([]); // 체크박스 선택 데이터 저장변수
@@ -139,10 +145,6 @@ const table_width = [
   "width: 100px", // 편집
 ];
 // Toast
-const notify = () => {
-  toast("test");
-  return { notify };
-};
 </script>
 
 <template>
@@ -179,14 +181,28 @@ const notify = () => {
         <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
       >
       <div class="hidden mx-auto md:block text-slate-500"></div>
-      <div class="mr-2">
+
+      <div class="mr-5">
         <a href="" class="flex items-center ml-auto text-primary">
           <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
         </a>
       </div>
+
+      <div>
+        <Button
+          class="mr-2 shadow-md"
+          as="a"
+          size="sm"
+          variant="outline-primary"
+          @click="reset_date"
+          ><Lucide icon="CalendarX" class="w-5 h-5"
+        /></Button>
+      </div>
+
       <div class="text-center">
         <div>
           <Litepicker
+            id="litepicker"
             v-model="now2"
             :options="{
               autoApply: false,
@@ -203,11 +219,8 @@ const notify = () => {
               lang: 'ko',
               format: 'YY/MM/DD',
               delimiter: ' - ',
-              buttonText: {
-                reset: '초기화',
-                apply: '적용',
-                cancel: '취소',
-              },
+              buttonText: { reset: '초기화', apply: '적용', cancel: '취소' },
+              resetButton: true,
             }"
             class="block w-40 mx-auto !box"
             placeholder="전체기간"

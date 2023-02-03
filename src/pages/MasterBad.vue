@@ -120,10 +120,10 @@ const resetCheckBox = () => {
 // 테이블 열 크기 조정 (불량 등록)
 const table_width = [
   "width: 50px", // 체크박스
-  "width: 100px", // 순번
+  "width: 50px", // 순번
   "width: 150px", // 불량명
   "width: 300px", // 불량내용
-  "width: 300px", // 비고
+  "width: 100px", // 비고
   "width: 100px", // 편집
 ];
 </script>

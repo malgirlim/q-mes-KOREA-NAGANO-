@@ -62,12 +62,12 @@ const table_width = [
   "width: 50px", // 순번
   "width: 200px", // 품목코드
   "width: 150px", // 거래처명
-  "width: 300px", // 품명
-  "width: 300px", // 규격
+  "width: 200px", // 품명
+  "width: 200px", // 규격
   "width: 50px", // 단위
   "width: 50px", // 불량수
-  "width: 50px", // 불량명
-  "width: 50px", // 불량내용
+  "width: 100px", // 불량명
+  "width: 150px", // 불량내용
   "width: 200px", // 원가
   "width: 200px", // 불량금액
 ];
