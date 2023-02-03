@@ -60,6 +60,7 @@ const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
   insertModal.value = value;
   insertModalData = {}; // 변수 초기화
+  insertModalData.품목NO = radioSelect.value[0];
 };
 let insertModalData: MasterBom; // 등록할 변수
 
@@ -78,9 +79,9 @@ const setDeleteConfirmationModal = (value: boolean) => {
 };
 const deleteButtonRef = ref(null);
 const deleteDataFunction = async () => {
-  await deleteData(checkDebug.value); // await : 이 함수가 끝나야 다음으로 넘어간다
+  await bom.deleteData(checkDebug.value); // await : 이 함수가 끝나야 다음으로 넘어간다
   resetCheckBox();
-  search();
+  bom.searchDatas("", "품목NO", radioSelect.value[0]);
 };
 
 // 날짜 구하기
@@ -92,7 +93,6 @@ const now2 = "전체기간";
 
 // 체크박스 선택으로 데이터 가져오기
 const checkDebug: any = ref([]); // 체크박스 선택 데이터 저장변수
-
 const mainCheckBox = ref(true); // 메인 체크박스 상태
 const checkAll = (value: boolean) => {
   // 메인 체크박스가 눌릴 때 모두 체크
@@ -123,11 +123,13 @@ const resetCheckBox = () => {
   checkDebug.value = [];
 };
 
-const radioSelect: any = ref({ 0: Number, false: Boolean });
-
-const debug = () => {
-  console.log(radioSelect.value[1]);
-};
+// 라디오 선택하기
+const radioSelect: any = ref([]);
+// now2가 변경되면 실행
+watch([radioSelect], (newValue, oldValue) => {
+  // console.log(oldValue[0], "->", newValue[0]);
+  bom.searchDatas("", "품목NO", radioSelect.value[0]);
+});
 
 // 테이블 열 크기 조정 (BOM 등록)
 const table_width = [
@@ -286,13 +288,6 @@ const table_width2 = [
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody style="position: relative; z-index: 1">
-                <!-- <Table.Tr
-          <Table.Tr
-            v-for="(faker, fakerKey) in _.take(fakerData, 10)"
-            :key="fakerKey"
-            class="intro-x"
-          > -->
-
                 <Table.Tr
                   v-for="(todo, index) in datas"
                   :key="todo.NO"
@@ -313,7 +308,6 @@ const table_width2 = [
                       type="radio"
                       :value="[todo.NO, true]"
                       v-model="radioSelect"
-                      @click="debug()"
                     />
                   </Table.Td>
                   <Table.Td
@@ -505,12 +499,6 @@ const table_width2 = [
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody style="position: relative; z-index: 1">
-                <!-- <Table.Tr
-          <Table.Tr
-            v-for="(faker, fakerKey) in _.take(fakerData, 10)"
-            :key="fakerKey"
-            class="intro-x"
-          > -->
                 <Table.Tr
                   v-for="(todo, index) in bom.datas.value"
                   :key="todo.NO"
@@ -601,15 +589,6 @@ const table_width2 = [
           <!--추가 Modal 내용 시작-->
           <div class="mb-5" style="font-weight: bold">원자재 등록</div>
           <div style="text-align: left">
-            <div>
-              <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
-              <FormInput
-                id="vertical-form-1"
-                type="text"
-                v-model="insertModalData.품목코드"
-                placeholder=""
-              />
-            </div>
             <div class="mt-3">
               <FormLabel htmlFor="vertical-form-2">원자재코드</FormLabel>
               <FormInput
@@ -633,11 +612,10 @@ const table_width2 = [
                 class="mr-2 shadow-md"
                 variant="primary"
                 @click="
-                  () => {
-                    insertData(insertModalData);
+                  async () => {
+                    await bom.insertData(insertModalData);
+                    await bom.searchDatas('', '품목NO', radioSelect[0]);
                     setInsertModal(false);
-                    search();
-                    pageChange();
                   }
                 "
                 >확인</Button
@@ -671,15 +649,6 @@ const table_width2 = [
         <Dialog.Panel class="p-10 text-center">
           <div class="mb-5" style="font-weight: bold">수정</div>
           <div style="text-align: left">
-            <div>
-              <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
-              <FormInput
-                id="vertical-form-1"
-                type="text"
-                v-model="editModalData.품목코드"
-                placeholder=""
-              />
-            </div>
             <div class="mt-3">
               <FormLabel htmlFor="vertical-form-2">원자재코드</FormLabel>
               <FormInput
@@ -704,7 +673,7 @@ const table_width2 = [
                 variant="primary"
                 @click="
                   () => {
-                    editData(editModalData);
+                    bom.editData(editModalData);
                     setEditModal(false);
                   }
                 "

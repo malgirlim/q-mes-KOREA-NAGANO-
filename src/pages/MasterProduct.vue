@@ -87,7 +87,6 @@ const now2 = "전체기간";
 
 // 체크박스 선택으로 데이터 가져오기
 const checkDebug: any = ref([]); // 체크박스 선택 데이터 저장변수
-
 const mainCheckBox = ref(true); // 메인 체크박스 상태
 const checkAll = (value: boolean) => {
   // 메인 체크박스가 눌릴 때 모두 체크

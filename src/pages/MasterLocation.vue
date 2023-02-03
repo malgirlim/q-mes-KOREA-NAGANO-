@@ -27,7 +27,7 @@ const pageChange = () => {
 };
 
 // api 보내기
-const url = "/api/master/bad";
+const url = "/api/master/location";
 const {
   datas,
   dataCount,

@@ -62,7 +62,9 @@ export interface MasterLocation {
 // 기준정보 - BOM 구성 화면 (우측화면)
 export interface MasterBom {
   NO?: Number;
+  품목NO?: Number; // MasterProduct 기본키
   품목코드?: String;
   원자재코드?: String;
   수량?: Number;
+  비고?: String;
 }
