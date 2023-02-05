@@ -195,6 +195,7 @@ const table_width = [
           size="sm"
           variant="outline-primary"
           @click="reset_date"
+          title="날짜 초기화"
           ><Lucide icon="CalendarX" class="w-5 h-5"
         /></Button>
       </div>
@@ -220,7 +221,6 @@ const table_width = [
               format: 'YY/MM/DD',
               delimiter: ' - ',
               buttonText: { reset: '초기화', apply: '적용', cancel: '취소' },
-              resetButton: true,
             }"
             class="block w-40 mx-auto !box"
             placeholder="전체기간"
