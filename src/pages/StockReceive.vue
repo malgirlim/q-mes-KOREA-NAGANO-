@@ -195,7 +195,7 @@ const table_width = [
           size="sm"
           variant="outline-primary"
           @click="reset_date"
-          title="날짜 초기화"
+          title="기간 초기화"
           ><Lucide icon="CalendarX" class="w-5 h-5"
         /></Button>
       </div>
