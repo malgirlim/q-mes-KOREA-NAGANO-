@@ -110,6 +110,16 @@ export const useSimpleMenuStore = defineStore("simpleMenu", {
             pageName: "simple-menu-monitor-safe",
             title: "안전재고 미달 통보",
           },
+          {
+            icon: "Factory",
+            pageName: "simple-menu-monitor-kpi-prod",
+            title: "KPI 시간당 생산량",
+          },
+          {
+            icon: "Wallet",
+            pageName: "simple-menu-monitor-kpi-stock",
+            title: "KPI 재고 비용 절감률",
+          },
         ],
       },
     ],

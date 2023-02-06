@@ -17,6 +17,8 @@ import StockBad from "../pages/StockBad.vue";
 import MonitorStock from "../pages/MonitorStock.vue";
 import MonitorBad from "../pages/MonitorBad.vue";
 import MonitorSafe from "../pages/MonitorSafe.vue";
+import MonitorKpiProd from "../pages/MonitorKpiProd.vue";
+import MonitorKpiStock from "../pages/MonitorKpiStock.vue";
 
 const routes = [
   {
@@ -139,6 +141,24 @@ const routes = [
           category: "모니터링",
         },
         component: MonitorSafe,
+      },
+      {
+        path: "monitor/kpi-prod",
+        name: "side-menu-monitor-kpi-prod",
+        meta: {
+          pagename: "KPI 시간당 생산량",
+          category: "모니터링",
+        },
+        component: MonitorKpiProd,
+      },
+      {
+        path: "monitor/kpi-stock",
+        name: "side-menu-monitor-kpi-stock",
+        meta: {
+          pagename: "KPI 재고 비용 절감률",
+          category: "모니터링",
+        },
+        component: MonitorKpiStock,
       },
     ],
   },
@@ -268,6 +288,24 @@ const routes = [
         },
         component: MonitorSafe,
       },
+      {
+        path: "monitor/kpi-prod",
+        name: "simple-menu-monitor-kpi-prod",
+        meta: {
+          pagename: "KPI 시간당 생산량",
+          category: "모니터링",
+        },
+        component: MonitorKpiProd,
+      },
+      {
+        path: "monitor/kpi-stock",
+        name: "simple-menu-monitor-kpi-stock",
+        meta: {
+          pagename: "KPI 재고 비용 절감률",
+          category: "모니터링",
+        },
+        component: MonitorKpiStock,
+      },
     ],
   },
   {
@@ -395,6 +433,24 @@ const routes = [
           category: "모니터링",
         },
         component: MonitorSafe,
+      },
+      {
+        path: "monitor/kpi-prod",
+        name: "top-menu-monitor-kpi-prod",
+        meta: {
+          pagename: "KPI 시간당 생산량",
+          category: "모니터링",
+        },
+        component: MonitorKpiProd,
+      },
+      {
+        path: "monitor/kpi-stock",
+        name: "top-menu-monitor-kpi-stock",
+        meta: {
+          pagename: "KPI 재고 비용 절감률",
+          category: "모니터링",
+        },
+        component: MonitorKpiStock,
       },
     ],
   },

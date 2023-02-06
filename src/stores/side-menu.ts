@@ -115,6 +115,16 @@ export const useSideMenuStore = defineStore("sideMenu", {
             pageName: "side-menu-monitor-safe",
             title: "안전재고 미달 통보",
           },
+          {
+            icon: "Factory",
+            pageName: "side-menu-monitor-kpi-prod",
+            title: "KPI 시간당 생산량",
+          },
+          {
+            icon: "Wallet",
+            pageName: "side-menu-monitor-kpi-stock",
+            title: "KPI 재고 비용 절감률",
+          },
         ],
       },
     ],
