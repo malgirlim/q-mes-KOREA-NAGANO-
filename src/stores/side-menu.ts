@@ -123,7 +123,7 @@ export const useSideMenuStore = defineStore("sideMenu", {
           {
             icon: "Wallet",
             pageName: "side-menu-monitor-kpi-stock",
-            title: "KPI 재고 비용 절감률",
+            title: "KPI 재고비용 절감률",
           },
         ],
       },

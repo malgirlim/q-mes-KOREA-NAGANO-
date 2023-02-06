@@ -13,7 +13,7 @@ import Litepicker from "../base-components/Litepicker";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
-import { MasterLocation } from "../interfaces/menu/masterInterface";
+import { MonitorKpiStock } from "../interfaces/menu/monitorInterface";
 
 // 페이징기능
 import { onMounted, watch } from "vue";
@@ -27,7 +27,7 @@ const pageChange = () => {
 };
 
 // api 보내기
-const url = "/api/master/location";
+const url = "/api/monitor/kpi-stock";
 const {
   datas,
   dataCount,
@@ -38,7 +38,7 @@ const {
   editData,
   deleteData,
   numberOfPages,
-} = useSendApi<MasterLocation>(url, currentPage, rowsPerPage);
+} = useSendApi<MonitorKpiStock>(url, currentPage, rowsPerPage);
 
 const searchKey = ref("전체");
 const searchInput = ref("");
@@ -56,7 +56,7 @@ const setInsertModal = (value: boolean) => {
   insertModal.value = value;
   insertModalData = {}; // 변수 초기화
 };
-let insertModalData: MasterLocation; // 등록할 변수
+let insertModalData: MonitorKpiStock; // 등록할 변수
 
 //수정 Modal
 const editModal = ref(false);
@@ -64,7 +64,7 @@ const setEditModal = (value: boolean) => {
   editModal.value = value;
   search();
 };
-let editModalData: MasterLocation; // 수정할 변수
+let editModalData: MonitorKpiStock; // 수정할 변수
 
 //삭제 Modal
 const deleteConfirmationModal = ref(false);
@@ -117,13 +117,14 @@ const resetCheckBox = () => {
   mainCheckBox.value = true; // 메인체크박스 데이터 초기화
   checkDebug.value = [];
 };
-// 테이블 열 크기 조정 (원자재 위치 등록)
+// 테이블 열 크기 조정 (KPI 시간당 생산량))
 const table_width = [
   "width: 50px", // 체크박스
   "width: 50px", // 순번
-  "width: 150px", // 불량명
-  "width: 300px", // 불량내용
-  "width: 100px", // 비고
+  "width: 150px", // 연월
+  "width: 300px", // 목표치
+  "width: 100px", // 측정치
+  "width: 100px", // 달성률
   "width: 100px", // 편집
 ];
 </script>
@@ -303,24 +304,30 @@ const table_width = [
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[2]"
               >
-                품목코드
+                연월
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[3]"
               >
-                위치
+                목표치
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[4]"
               >
-                비고
+                측정치
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[5]"
+              >
+                달성률
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 id="edit"
-                :style="table_width[5]"
+                :style="table_width[6]"
               >
                 편집
               </Table.Th>
@@ -361,23 +368,30 @@ const table_width = [
                 class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[2]"
               >
-                <div>{{ todo.품목코드 }}</div>
+                <div>{{ todo.연월 }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[3]"
               >
-                <div>{{ todo.위치 }}</div>
+                <div>{{ todo.목표치 }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[4]"
               >
-                <div>{{ todo.비고 }}</div>
+                <div>{{ todo.측정치 }}</div>
+              </Table.Td>
+
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[5]"
+              >
+                <div>{{ todo.달성률 }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
-                :style="table_width[5]"
+                :style="table_width[6]"
                 id="edit"
               >
                 <div class="flex items-center justify-center text-danger">
@@ -421,32 +435,41 @@ const table_width = [
   >
     <Dialog.Panel class="p-10 text-center">
       <!--추가 Modal 내용 시작-->
-      <div class="mb-5" style="font-weight: bold">원자재 위치 등록</div>
+      <div class="mb-5" style="font-weight: bold">KPI 재고비용 절감률 등록</div>
       <div style="text-align: left">
         <div>
-          <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">연월</FormLabel>
           <FormInput
             id="vertical-form-1"
             type="text"
-            v-model="insertModalData.품목코드"
+            v-model="insertModalData.연월"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">위치</FormLabel>
+          <FormLabel htmlFor="vertical-form-2">목표치</FormLabel>
           <FormInput
             id="vertical-form-2"
             type="text"
-            v-model="insertModalData.위치"
+            v-model="insertModalData.목표치"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-3">비고</FormLabel>
+          <FormLabel htmlFor="vertical-form-3">측정치</FormLabel>
           <FormInput
             id="vertical-form-3"
             type="text"
-            v-model="insertModalData.비고"
+            v-model="insertModalData.달성률"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-3">달성률</FormLabel>
+          <FormInput
+            id="vertical-form-3"
+            type="text"
+            v-model="insertModalData.달성률"
             placeholder=""
           />
         </div>
@@ -494,29 +517,38 @@ const table_width = [
       <div class="mb-5" style="font-weight: bold">수정</div>
       <div style="text-align: left">
         <div>
-          <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
+          <FormLabel htmlFor="vertical-form-1">연월</FormLabel>
           <FormInput
             id="vertical-form-1"
             type="text"
-            v-model="editModalData.품목코드"
+            v-model="editModalData.연월"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">위치</FormLabel>
+          <FormLabel htmlFor="vertical-form-2">목표치</FormLabel>
           <FormInput
             id="vertical-form-2"
             type="text"
-            v-model="editModalData.위치"
+            v-model="editModalData.목표치"
             placeholder=""
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-3">비고</FormLabel>
+          <FormLabel htmlFor="vertical-form-3">측정치</FormLabel>
           <FormInput
             id="vertical-form-3"
             type="text"
-            v-model="editModalData.비고"
+            v-model="editModalData.측정치"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-3">달성률</FormLabel>
+          <FormInput
+            id="vertical-form-3"
+            type="text"
+            v-model="editModalData.달성률"
             placeholder=""
           />
         </div>

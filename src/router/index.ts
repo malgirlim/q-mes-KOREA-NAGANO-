@@ -155,7 +155,7 @@ const routes = [
         path: "monitor/kpi-stock",
         name: "side-menu-monitor-kpi-stock",
         meta: {
-          pagename: "KPI 재고 비용 절감률",
+          pagename: "KPI 재고비용 절감률",
           category: "모니터링",
         },
         component: MonitorKpiStock,
@@ -301,7 +301,7 @@ const routes = [
         path: "monitor/kpi-stock",
         name: "simple-menu-monitor-kpi-stock",
         meta: {
-          pagename: "KPI 재고 비용 절감률",
+          pagename: "KPI 재고비용 절감률",
           category: "모니터링",
         },
         component: MonitorKpiStock,
@@ -447,7 +447,7 @@ const routes = [
         path: "monitor/kpi-stock",
         name: "top-menu-monitor-kpi-stock",
         meta: {
-          pagename: "KPI 재고 비용 절감률",
+          pagename: "KPI 재고비용 절감률",
           category: "모니터링",
         },
         component: MonitorKpiStock,

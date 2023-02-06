@@ -59,7 +59,7 @@ export interface MonitorKpiProd {
 }
 
 // 재고 조회 - KPI 재고 비용 절감
-export interface MonitorKpiProd {
+export interface MonitorKpiStock {
   NO?: Number;
   연월?: String;
   목표치?: String;
