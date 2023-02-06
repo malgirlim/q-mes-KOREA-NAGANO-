@@ -55,6 +55,7 @@ const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
   insertModal.value = value;
   insertModalData = {}; // 변수 초기화
+  insertModalData.입고일시 = moment().format("YYYY-MM-DD HH:mm:ss");
 };
 let insertModalData: StockReceive; // 등록할 변수
 
@@ -453,7 +454,9 @@ const table_width = [
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[2]"
               >
-                <div>{{ todo.입고일시 }}</div>
+                <div>
+                  {{ moment(todo.입고일시).format("YYYY-MM-DD HH:mm") }}
+                </div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -541,7 +544,7 @@ const table_width = [
           <FormLabel htmlFor="vertical-form-1">입고일시</FormLabel>
           <FormInput
             id="vertical-form-1"
-            type="date"
+            type="text"
             v-model="insertModalData.입고일시"
             placeholder=""
           />
@@ -656,7 +659,7 @@ const table_width = [
           <FormLabel htmlFor="vertical-form-1">입고일시</FormLabel>
           <FormInput
             id="vertical-form-1"
-            type="date"
+            type="text"
             v-model="editModalData.입고일시"
             placeholder=""
           />

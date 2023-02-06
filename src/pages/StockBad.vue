@@ -55,6 +55,7 @@ const insertModal = ref(false);
 const setInsertModal = (value: boolean) => {
   insertModal.value = value;
   insertModalData = {}; // 변수 초기화
+  insertModalData.불량일시 = moment().format("YYYY-MM-DD HH:mm:ss");
 };
 let insertModalData: StockBad; // 등록할 변수
 
@@ -445,7 +446,9 @@ const table_width = [
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[2]"
               >
-                <div>{{ todo.불량일시 }}</div>
+                <div>
+                  {{ moment(todo.불량일시).format("YYYY-MM-DD HH:mm") }}
+                </div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -552,7 +555,7 @@ const table_width = [
           <FormLabel htmlFor="vertical-form-1">불량일시</FormLabel>
           <FormInput
             id="vertical-form-1"
-            type="date"
+            type="text"
             v-model="insertModalData.불량일시"
             placeholder=""
           />
@@ -614,7 +617,7 @@ const table_width = [
         <!--수정필요-->
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">불량명</FormLabel>
-          <FormSelect class="sm:mt-2 sm:mr-2" modelValue="오염">
+          <FormSelect class="sm:mt-2 sm:mr-2" v-model="insertModalData.불량명">
             <option>오염</option>
             <option>박리</option>
             <option>사이즈</option>
@@ -622,7 +625,10 @@ const table_width = [
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">불량내용</FormLabel>
-          <FormSelect class="sm:mt-2 sm:mr-2" modelValue="원단 오염">
+          <FormSelect
+            class="sm:mt-2 sm:mr-2"
+            v-model="insertModalData.불량내용"
+          >
             <option>원단 오염</option>
             <option>포장 오염</option>
             <option>그냥 오염</option>
@@ -685,7 +691,7 @@ const table_width = [
           <FormLabel htmlFor="vertical-form-1">불량일시</FormLabel>
           <FormInput
             id="vertical-form-1"
-            type="date"
+            type="text"
             v-model="editModalData.불량일시"
             placeholder=""
           />
@@ -747,7 +753,7 @@ const table_width = [
         <!-- 수정 필요 -->
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">불량명</FormLabel>
-          <FormSelect class="sm:mt-2 sm:mr-2" modelValue="오염">
+          <FormSelect class="sm:mt-2 sm:mr-2" v-model="editModalData.불량명">
             <option>오염</option>
             <option>박리</option>
             <option>사이즈</option>
@@ -755,7 +761,7 @@ const table_width = [
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">불량내용</FormLabel>
-          <FormSelect class="sm:mt-2 sm:mr-2" modelValue="원단 오염">
+          <FormSelect class="sm:mt-2 sm:mr-2" v-model="editModalData.불량내용">
             <option>원단 오염</option>
             <option>포장 오염</option>
             <option>그냥 오염</option>

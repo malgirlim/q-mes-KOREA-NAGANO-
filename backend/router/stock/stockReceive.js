@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 // const database = require("./database");
 const { sql, pool } = require("../../mssql");
+const { now } = require("lodash");
 
 const router = express.Router();
 router.use(bodyParser.json());
@@ -17,7 +18,7 @@ router.get("/", async (req, res) => {
     const Pool = await pool;
     // select
     const result = await Pool.request().query(
-      "exec [QMES].[dbo].[MANAGE_ITEM_RECEIVE_READ_SP] '전체','','010101','990101'"
+      "exec [QMES].[dbo].[MANAGE_ITEM_RECEIVE_READ_SP] '전체','','000101','990101'"
     );
     res.send(JSON.stringify(result.recordset));
   } catch (err) {
@@ -28,7 +29,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    let stardDate = "010101";
+    let stardDate = "000101";
     let endDate = "990101";
     if (req.body.date != "전체기간") {
       stardDate = req.body.date.replace(/\//g, "").slice(0, 6);
