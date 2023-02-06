@@ -26,7 +26,7 @@ createApp(App)
   .use(createPinia())
   .use(VueHtmlToPaper, options)
   .use(Vue3Toasity, {
-    autoClose: 10000,
+    autoClose: 3000,
   })
   .mount("#app");
 // createApp(App).use(router).use(createPinia()).mount("#app");

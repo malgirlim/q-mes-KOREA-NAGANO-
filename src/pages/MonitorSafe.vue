@@ -10,6 +10,7 @@ import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 import Litepicker from "../base-components/Litepicker";
+import { toast } from "vue3-toastify";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
@@ -42,7 +43,10 @@ const {
 
 const searchKey = ref("전체");
 const searchInput = ref("");
-onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오기
+onMounted(async () => {
+  await loadDatas();
+  toast.error("안전재고 미달 " + dataCount.value + "건이 있습니다.");
+}); // 페이지 로딩 시 데이터 불러오기
 
 // 조회
 const search = () => {

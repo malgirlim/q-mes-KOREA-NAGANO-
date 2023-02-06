@@ -35,7 +35,7 @@ const data = computed<ChartData>(() => {
     datasets: [
       {
         label: "2023",
-        data: [220, 340, 560, 310],
+        data: [10, 20, 30, 50],
         borderWidth: 2,
         borderColor: colorScheme.value ? getColor("primary") : "",
         backgroundColor: "transparent",
@@ -44,7 +44,7 @@ const data = computed<ChartData>(() => {
       },
       {
         label: "2022",
-        data: [0, 300, 400, 560, 320, 600, 720, 850, 690, 805, 1200, 1010],
+        data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 80, 90, 100],
         borderWidth: 2,
         borderDash: [2, 2],
         borderColor: darkMode.value
