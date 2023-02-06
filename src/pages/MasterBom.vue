@@ -166,11 +166,12 @@ const table_width2 = [
             </a>
           </div>
           <div class="ml-2">
-            <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
+            <FormSelect v-model="searchKey" class="w-30 mt-3 !box sm:mt-0">
               <option>전체</option>
-              <option>불량명</option>
-              <option>불량내용</option>
-              <option>비고</option>
+              <option>품목코드</option>
+              <option>거래처명</option>
+              <option>품명</option>
+              <option>규격</option>
             </FormSelect>
           </div>
           <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-2">
@@ -476,12 +477,12 @@ const table_width2 = [
                   >
                     순번
                   </Table.Th>
-                  <Table.Th
+                  <!-- Table.Th
                     class="text-center border-b-0 whitespace-nowrap"
                     :style="table_width2[2]"
                   >
                     품목코드
-                  </Table.Th>
+                  </Table.Th -->
                   <Table.Th
                     class="text-center border-b-0 whitespace-nowrap"
                     :style="table_width2[3]"
