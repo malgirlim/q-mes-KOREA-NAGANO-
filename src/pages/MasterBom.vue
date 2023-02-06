@@ -160,6 +160,11 @@ const table_width2 = [
         >
           <div class="hidden mx-auto md:block text-slate-500"></div>
 
+          <div class="mr-2">
+            <a href="" class="flex items-center ml-auto text-primary">
+              <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
+            </a>
+          </div>
           <div class="ml-2">
             <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
               <option>전체</option>
