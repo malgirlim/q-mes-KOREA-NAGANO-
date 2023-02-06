@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, Ref } from "vue";
+import { onMounted, ref, Ref } from "vue";
 import _ from "lodash";
 import Lucide from "../base-components/Lucide";
 import Tippy from "../base-components/Tippy";
