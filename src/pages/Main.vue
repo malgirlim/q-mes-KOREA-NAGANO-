@@ -8,29 +8,21 @@ import LineChart2 from "../components/LineChart2";
 import moment from "moment";
 import { toast } from "vue3-toastify";
 
+// #####  페이지 로딩 시 데이터 불러오기 및 5초마다 데이터 다시 불러오기  #####
+onMounted(async () => {
+  setInterval(() => {
+    now.value = moment().format("YYYY-MM-DD HH:mm:ss");
+  }, 1000);
+});
+
 // 날짜 구하기
-const now = moment().format("YYYY-MM-DD HH:mm");
+const now = ref(moment().format("YYYY-MM-DD HH:mm:ss"));
 
-// 하단 표시 변환용
-
-let bottom1 = ref(true);
-let bottom2 = ref(false);
-let bottom3 = ref(false);
-
-const changeBottom1 = () => {
-  bottom1.value = true;
-  bottom2.value = false;
-  bottom3.value = false;
-};
-const changeBottom2 = () => {
-  bottom1.value = false;
-  bottom2.value = true;
-  bottom3.value = false;
-};
-const changeBottom3 = () => {
-  bottom1.value = false;
-  bottom2.value = false;
-  bottom3.value = true;
+// 하단 표시
+const bottom_list = ["시간당 생산량", "재고비용 절감률", "안전재고 미달"];
+const bottom = ref("시간당 생산량"); // 처음 표시할 것
+const changeBottom = (cb: string) => {
+  bottom.value = cb;
 };
 </script>
 
@@ -56,7 +48,7 @@ const changeBottom3 = () => {
                     'before:content-[\'\'] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70',
                   ]"
                 >
-                  <div class="p-5 box" @click="changeBottom1">
+                  <div class="p-5 box" @click="changeBottom(bottom_list[0])">
                     <div class="flex">
                       <Lucide
                         icon="Factory"
@@ -87,7 +79,7 @@ const changeBottom3 = () => {
                     'before:content-[\'\'] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70',
                   ]"
                 >
-                  <div class="p-5 box" @click="changeBottom2">
+                  <div class="p-5 box" @click="changeBottom(bottom_list[1])">
                     <div class="flex">
                       <Lucide
                         icon="Wallet"
@@ -118,7 +110,7 @@ const changeBottom3 = () => {
                     'before:content-[\'\'] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70',
                   ]"
                 >
-                  <div class="p-5 box" @click="changeBottom3">
+                  <div class="p-5 box" @click="changeBottom(bottom_list[2])">
                     <div class="flex">
                       <Lucide
                         icon="Siren"
@@ -153,8 +145,8 @@ const changeBottom3 = () => {
   <div>
     <div class="mt-10 intro-y"></div>
 
-    <!--KPI 재고비용 차트-->
-    <div v-if="bottom1" class="p-5 mt-12 intro-y box sm:mt-5">
+    <!--KPI 시간당 생산량 차트-->
+    <div v-if="bottom == bottom_list[0]" class="p-5 mt-12 intro-y box sm:mt-5">
       <div class="flex flex-col md:flex-row md:items-center">
         <div class="flex">
           <div>
@@ -186,8 +178,8 @@ const changeBottom3 = () => {
         <div><LineChart1 :height="275" class="mt-6 -mb-6" /></div>
       </div>
     </div>
-    <!--KPI 시간당 생산량 차트-->
-    <div v-if="bottom2" class="p-5 mt-12 intro-y box sm:mt-5">
+    <!--KPI 재고비용 차트-->
+    <div v-if="bottom == bottom_list[1]" class="p-5 mt-12 intro-y box sm:mt-5">
       <div class="flex flex-col md:flex-row md:items-center">
         <div class="flex">
           <div>
@@ -221,7 +213,7 @@ const changeBottom3 = () => {
     </div>
     <!-- END: Chart -->
     <!--안전재고 미달 리스트-->
-    <div v-if="bottom3" class="p-5 mt-12 intro-y box sm:mt-5">
+    <div v-if="bottom == bottom_list[2]" class="p-5 mt-12 intro-y box sm:mt-5">
       <div class="flex flex-col md:flex-row md:items-center">
         <div class="flex">
           <div>
