@@ -10,11 +10,7 @@ import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 import Litepicker from "../base-components/Litepicker";
-<<<<<<< HEAD
-import TomSelect from "../base-components/TomSelect";
-=======
 import TomSelect from "tom-select";
->>>>>>> 29f2b64d53885330bfd0ba05df12ee253246d7de
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
@@ -612,10 +608,6 @@ const table_width = [
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">품목코드</FormLabel>
-<<<<<<< HEAD
-          <TomSelect v-model="insertModalData.품목코드">
-            <option :value="p" v-for="p in product.dataAll.value" :key="p.NO">
-=======
           <select v-tom v-model="insertModalData.NO">
             <option value="" selected>=== 필수선택 ===</option>
             <option
@@ -623,16 +615,11 @@ const table_width = [
               v-for="p in product.dataAll.value"
               :key="p.NO"
             >
->>>>>>> 29f2b64d53885330bfd0ba05df12ee253246d7de
               {{ p.품목코드 }} # 품명:{{ p.품명 }} # 규격:{{ p.규격 }} # 단위:{{
                 p.단위
               }}
             </option>
-<<<<<<< HEAD
-          </TomSelect>
-=======
           </select>
->>>>>>> 29f2b64d53885330bfd0ba05df12ee253246d7de
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-7">입고수</FormLabel>
