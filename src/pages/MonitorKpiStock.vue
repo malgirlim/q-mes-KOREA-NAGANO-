@@ -380,6 +380,9 @@ const table_width = [
             </Table.Tr>
           </Table.Tbody>
         </Table>
+        <div class="text-center mt-20" v-if="dataCount == 0">
+          저장된 데이터가 없습니다.
+        </div>
       </div>
     </div>
     <!-- END: Data List -->

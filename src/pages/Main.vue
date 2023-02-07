@@ -73,7 +73,7 @@ const changeBottom = (cb: string) => {
                     </div>
                     <div class="mt-6 text-3xl font-medium leading-8">2</div>
                     <div class="mt-1 text-base text-slate-500">
-                      실시간 생산량
+                      실시간 생산량 (최근 1시간)
                     </div>
                   </div>
                 </div>

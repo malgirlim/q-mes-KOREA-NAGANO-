@@ -142,19 +142,6 @@ const resetCheckBox = () => {
         <Lucide icon="FilePlus" class="w-4 h-4 mr-2" />
         등록
       </Button>
-      <Button
-        class="mr-2 shadow-md"
-        as="a"
-        variant="danger"
-        @click="
-          (event) => {
-            event.preventDefault();
-            setDeleteConfirmationModal(true);
-          }
-        "
-      >
-        <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
-      >
       <div class="hidden mx-auto md:block text-slate-500"></div>
       <div class="mr-2">
         <a href="" class="flex items-center ml-auto text-primary">
@@ -255,9 +242,10 @@ const resetCheckBox = () => {
       </div>
     </div>
     <!-- BEGIN: Users Layout -->
+
     <div
-      v-for="(faker, fakerKey) in _.take(fakerData, 10)"
-      :key="fakerKey"
+      v-for="todo in datas"
+      :key="todo.NO"
       class="col-span-12 intro-y md:col-span-3 m-1"
     >
       <div class="box">
@@ -265,14 +253,14 @@ const resetCheckBox = () => {
           class="flex flex-col items-center p-5 border-b lg:flex-row border-slate-200/60 dark:border-darkmode-400"
         >
           <div class="mt-3 text-center lg:ml-2 lg:mr-auto lg:text-left lg:mt-0">
-            <a href="" class="font-medium">
-              {{ faker.users[0].name }} (userID)
-            </a>
+            <span class="font-medium"> 박명한 (malgirlim)</span>
             <div class="text-slate-500 text-xs mt-0.5">
-              스마트사업부 / {{ faker.jobs[0] }}
+              스마트사업부 / 기술개발팀
             </div>
-            <div class="text-slate-500 text-xs mt-0.5">010-3258-2466</div>
-            <div class="text-slate-500 text-xs mt-0.5">pica001@naver.com</div>
+            <div class="text-slate-500 text-xs mt-0.5">
+              <span class="mr-3"><b>Mobile.</b> 010-3258-2466</span>
+              <span><b>E-mail.</b> pica001@naver.com</span>
+            </div>
           </div>
           <div
             class="flex mt-3 -ml-2 lg:ml-0 lg:justify-end lg:mt-0"
@@ -302,13 +290,27 @@ const resetCheckBox = () => {
           <Button
             variant="outline-secondary"
             class="px-2 py-1 mr-2"
-            @click="setEditModal(true)"
+            @click="
+              (event) => {
+                event.preventDefault();
+                setEditModal(true);
+                editModalData = todo;
+              }
+            "
           >
             수정
+          </Button>
+          <Button
+            variant="outline-danger"
+            class="px-2 py-1 mr-2"
+            @click="setEditModal(true)"
+          >
+            삭제
           </Button>
         </div>
       </div>
     </div>
+
     <!-- END: Users Layout -->
     <!-- END: Data List -->
 
@@ -525,6 +527,9 @@ const resetCheckBox = () => {
       </Dialog.Panel>
     </Dialog>
     <!-- END: Delete Confirmation Modal -->
+  </div>
+  <div class="text-center mt-20 intro-y" v-if="dataCount == 0">
+    저장된 데이터가 없습니다.
   </div>
   <!-- BEGIN: FOOTER(COPYRIGHT) -->
   <div class="intro-y mt-5 mr-5" style="text-align: right">

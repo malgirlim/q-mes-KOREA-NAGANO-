@@ -57,6 +57,13 @@ const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
 const now2 = "전체기간";
 
+// 날짜 리셋
+const reset_date = () => {
+  now2.value = "전체기간";
+  const litepicker_init = document.querySelector("#litepicker") as any;
+  litepicker_init.value = "전체기간";
+};
+
 // 테이블 열 크기 조정 (원자재 재고 조회)
 const table_width = [
   "width: 50px", // 순번
@@ -83,10 +90,21 @@ const table_width = [
       class="flex flex-wrap items-center col-span-12 mt-2 mb-2 intro-y sm:flex-nowrap"
     >
       <div class="hidden mx-auto md:block text-slate-500"></div>
-      <div class="mr-2">
+      <div class="mr-5">
         <a href="" class="flex items-center ml-auto text-primary">
           <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
         </a>
+      </div>
+      <div>
+        <Button
+          class="mr-2 shadow-md"
+          as="a"
+          size="sm"
+          variant="outline-primary"
+          @click="reset_date"
+          title="기간 초기화"
+          ><Lucide icon="CalendarX" class="w-5 h-5"
+        /></Button>
       </div>
       <div class="text-center">
         <div>
@@ -413,6 +431,9 @@ const table_width = [
             </Table.Tr>
           </Table.Tbody>
         </Table>
+        <div class="text-center mt-20" v-if="dataCount == 0">
+          저장된 데이터가 없습니다.
+        </div>
       </div>
     </div>
     <!-- END: Data List -->

@@ -293,6 +293,7 @@ const table_width2 = [
                   </Table.Th>
                 </Table.Tr>
               </Table.Thead>
+
               <Table.Tbody style="position: relative; z-index: 1">
                 <Table.Tr
                   v-for="(todo, index) in datas"
@@ -366,6 +367,9 @@ const table_width2 = [
                 </Table.Tr>
               </Table.Tbody>
             </Table>
+            <div class="text-center mt-20" v-if="dataCount == 0">
+              저장된 데이터가 없습니다.
+            </div>
           </div>
         </div>
         <!-- END: Data List -->
@@ -504,6 +508,7 @@ const table_width2 = [
                   </Table.Th>
                 </Table.Tr>
               </Table.Thead>
+
               <Table.Tbody style="position: relative; z-index: 1">
                 <Table.Tr
                   v-for="(todo, index) in bom.datas.value"
@@ -572,6 +577,9 @@ const table_width2 = [
                 </Table.Tr>
               </Table.Tbody>
             </Table>
+            <div class="text-center mt-20" v-if="bom.dataCount.value == 0">
+              저장된 데이터가 없습니다.
+            </div>
           </div>
         </div>
         <!-- END: Data List -->

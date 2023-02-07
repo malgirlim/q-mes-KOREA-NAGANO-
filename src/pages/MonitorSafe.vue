@@ -45,7 +45,9 @@ const searchKey = ref("전체");
 const searchInput = ref("");
 onMounted(async () => {
   await loadDatas();
-  toast.error("안전재고 미달 " + dataCount.value + "건이 있습니다.");
+  if (dataCount.value > 0) {
+    toast.error("안전재고 미달 " + dataCount.value + "건이 있습니다.");
+  }
 }); // 페이지 로딩 시 데이터 불러오기
 
 // 조회
@@ -335,6 +337,9 @@ const table_width = [
             </Table.Tr>
           </Table.Tbody>
         </Table>
+        <div class="text-center mt-20" v-if="dataCount == 0">
+          저장된 데이터가 없습니다.
+        </div>
       </div>
     </div>
     <!-- END: Data List -->

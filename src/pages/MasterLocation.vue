@@ -339,7 +339,7 @@ const table_width = [
               class="intro-x"
             >
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 id="checkbox"
                 :style="table_width[0]"
               >
@@ -400,6 +400,9 @@ const table_width = [
             </Table.Tr>
           </Table.Tbody>
         </Table>
+        <div class="text-center mt-20" v-if="dataCount == 0">
+          저장된 데이터가 없습니다.
+        </div>
       </div>
     </div>
     <!-- END: Data List -->

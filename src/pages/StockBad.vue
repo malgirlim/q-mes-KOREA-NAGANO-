@@ -91,6 +91,13 @@ watch([now2], (newValue, oldValue) => {
   pageChange();
 });
 
+// 날짜 리셋
+const reset_date = () => {
+  now2.value = "전체기간";
+  const litepicker_init = document.querySelector("#litepicker") as any;
+  litepicker_init.value = "전체기간";
+};
+
 // 체크박스 선택으로 데이터 가져오기
 const checkDebug: any = ref([]); // 체크박스 선택 데이터 저장변수
 
@@ -175,10 +182,21 @@ const table_width = [
         <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
       >
       <div class="hidden mx-auto md:block text-slate-500"></div>
-      <div class="mr-2">
+      <div class="mr-5">
         <a href="" class="flex items-center ml-auto text-primary">
           <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
         </a>
+      </div>
+      <div>
+        <Button
+          class="mr-2 shadow-md"
+          as="a"
+          size="sm"
+          variant="outline-primary"
+          @click="reset_date"
+          title="기간 초기화"
+          ><Lucide icon="CalendarX" class="w-5 h-5"
+        /></Button>
       </div>
       <div class="text-center">
         <div>
@@ -528,6 +546,9 @@ const table_width = [
             </Table.Tr>
           </Table.Tbody>
         </Table>
+        <div class="text-center mt-20" v-if="dataCount == 0">
+          저장된 데이터가 없습니다.
+        </div>
       </div>
     </div>
     <!-- END: Data List -->
