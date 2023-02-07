@@ -10,7 +10,7 @@ export interface MasterUser {
 
 // 기준정보 - 품목 등록
 export interface MasterProduct {
-  NO?: Number;
+  NO?: number;
   품목코드?: String;
   품명?: String;
   거래처명?: String;
