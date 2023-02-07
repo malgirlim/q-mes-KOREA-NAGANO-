@@ -56,7 +56,6 @@ onMounted(async () => {
   loadDatas();
   product.loadDatas();
   bad.loadDatas();
-  console.log(product.dataAll);
 }); // 페이지 로딩 시 데이터 불러오기
 
 // 조회
@@ -75,12 +74,18 @@ const setInsertModal = (value: boolean) => {
 let insertModalData: StockBad; // 등록할 변수
 // 등록 함수
 const insertDataFunction = () => {
-  insertModalData.불량일시 = moment().format("YYYY-MM-DD HH:mm:ss");
-  insertData(insertModalData);
-  setInsertModal(false);
-  search();
-  pageChange();
+  if (insertModalData.NO > 0) {
+    insertModalData = product.dataAll.value.filter(
+      (c) => c.NO === insertModalData.NO
+    )[0];
+    insertModalData.불량일시 = moment().format("YYYY-MM-DD HH:mm:ss");
+    insertData(insertModalData);
+    setInsertModal(false);
+    search();
+    pageChange();
+  }
 };
+// TomSelect 에 필요한 함수
 const vTom = {
   mounted(el: any, binding: any, vnode: any) {
     const options = binding.value || {};
@@ -625,7 +630,8 @@ const table_width = [
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
-          <select v-tom v-model="insertModalData">
+          <select v-tom v-model="insertModalData.NO">
+            <option value="" selected>=== 필수선택 ===</option>
             <option
               :value="p.NO"
               v-for="p in product.dataAll.value"
@@ -668,7 +674,7 @@ const table_width = [
             <option
               :value="bad_content.불량내용"
               v-for="bad_content in bad.dataAll.value.filter(
-                (c) => c.불량명 == insertModalData.불량명
+                (c) => c.불량명 === insertModalData.불량명
               )"
               :key="bad_content.NO"
             >

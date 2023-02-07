@@ -10,6 +10,7 @@ import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 import Litepicker from "../base-components/Litepicker";
+import TomSelect from "tom-select";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
@@ -68,11 +69,36 @@ const setInsertModal = (value: boolean) => {
 let insertModalData: StockUse; // 등록할 변수
 // 등록 함수
 const insertDataFunction = () => {
-  insertModalData.출고일시 = moment().format("YYYY-MM-DD HH:mm:ss");
-  insertData(insertModalData);
-  setInsertModal(false);
-  search();
-  pageChange();
+  if (insertModalData.NO > 0) {
+    insertModalData = product.dataAll.value.filter(
+      (c) => c.NO === insertModalData.NO
+    )[0];
+    insertModalData.출고일시 = moment().format("YYYY-MM-DD HH:mm:ss");
+    insertData(insertModalData);
+    setInsertModal(false);
+    search();
+    pageChange();
+  }
+};
+// TomSelect 에 필요한 함수
+const vTom = {
+  mounted(el: any, binding: any, vnode: any) {
+    const options = binding.value || {};
+    const defaultOptions = {
+      onInitialize: function () {
+        // the onInitialize callback is invoked once the control is completely initialized.
+        // console.log("onInitialize", this);
+      },
+    };
+    new TomSelect(el, { ...defaultOptions, ...options });
+  },
+  unmounted(el: any) {
+    const tomSelect = el.tomselect;
+    if (tomSelect) {
+      tomSelect.destroy();
+      delete el.tomselect;
+    }
+  },
 };
 
 //수정 Modal
@@ -575,13 +601,18 @@ const table_width = [
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">품목코드</FormLabel>
-          <FormSelect v-model="insertModalData">
-            <option :value="p" v-for="p in product.dataAll.value" :key="p.NO">
+          <select v-tom v-model="insertModalData.NO">
+            <option value="" selected>=== 필수선택 ===</option>
+            <option
+              :value="p.NO"
+              v-for="p in product.dataAll.value"
+              :key="p.NO"
+            >
               {{ p.품목코드 }} # 품명:{{ p.품명 }} # 규격:{{ p.규격 }} # 단위:{{
                 p.단위
               }}
             </option>
-          </FormSelect>
+          </select>
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">출고수</FormLabel>
