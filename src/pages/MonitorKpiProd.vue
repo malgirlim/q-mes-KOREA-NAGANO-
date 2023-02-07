@@ -352,7 +352,12 @@ const table_width = [
                 :style="table_width[5]"
               >
                 <div>
-                  {{ (Number(todo.측정치) / Number(todo.목표치)) * 100 }}%
+                  {{
+                    ((Number(todo.측정치) / Number(todo.목표치)) * 100).toFixed(
+                      2
+                    )
+                  }}
+                  %
                 </div>
               </Table.Td>
               <Table.Td
