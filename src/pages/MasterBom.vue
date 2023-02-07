@@ -628,6 +628,7 @@ const table_width2 = [
             <div class="mt-3">
               <FormLabel htmlFor="vertical-form-2">원자재코드</FormLabel>
               <select v-tom v-model="insertModalData.원자재코드">
+                <option value="" selected>=== 필수선택 ===</option>
                 <option
                   v-for="todo in dataAll"
                   :key="todo.NO"
