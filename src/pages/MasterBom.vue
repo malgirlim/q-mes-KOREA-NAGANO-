@@ -633,7 +633,6 @@ const table_width2 = [
                   v-for="todo in dataAll"
                   :key="todo.NO"
                   :value="todo.품목코드"
-                  selected
                 >
                   {{ todo.품목코드 }} # 품명:{{ todo.품명 }}
                 </option>
