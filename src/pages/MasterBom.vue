@@ -10,6 +10,7 @@ import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 import Litepicker from "../base-components/Litepicker";
+import TomSelect from "tom-select";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
@@ -64,6 +65,26 @@ const setInsertModal = (value: boolean) => {
   insertModalData.품목NO = radioSelect.value[0];
 };
 let insertModalData: MasterBom; // 등록할 변수
+// TomSelect 에 필요한 함수
+const vTom = {
+  mounted(el: any, binding: any, vnode: any) {
+    const options = binding.value || {};
+    const defaultOptions = {
+      onInitialize: function () {
+        // the onInitialize callback is invoked once the control is completely initialized.
+        // console.log("onInitialize", this);
+      },
+    };
+    new TomSelect(el, { ...defaultOptions, ...options });
+  },
+  unmounted(el: any) {
+    const tomSelect = el.tomselect;
+    if (tomSelect) {
+      tomSelect.destroy();
+      delete el.tomselect;
+    }
+  },
+};
 
 //수정 Modal
 const editModal = ref(false);
@@ -606,7 +627,7 @@ const table_width2 = [
           <div style="text-align: left">
             <div class="mt-3">
               <FormLabel htmlFor="vertical-form-2">원자재코드</FormLabel>
-              <FormSelect v-model="insertModalData.원자재코드">
+              <select v-tom v-model="insertModalData.원자재코드">
                 <option
                   v-for="todo in dataAll"
                   :key="todo.NO"
@@ -615,7 +636,7 @@ const table_width2 = [
                 >
                   {{ todo.품목코드 }} # 품명:{{ todo.품명 }}
                 </option>
-              </FormSelect>
+              </select>
             </div>
             <div class="mt-3">
               <FormLabel htmlFor="vertical-form-3">수량</FormLabel>
