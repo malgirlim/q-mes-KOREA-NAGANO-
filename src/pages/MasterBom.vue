@@ -10,7 +10,6 @@ import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 import Litepicker from "../base-components/Litepicker";
-import TomSelect from "tom-select";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
@@ -65,27 +64,6 @@ const setInsertModal = (value: boolean) => {
   insertModalData.품목NO = radioSelect.value[0];
 };
 let insertModalData: MasterBom; // 등록할 변수
-// TomSelect 사용
-const vTom = {
-  mounted(el: any, binding: any, vnode: any) {
-    const options = binding.value || {};
-
-    const defaultOptions = {
-      onInitialize: function () {
-        // the onInitialize callback is invoked once the control is completely initialized.
-        console.log("onInitialize", this);
-      },
-    };
-    new TomSelect(el, { ...defaultOptions, ...options });
-  },
-  unmounted(el: any) {
-    const tomSelect = el.tomselect;
-    if (tomSelect) {
-      tomSelect.destroy();
-      delete el.tomselect;
-    }
-  },
-};
 
 //수정 Modal
 const editModal = ref(false);
@@ -166,9 +144,9 @@ const table_width = [
 const table_width2 = [
   "width: 50px", // 체크박스
   "width: 100px", // 순번
-  "width: 150px", // 불량명
-  "width: 300px", // 불량내용
-  "width: 300px", // 비고
+  "width: 300px", // 원자재코드
+  "width: 300px", // 원자재명
+  "width: 150px", // 수량
   "width: 150px", // 편집
 ];
 </script>
@@ -504,21 +482,21 @@ const table_width2 = [
                   >
                     순번
                   </Table.Th>
-                  <!-- Table.Th
-                    class="text-center border-b-0 whitespace-nowrap"
-                    :style="table_width2[2]"
-                  >
-                    품목코드
-                  </Table.Th -->
                   <Table.Th
                     class="text-center border-b-0 whitespace-nowrap"
-                    :style="table_width2[3]"
+                    :style="table_width2[2]"
                   >
                     원자재코드
                   </Table.Th>
                   <Table.Th
                     class="text-center border-b-0 whitespace-nowrap"
-                    :style="table_width2[4]"
+                    :style="table_width2[2]"
+                  >
+                    원자재명
+                  </Table.Th>
+                  <Table.Th
+                    class="text-center border-b-0 whitespace-nowrap"
+                    :style="table_width2[3]"
                   >
                     수량
                   </Table.Th>
@@ -561,13 +539,13 @@ const table_width2 = [
                     class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                     :style="table_width2[2]"
                   >
-                    <div>{{ todo.품목코드 }}</div>
+                    <div>{{ todo.원자재코드 }}</div>
                   </Table.Td>
                   <Table.Td
                     class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-                    :style="table_width2[3]"
+                    :style="table_width2[2]"
                   >
-                    <div>{{ todo.원자재코드 }}</div>
+                    <div>{{ todo.원자재명 }}</div>
                   </Table.Td>
                   <Table.Td
                     class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -628,7 +606,7 @@ const table_width2 = [
           <div style="text-align: left">
             <div class="mt-3">
               <FormLabel htmlFor="vertical-form-2">원자재코드</FormLabel>
-              <select v-tom v-model="insertModalData.원자재코드">
+              <FormSelect v-model="insertModalData.원자재코드">
                 <option
                   v-for="todo in dataAll"
                   :key="todo.NO"
@@ -637,7 +615,7 @@ const table_width2 = [
                 >
                   {{ todo.품목코드 }} # 품명:{{ todo.품명 }}
                 </option>
-              </select>
+              </FormSelect>
             </div>
             <div class="mt-3">
               <FormLabel htmlFor="vertical-form-3">수량</FormLabel>
@@ -692,12 +670,16 @@ const table_width2 = [
           <div style="text-align: left">
             <div class="mt-3">
               <FormLabel htmlFor="vertical-form-2">원자재코드</FormLabel>
-              <FormInput
-                id="vertical-form-2"
-                type="text"
-                v-model="editModalData.원자재코드"
-                placeholder=""
-              />
+              <FormSelect v-model="editModalData.원자재코드">
+                <option
+                  v-for="todo in dataAll"
+                  :key="todo.NO"
+                  :value="todo.품목코드"
+                  selected
+                >
+                  {{ todo.품목코드 }} # 품명:{{ todo.품명 }}
+                </option>
+              </FormSelect>
             </div>
             <div class="mt-3">
               <FormLabel htmlFor="vertical-form-3">수량</FormLabel>
