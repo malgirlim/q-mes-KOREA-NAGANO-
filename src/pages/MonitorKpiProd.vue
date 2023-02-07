@@ -168,43 +168,7 @@ const table_width = [
           <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
         </a>
       </div>
-      <div class="ml-2">
-        <FormSelect modelValue="전체" class="w-30 mt-3 !box sm:mt-0">
-          <option>전체</option>
-          <option>품목코드</option>
-          <option>위치</option>
-          <option>비고</option>
-        </FormSelect>
-      </div>
-      <div class="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-2">
-        <div class="relative w-56 text-slate-500">
-          <FormInput
-            type="text"
-            class="w-56 pr-10 !box"
-            v-model="searchInput"
-            @keyup.enter="
-              () => {
-                search();
-                pageChange();
-              }
-            "
-            placeholder="검색어를 입력해주세요"
-          />
-          <button
-            @click="
-              {
-                search();
-                pageChange();
-              }
-            "
-          >
-            <Lucide
-              icon="Search"
-              class="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
-            />
-          </button>
-        </div>
-      </div>
+
       <div class="ml-2">
         <!-- BEGIN: Pagination Pages-->
         <FormSelect
@@ -387,7 +351,9 @@ const table_width = [
                 class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[5]"
               >
-                <div>{{ todo.달성률 }}</div>
+                <div>
+                  {{ (Number(todo.측정치) / Number(todo.목표치)) * 100 }}%
+                </div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
@@ -460,16 +426,7 @@ const table_width = [
           <FormInput
             id="vertical-form-3"
             type="text"
-            v-model="insertModalData.달성률"
-            placeholder=""
-          />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-3">달성률</FormLabel>
-          <FormInput
-            id="vertical-form-3"
-            type="text"
-            v-model="insertModalData.달성률"
+            v-model="insertModalData.측정치"
             placeholder=""
           />
         </div>
@@ -540,15 +497,6 @@ const table_width = [
             id="vertical-form-3"
             type="text"
             v-model="editModalData.측정치"
-            placeholder=""
-          />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-3">달성률</FormLabel>
-          <FormInput
-            id="vertical-form-3"
-            type="text"
-            v-model="editModalData.달성률"
             placeholder=""
           />
         </div>

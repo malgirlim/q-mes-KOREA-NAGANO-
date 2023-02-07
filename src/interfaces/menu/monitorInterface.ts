@@ -55,7 +55,6 @@ export interface MonitorKpiProd {
   연월?: String;
   목표치?: String;
   측정치?: String;
-  달성률?: String;
 }
 
 // 재고 조회 - KPI 재고 비용 절감
@@ -64,5 +63,4 @@ export interface MonitorKpiStock {
   연월?: String;
   목표치?: String;
   측정치?: String;
-  달성률?: String;
 }
