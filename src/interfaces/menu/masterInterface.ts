@@ -11,7 +11,6 @@ export interface MasterUser {
 // 기준정보 - 품목 등록
 export interface MasterProduct {
   NO?: number;
-<<<<<<< HEAD
   품목코드?: string;
   품명?: string;
   거래처명?: string;
@@ -22,18 +21,6 @@ export interface MasterProduct {
   비고?: string;
   등록자?: string;
   등록일시?: string;
-=======
-  품목코드?: String;
-  품명?: String;
-  거래처명?: String;
-  규격?: String;
-  단위?: String;
-  안전재고?: Number;
-  원가?: Number;
-  비고?: String;
-  등록자?: String;
-  등록일시?: String;
->>>>>>> 19726d835715695074af0b3fe6ef9fbc90a1438e
 }
 
 // 기준정보 - 거래처 등록

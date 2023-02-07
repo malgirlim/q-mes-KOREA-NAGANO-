@@ -7,14 +7,45 @@ import LineChart1 from "../components/LineChart1";
 import LineChart2 from "../components/LineChart2";
 import LineChart3 from "../components/LineChart3";
 import moment from "moment";
-import { toast } from "vue3-toastify";
+import Table from "../base-components/Table";
+
+import PaginationComponent from "../components/Pagination/PaginationComponent.vue"; // 페이징설정
+
+// API 보내는 함수 및 인터페이스 불러오기
+import { useSendApi } from "../composables/useSendApi";
+import { MonitorSafe } from "../interfaces/menu/monitorInterface";
 
 // #####  페이지 로딩 시 데이터 불러오기 및 5초마다 데이터 다시 불러오기  #####
 onMounted(async () => {
+  await loadDatas();
   setInterval(() => {
     now.value = moment().format("YYYY-MM-DD HH:mm:ss");
   }, 1000);
 });
+
+// 페이징기능
+
+const currentPage = ref(1); // 현재페이지
+const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
+
+const pageChange = () => {
+  // 한 페이지에 보여질 데이터 갯수 변경 시 1페이지로 이동
+  currentPage.value = 1;
+};
+
+// api 보내기
+const url = "/api/monitor/safe";
+const {
+  datas,
+  dataCount,
+  datasAreLoading,
+  loadDatas,
+  searchDatas,
+  insertData,
+  editData,
+  deleteData,
+  numberOfPages,
+} = useSendApi<MonitorSafe>(url, currentPage, rowsPerPage);
 
 // 날짜 구하기
 const now = ref(moment().format("YYYY-MM-DD HH:mm:ss"));
@@ -30,6 +61,20 @@ const bottom = ref("실시간 생산량"); // 처음 표시할 것
 const changeBottom = (cb: string) => {
   bottom.value = cb;
 };
+
+// 테이블 열 크기 조정 (안전재고 미달)
+const table_width = [
+  "width: 50px", // 순번
+  "width: 50px", // 품목코드
+  "width: 150px", // 거래처명
+  "width: 300px", // 품명
+  "width: 100px", // 규격
+  "width: 100px", // 단위
+  "width: 50px", // 재고수
+  "width: 50px", // 안전재고수
+  "width: 50px", // 부족재고수
+  "width: 150px", // 링크
+];
 </script>
 
 <template>
@@ -164,7 +209,7 @@ const changeBottom = (cb: string) => {
                         </Tippy>
                       </div>
                     </div>
-                    <div class="mt-6 text-3xl font-medium leading-8">1</div>
+                    <div class="mt-6 text-3xl font-medium leading-8">3</div>
                     <div class="mt-1 text-base text-slate-500">
                       안전재고 미달
                     </div>
@@ -289,7 +334,7 @@ const changeBottom = (cb: string) => {
             <div
               class="text-lg font-medium text-primary dark:text-slate-300 xl:text-xl"
             >
-              4,710개
+              10개
             </div>
             <div class="mt-0.5 text-slate-500">이번 달</div>
           </div>
@@ -298,13 +343,167 @@ const changeBottom = (cb: string) => {
           ></div>
           <div>
             <div class="text-lg font-medium text-slate-500 xl:text-xl">
-              2,130개
+              30개
             </div>
             <div class="mt-0.5 text-slate-500">지난 달</div>
           </div>
         </div>
       </div>
+      <!-- BEGIN: Data List -->
+      <!-- style="height: calc(100vh - 350px)" : 브라우저 화면 창크기에 맞게 변경됨 -->
+      <div
+        class="col-span-12 overflow-auto intro-y lg:overflow-visible"
+        id="printMe"
+      >
+        <div class="mt-5">
+          <Table class="border-spacing-y-[10px] border-separate -mt-2">
+            <Table.Thead
+              class="bg-slate-100"
+              style="position: sticky; top: 0px; z-index: 2"
+            >
+              <Table.Tr>
+                <Table.Th
+                  class="text-center border-b-0 whitespace-nowrap"
+                  :style="table_width[0]"
+                >
+                  순번
+                </Table.Th>
+                <Table.Th
+                  class="text-center border-b-0 whitespace-nowrap"
+                  :style="table_width[1]"
+                >
+                  품목코드
+                </Table.Th>
+                <Table.Th
+                  class="border-b-0 whitespace-nowrap"
+                  :style="table_width[2]"
+                >
+                  거래처명
+                </Table.Th>
+                <Table.Th
+                  class="border-b-0 whitespace-nowrap"
+                  :style="table_width[3]"
+                >
+                  품명
+                </Table.Th>
+                <Table.Th
+                  class="border-b-0 whitespace-nowrap"
+                  :style="table_width[4]"
+                >
+                  규격
+                </Table.Th>
+                <Table.Th
+                  class="text-center border-b-0 whitespace-nowrap"
+                  :style="table_width[5]"
+                >
+                  단위
+                </Table.Th>
+                <Table.Th
+                  class="text-center border-b-0 whitespace-nowrap"
+                  :style="table_width[6]"
+                >
+                  재고수
+                </Table.Th>
+                <Table.Th
+                  class="text-center border-b-0 whitespace-nowrap"
+                  :style="table_width[7]"
+                >
+                  안전재고수
+                </Table.Th>
+                <Table.Th
+                  class="text-center border-b-0 whitespace-nowrap"
+                  :style="table_width[8]"
+                >
+                  부족재고수
+                </Table.Th>
+                <Table.Th
+                  class="text-center border-b-0 whitespace-nowrap"
+                  :style="table_width[9]"
+                >
+                  링크
+                </Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody style="position: relative; z-index: 1">
+              <Table.Tr
+                v-for="(todo, index) in datas"
+                :key="todo.NO"
+                class="intro-x"
+              >
+                <Table.Td
+                  class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                  :style="table_width[0]"
+                >
+                  <div>{{ index + 1 + (currentPage - 1) * rowsPerPage }}</div>
+                </Table.Td>
+                <Table.Td
+                  class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                  :style="table_width[1]"
+                >
+                  <div>{{ todo.품목코드 }}</div>
+                </Table.Td>
+                <Table.Td
+                  class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                  :style="table_width[2]"
+                >
+                  <div>{{ todo.거래처명 }}</div>
+                </Table.Td>
+                <Table.Td
+                  class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                  :style="table_width[3]"
+                >
+                  <div>{{ todo.품명 }}</div>
+                </Table.Td>
+                <Table.Td
+                  class="first:rounded-l-md last:rounded-r-md w-5 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                  :style="table_width[4]"
+                >
+                  <div>{{ todo.규격 }}</div>
+                </Table.Td>
+                <Table.Td
+                  class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                  :style="table_width[5]"
+                >
+                  <div>{{ todo.단위 }}</div>
+                </Table.Td>
+                <Table.Td
+                  class="first:rounded-l-md last:rounded-r-md w-10 text-center text-danger bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                  :style="table_width[6]"
+                >
+                  <div>{{ todo.재고수 }}</div>
+                </Table.Td>
+                <Table.Td
+                  class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                  :style="table_width[7]"
+                >
+                  <div>{{ todo.안전재고수 }}</div>
+                </Table.Td>
+                <Table.Td
+                  class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white text-danger border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                  :style="table_width[8]"
+                >
+                  <div>{{ todo.부족재고수 }}</div>
+                </Table.Td>
+                <Table.Td
+                  class="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                  :style="table_width[9]"
+                >
+                  <div class="flex items-center justify-center">
+                    <Lucide icon="Link" class="w-4 h-4 mr-2" />
+                    <a href="/monitor/safe">바로가기</a>
+                  </div>
+                </Table.Td>
+              </Table.Tr>
+            </Table.Tbody>
+          </Table>
+          <div class="text-center mt-20" v-if="dataCount == 0">
+            저장된 데이터가 없습니다.
+          </div>
+        </div>
+      </div>
+      <!-- END: Data List -->
     </div>
+
     <!-- BEGIN: FOOTER(COPYRIGHT) -->
     <div class="intro-y mt-3" style="text-align: right">
       <footer>&copy;2023 QInnotek. All rights reserved.</footer>

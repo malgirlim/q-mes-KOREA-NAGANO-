@@ -665,6 +665,7 @@ const table_width = [
             type="text"
             v-model="editModalData.입고일시"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">
@@ -674,6 +675,7 @@ const table_width = [
             type="text"
             v-model="editModalData.품목코드"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">
@@ -683,6 +685,7 @@ const table_width = [
             type="text"
             v-model="editModalData.거래처명"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">
@@ -692,6 +695,7 @@ const table_width = [
             type="text"
             v-model="editModalData.품명"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">
@@ -701,6 +705,7 @@ const table_width = [
             type="text"
             v-model="editModalData.규격"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">
@@ -710,6 +715,7 @@ const table_width = [
             type="text"
             v-model="editModalData.단위"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">

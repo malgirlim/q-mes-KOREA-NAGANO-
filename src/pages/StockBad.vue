@@ -715,6 +715,7 @@ const table_width = [
             type="text"
             v-model="editModalData.불량일시"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">
@@ -724,6 +725,7 @@ const table_width = [
             type="text"
             v-model="editModalData.품목코드"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">
@@ -733,6 +735,7 @@ const table_width = [
             type="text"
             v-model="editModalData.거래처명"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">
@@ -742,6 +745,7 @@ const table_width = [
             type="text"
             v-model="editModalData.품명"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">
@@ -751,6 +755,7 @@ const table_width = [
             type="text"
             v-model="editModalData.규격"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">
@@ -760,6 +765,7 @@ const table_width = [
             type="text"
             v-model="editModalData.단위"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">
@@ -785,7 +791,7 @@ const table_width = [
           <FormSelect class="sm:mt-2 sm:mr-2" v-model="editModalData.불량내용">
             <option>원단 오염</option>
             <option>포장 오염</option>
-            <option>그냥 오염</option>
+            <option>내부 오염</option>
           </FormSelect>
         </div>
         <!-- 수정 필요 -->
