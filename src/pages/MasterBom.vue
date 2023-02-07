@@ -30,6 +30,7 @@ const pageChange = () => {
 // api 보내기
 const url = "/api/master/product";
 const {
+  dataAll,
   datas,
   dataCount,
   datasAreLoading,
@@ -597,12 +598,26 @@ const table_width2 = [
           <div style="text-align: left">
             <div class="mt-3">
               <FormLabel htmlFor="vertical-form-2">원자재코드</FormLabel>
-              <FormInput
+              <FormSelect
+                id="select-itemcode"
+                v-model="insertModalData.원자재코드"
+              >
+                <option
+                  v-for="todo in dataAll"
+                  :key="todo.NO"
+                  :value="todo.품목코드"
+                >
+                  품목코드:{{ todo.품목코드 }} # 품명:{{ todo.품명 }} # 규격:{{
+                    todo.규격
+                  }}
+                </option>
+              </FormSelect>
+              <!-- FormInput
                 id="vertical-form-2"
                 type="text"
                 v-model="insertModalData.원자재코드"
                 placeholder=""
-              />
+              /-->
             </div>
             <div class="mt-3">
               <FormLabel htmlFor="vertical-form-3">수량</FormLabel>
