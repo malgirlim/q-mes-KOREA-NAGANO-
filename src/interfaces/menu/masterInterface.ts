@@ -65,6 +65,7 @@ export interface MasterBom {
   품목NO?: number; // MasterProduct 기본키
   품목코드?: string;
   원자재코드?: string;
+  원자재명?: string;
   수량?: number;
   비고?: string;
 }

@@ -14,6 +14,7 @@ import Litepicker from "../base-components/Litepicker";
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
 import { StockUse } from "../interfaces/menu/stockInterface";
+import { MasterProduct } from "../interfaces/menu/MasterInterface";
 
 // 페이징기능
 import { onMounted, watch } from "vue";
@@ -40,9 +41,16 @@ const {
   numberOfPages,
 } = useSendApi<StockUse>(url, currentPage, rowsPerPage);
 
+// api2 : 품목등록데이터 가져오기
+const url_2 = "/api/master/product";
+const product = useSendApi<MasterProduct>(url_2, currentPage, rowsPerPage);
+
 const searchKey = ref("전체");
 const searchInput = ref("");
-onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오기
+onMounted(async () => {
+  loadDatas();
+  product.loadDatas();
+}); // 페이지 로딩 시 데이터 불러오기
 
 // 조회
 const search = () => {
@@ -58,6 +66,14 @@ const setInsertModal = (value: boolean) => {
   insertModalData.출고일시 = moment().format("YYYY-MM-DD HH:mm:ss");
 };
 let insertModalData: StockUse; // 등록할 변수
+// 등록 함수
+const insertDataFunction = () => {
+  insertModalData.출고일시 = moment().format("YYYY-MM-DD HH:mm:ss");
+  insertData(insertModalData);
+  setInsertModal(false);
+  search();
+  pageChange();
+};
 
 //수정 Modal
 const editModal = ref(false);
@@ -558,49 +574,14 @@ const table_width = [
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">품목코드</FormLabel>
-          <FormInput
-            id="vertical-form-1"
-            type="text"
-            v-model="insertModalData.품목코드"
-            placeholder=""
-          />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">거래처명</FormLabel>
-          <FormInput
-            id="vertical-form-1"
-            type="text"
-            v-model="insertModalData.거래처명"
-            placeholder=""
-          />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">품명</FormLabel>
-          <FormInput
-            id="vertical-form-1"
-            type="text"
-            v-model="insertModalData.품명"
-            placeholder=""
-          />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-1">규격</FormLabel>
-          <FormInput
-            id="vertical-form-1"
-            type="text"
-            v-model="insertModalData.규격"
-            placeholder=""
-          />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">단위</FormLabel>
-          <FormInput
-            id="vertical-form-2"
-            type="text"
-            v-model="insertModalData.단위"
-            placeholder=""
-          />
+          <FormLabel htmlFor="vertical-form-2">품목코드</FormLabel>
+          <FormSelect v-model="insertModalData">
+            <option :value="p" v-for="p in product.dataAll.value" :key="p.NO">
+              {{ p.품목코드 }} # 품명:{{ p.품명 }} # 규격:{{ p.규격 }} # 단위:{{
+                p.단위
+              }}
+            </option>
+          </FormSelect>
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">출고수</FormLabel>
@@ -626,10 +607,7 @@ const table_width = [
             variant="primary"
             @click="
               () => {
-                insertData(insertModalData);
-                setInsertModal(false);
-                search();
-                pageChange();
+                insertDataFunction();
               }
             "
             >확인</Button
