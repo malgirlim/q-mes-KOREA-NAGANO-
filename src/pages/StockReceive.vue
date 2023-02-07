@@ -70,9 +70,21 @@ let insertModalData: StockReceive; // 등록할 변수
 // 등록 함수
 const insertDataFunction = () => {
   if (insertModalData.NO > 0) {
-    insertModalData = product.dataAll.value.filter(
+    insertModalData.품목코드 = product.dataAll.value.filter(
       (c) => c.NO === insertModalData.NO
-    )[0];
+    )[0].품목코드;
+    insertModalData.품명 = product.dataAll.value.filter(
+      (c) => c.NO === insertModalData.NO
+    )[0].품명;
+    insertModalData.거래처명 = product.dataAll.value.filter(
+      (c) => c.NO === insertModalData.NO
+    )[0].거래처명;
+    insertModalData.규격 = product.dataAll.value.filter(
+      (c) => c.NO === insertModalData.NO
+    )[0].규격;
+    insertModalData.단위 = product.dataAll.value.filter(
+      (c) => c.NO === insertModalData.NO
+    )[0].단위;
     insertModalData.입고일시 = moment().format("YYYY-MM-DD HH:mm:ss");
     insertData(insertModalData);
     setInsertModal(false);
