@@ -305,7 +305,12 @@ const resetCheckBox = () => {
           <Button
             variant="outline-danger"
             class="px-2 py-1 mr-2"
-            @click="setEditModal(true)"
+            @click="
+              () => {
+                checkDebug = [todo.NO];
+                setDeleteConfirmationModal(true);
+              }
+            "
           >
             삭제
           </Button>
