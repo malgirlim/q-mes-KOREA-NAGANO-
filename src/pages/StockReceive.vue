@@ -608,18 +608,13 @@ const table_width = [
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">품목코드</FormLabel>
-          <select v-tom v-model="insertModalData.NO">
-            <option value="" selected>=== 필수선택 ===</option>
-            <option
-              :value="p.NO"
-              v-for="p in product.dataAll.value"
-              :key="p.NO"
-            >
+          <TomSelect v-model="insertModalData.품목코드">
+            <option :value="p" v-for="p in product.dataAll.value" :key="p.NO">
               {{ p.품목코드 }} # 품명:{{ p.품명 }} # 규격:{{ p.규격 }} # 단위:{{
                 p.단위
               }}
             </option>
-          </select>
+          </TomSelect>
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-7">입고수</FormLabel>
