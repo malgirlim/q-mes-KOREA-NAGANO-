@@ -253,13 +253,15 @@ const resetCheckBox = () => {
           class="flex flex-col items-center p-5 border-b lg:flex-row border-slate-200/60 dark:border-darkmode-400"
         >
           <div class="mt-3 text-center lg:ml-2 lg:mr-auto lg:text-left lg:mt-0">
-            <span class="font-medium"> 박명한 (malgirlim)</span>
+            <span class="font-medium">
+              {{ todo.이름 }} ({{ todo.아이디 }})</span
+            >
             <div class="text-slate-500 text-xs mt-0.5">
-              스마트사업부 / 기술개발팀
+              {{ todo.부서 }}
             </div>
             <div class="text-slate-500 text-xs mt-0.5">
-              <span class="mr-3"><b>Mobile.</b> 010-3258-2466</span>
-              <span><b>E-mail.</b> pica001@naver.com</span>
+              <span class="mr-3"><b>Mobile.</b> {{ todo.연락처 }}</span>
+              <span><b>E-mail.</b> {{ todo.이메일 }}</span>
             </div>
           </div>
           <div
@@ -303,7 +305,12 @@ const resetCheckBox = () => {
           <Button
             variant="outline-danger"
             class="px-2 py-1 mr-2"
-            @click="setEditModal(true)"
+            @click="
+              () => {
+                checkDebug = [todo.NO];
+                setDeleteConfirmationModal(true);
+              }
+            "
           >
             삭제
           </Button>
