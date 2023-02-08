@@ -100,7 +100,7 @@ const insertDataFunction = () => {
 };
 // TomSelect 에 필요한 함수
 const vTom = {
-  mounted(el: any, binding: any, vnode: any) {
+  mounted(el: any, binding: any, _vnode: any) {
     const options = binding.value || {};
     const defaultOptions = {
       onInitialize: function () {
@@ -117,6 +117,18 @@ const vTom = {
       delete el.tomselect;
     }
   },
+};
+// 불량명에 따라 불량내용 불러오기
+const badContent = ref();
+const changeBadValue = (event: any) => {
+  badContent.value = JSON.parse(
+    JSON.stringify(
+      bad.dataAll.value.filter((v) => v.불량명 === event.target.value)
+    )
+  );
+};
+const changeBadContent = () => {
+  console.log(badContent);
 };
 
 //수정 Modal
@@ -146,7 +158,7 @@ const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
 const now2 = ref("전체기간");
 // now2가 변경되면 실행
-watch([now2], (newValue, oldValue) => {
+watch([now2], (_newValue, _oldValue) => {
   search();
   pageChange();
 });
@@ -668,32 +680,35 @@ const table_width = [
         <!--수정필요-->
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">불량명</FormLabel>
-          <FormSelect class="sm:mt-2 sm:mr-2" v-model="insertModalData.불량명">
+          <select
+            v-tom
+            v-model="insertModalData.불량명"
+            @change="changeBadValue($event)"
+          >
+            <option value="" selected>=== 불량선택 ===</option>
             <option
               :value="b.불량명"
-              v-for="b in bad.dataAll.value"
+              v-for="b in [...new Set(bad.dataAll.value)]"
               :key="b.NO"
             >
               {{ b.불량명 }}
             </option>
-          </FormSelect>
+          </select>
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">불량내용</FormLabel>
-          <FormSelect
-            class="sm:mt-2 sm:mr-2"
-            v-model="insertModalData.불량내용"
-          >
-            <option
-              :value="bad_content.불량내용"
-              v-for="bad_content in bad.dataAll.value.filter(
-                (c) => c.불량명 === insertModalData.불량명
-              )"
-              :key="bad_content.NO"
-            >
-              {{ bad_content.불량내용 }}
-            </option>
-          </FormSelect>
+          <div :key="badContent">
+            <select v-tom v-model="insertModalData.불량내용">
+              <option value="" selected>=== 불량내용선택 ===</option>
+              <option
+                :value="bc.불량내용"
+                v-for="bc in badContent"
+                :key="bc.NO"
+              >
+                {{ bc.불량내용 }}
+              </option>
+            </select>
+          </div>
         </div>
         <!--수정필요-->
         <div class="mt-3">

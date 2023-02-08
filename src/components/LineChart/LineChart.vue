@@ -12,11 +12,11 @@ const props = defineProps<{
   height?: number;
   lineColor?: string;
   data_labels?: [];
-  data_set?: {
+  data_set: {
     target_label?: string;
-    target_data?: [];
+    target_data: [];
     output_label?: string;
-    output_data?: [];
+    output_data: [];
   };
 }>();
 
@@ -44,8 +44,8 @@ const data = computed<ChartData>(() => {
       {
         // label: "2023",
         // data: [220, 340, 560, 4710],
-        label: props.data_set?.target_label,
-        data: props.data_set?.target_data,
+        label: props.data_set.target_label,
+        data: props.data_set.target_data,
         borderWidth: 2,
         borderColor: colorScheme.value ? getColor("primary") : "",
         backgroundColor: "transparent",
@@ -55,8 +55,8 @@ const data = computed<ChartData>(() => {
       {
         // label: "2022",
         // data: [0, 300, 400, 560, 320, 600, 720, 850, 690, 805, 1200, 1010],
-        label: props.data_set?.output_label,
-        data: props.data_set?.output_data,
+        label: props.data_set.output_label,
+        data: props.data_set.output_data,
         borderWidth: 2,
         borderDash: [2, 2],
         borderColor: darkMode.value

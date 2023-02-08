@@ -25,13 +25,20 @@ onMounted(async () => {
   await monitor_safe.loadDatas();
   await monitor_kpi_prod.loadDatas();
   await monitor_kpi_stock.loadDatas();
-  setInterval(() => {
+  setInterval(async () => {
+    await monitor_stock.searchDatas(
+      "22/01/01 - " + moment().add(-1, "days").format("YY/MM/DD"),
+      "전체",
+      ""
+    );
+    const monitor_stock_data_past = monitor_stock.datas.value;
     monitor_stock.searchDatas(
       "22/01/01 - " + moment().format("YY/MM/DD"),
       "전체",
       ""
     );
-  }, 6000);
+    const monitor_stock_data_current = monitor_stock.datas.value;
+  }, 60000);
 
   setInterval(() => {
     now.value = moment().format("YYYY-MM-DD HH:mm:ss");
