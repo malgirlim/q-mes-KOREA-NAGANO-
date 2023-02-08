@@ -19,23 +19,23 @@ const darkMode = computed(() => useDarkModeStore().darkMode);
 const data = computed<ChartData>(() => {
   return {
     labels: [
-      "1월",
-      "2월",
-      "3월",
-      "4월",
-      "5월",
-      "6월",
-      "7월",
-      "8월",
-      "9월",
-      "10월",
-      "11월",
-      "12월",
+      "08시",
+      "09시",
+      "10시",
+      "11시",
+      "12시",
+      "13시",
+      "14시",
+      "15시",
+      "16시",
+      "17시",
+      "18시",
+      "19시",
     ],
     datasets: [
       {
-        label: "2023",
-        data: [220, 340, 560, 4710],
+        label: "1시간",
+        data: [0, 1, 2, 3, 4, 0, 2, 2, 3, 3, 2, 2],
         borderWidth: 2,
         borderColor: colorScheme.value ? getColor("primary") : "",
         backgroundColor: "transparent",
@@ -43,8 +43,8 @@ const data = computed<ChartData>(() => {
         tension: 0.4,
       },
       {
-        label: "2022",
-        data: [0, 300, 400, 560, 320, 600, 720, 850, 690, 805, 1200, 1010],
+        label: "누적",
+        data: [0, 1, 3, 6, 10, 10, 12, 14, 17, 20, 22, 24],
         borderWidth: 2,
         borderDash: [2, 2],
         borderColor: darkMode.value
@@ -77,7 +77,7 @@ const options = computed<ChartOptions>(() => {
           color: getColor("slate.500", 0.8),
         },
         grid: {
-          display: false,
+          display: true,
           drawBorder: false,
         },
       },

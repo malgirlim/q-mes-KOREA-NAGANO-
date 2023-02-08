@@ -150,9 +150,9 @@ const table_width = [
                         </Tippy>
                       </div>
                     </div>
-                    <div class="mt-6 text-3xl font-medium leading-8">2</div>
+                    <div class="mt-6 text-3xl font-medium leading-8">2 /10</div>
                     <div class="mt-1 text-base text-slate-500">
-                      실시간 생산량 (최근 1시간)
+                      실시간 생산 현황 (현재/누적)
                     </div>
                   </div>
                 </div>
@@ -270,30 +270,24 @@ const table_width = [
             <div
               class="text-lg font-medium text-primary dark:text-slate-300 xl:text-xl"
             >
-              4,710개
+              2개
             </div>
-            <div class="mt-0.5 text-slate-500">이번 달</div>
+            <div class="mt-0.5 text-slate-500">1시간</div>
           </div>
           <div
             class="w-px h-12 mx-4 border border-r border-dashed border-slate-200 dark:border-darkmode-300 xl:mx-5"
           ></div>
           <div>
             <div class="text-lg font-medium text-slate-500 xl:text-xl">
-              2,130개
+              10개
             </div>
-            <div class="mt-0.5 text-slate-500">지난 달</div>
+            <div class="mt-0.5 text-slate-500">누적</div>
           </div>
         </div>
       </div>
-      <div
-        :class="[
-          'relative',
-          'before:content-[\'\'] before:block before:absolute before:w-16 before:left-0 before:top-0 before:bottom-0 before:ml-10 before:mb-7 before:bg-gradient-to-r before:from-white before:via-white/80 before:to-transparent before:dark:from-darkmode-600',
-          'after:content-[\'\'] after:block after:absolute after:w-16 after:right-0 after:top-0 after:bottom-0 after:mb-7 after:bg-gradient-to-l after:from-white after:via-white/80 after:to-transparent after:dark:from-darkmode-600',
-        ]"
-      >
-        <div><LineChart1 :height="300" class="mt-6 -mb-6" /></div>
-      </div>
+      <div class="text-lg font-medium text-center -mt-10">실시간 생산 현황</div>
+
+      <div><LineChart1 :height="300" class="mt-5 -mb-6" /></div>
     </div>
     <!--KPI 시간당 생산량 차트-->
     <div v-if="bottom == bottom_list[1]" class="p-5 mt-12 intro-y box sm:mt-5">
@@ -318,15 +312,11 @@ const table_width = [
           </div>
         </div>
       </div>
-      <div
-        :class="[
-          'relative',
-          'before:content-[\'\'] before:block before:absolute before:w-16 before:left-0 before:top-0 before:bottom-0 before:ml-10 before:mb-7 before:bg-gradient-to-r before:from-white before:via-white/80 before:to-transparent before:dark:from-darkmode-600',
-          'after:content-[\'\'] after:block after:absolute after:w-16 after:right-0 after:top-0 after:bottom-0 after:mb-7 after:bg-gradient-to-l after:from-white after:via-white/80 after:to-transparent after:dark:from-darkmode-600',
-        ]"
-      >
-        <div><LineChart2 :height="300" class="mt-6 -mb-6" /></div>
+      <div class="text-lg font-medium text-center -mt-10">
+        KPI - 월 평균 시간당 생산량
       </div>
+
+      <div><LineChart2 :height="300" class="mt-5 -mb-6" /></div>
     </div>
     <!--KPI 재고비용 차트-->
     <div v-if="bottom == bottom_list[2]" class="p-5 mt-12 intro-y box sm:mt-5">
@@ -351,15 +341,10 @@ const table_width = [
           </div>
         </div>
       </div>
-      <div
-        :class="[
-          'relative',
-          'before:content-[\'\'] before:block before:absolute before:w-16 before:left-0 before:top-0 before:bottom-0 before:ml-10 before:mb-7 before:bg-gradient-to-r before:from-white before:via-white/80 before:to-transparent before:dark:from-darkmode-600',
-          'after:content-[\'\'] after:block after:absolute after:w-16 after:right-0 after:top-0 after:bottom-0 after:mb-7 after:bg-gradient-to-l after:from-white after:via-white/80 after:to-transparent after:dark:from-darkmode-600',
-        ]"
-      >
-        <div><LineChart3 :height="300" class="mt-6 -mb-6" /></div>
+      <div class="text-lg font-medium text-center -mt-10">
+        KPI / 월간 재고 비용 절감률
       </div>
+      <div><LineChart3 :height="300" class="mt-5 -mb-6" /></div>
     </div>
     <!-- END: Chart -->
     <!--안전재고 미달 리스트-->
@@ -385,6 +370,10 @@ const table_width = [
           </div>
         </div>
       </div>
+      <div class="text-lg font-medium text-center -mt-10">
+        안전재고 미달 리스트
+      </div>
+
       <!-- BEGIN: Data List -->
       <!-- style="height: calc(100vh - 350px)" : 브라우저 화면 창크기에 맞게 변경됨 -->
       <div
