@@ -47,7 +47,7 @@ onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오�
 // 조회
 const search = () => {
   // console.log(searchKey.value, searchInput.value);
-  searchDatas("", searchKey.value, searchInput.value);
+  searchDatas(now2.value, searchKey.value, searchInput.value);
 };
 
 // 날짜 구하기
@@ -55,7 +55,12 @@ const now = moment().format("YYYY-MM-DD");
 const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
 const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
-const now2 = "전체기간";
+const now2 = ref("전체기간");
+// now2가 변경되면 실행
+watch([now2], (newValue, oldValue) => {
+  search();
+  pageChange();
+});
 
 // 날짜 리셋
 const reset_date = () => {
@@ -377,7 +382,9 @@ const table_width = [
               <Table.Td
                 :class="[
                   'first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]',
-                  { 'text-danger': todo.부족재고수! > 0 },
+                  {
+                    'text-danger': (todo.부족재고수 ? todo.부족재고수 : 0) > 0,
+                  },
                 ]"
                 :style="table_width[6]"
               >
@@ -392,7 +399,9 @@ const table_width = [
               <Table.Td
                 :class="[
                   'first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]',
-                  { 'text-danger': todo.부족재고수! > 0 },
+                  {
+                    'text-danger': (todo.부족재고수 ? todo.부족재고수 : 0) > 0,
+                  },
                 ]"
                 :style="table_width[8]"
               >

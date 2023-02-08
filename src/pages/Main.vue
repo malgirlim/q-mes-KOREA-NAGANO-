@@ -13,11 +13,27 @@ import PaginationComponent from "../components/Pagination/PaginationComponent.vu
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
-import { MonitorSafe } from "../interfaces/menu/monitorInterface";
+import {
+  MonitorKpiProd,
+  MonitorKpiStock,
+  MonitorSafe,
+  MonitorStock,
+} from "../interfaces/menu/monitorInterface";
 
 // #####  페이지 로딩 시 데이터 불러오기 및 5초마다 데이터 다시 불러오기  #####
 onMounted(async () => {
   await monitor_safe.loadDatas();
+  await monitor_kpi_prod.loadDatas();
+  await monitor_kpi_stock.loadDatas();
+  setInterval(() => {
+    let monitor_stock_data = monitor_stock.searchDatas(
+      "22/01/01 - " + moment().format("YY/MM/DD"),
+      "전체",
+      ""
+    );
+    console.log(monitor_stock_data);
+  }, 6000);
+
   setInterval(() => {
     now.value = moment().format("YYYY-MM-DD HH:mm:ss");
   }, 1000);
@@ -32,9 +48,39 @@ const pageChange = () => {
   currentPage.value = 1;
 };
 
+// api 보내기 - 실시간 생산량
+
+// api 보내기 - 월 평균 시간당 생산량
+const monitor_kpi_prod_url = "/api/monitor/kpi-prod";
+const monitor_kpi_prod = useSendApi<MonitorKpiProd>(
+  monitor_kpi_prod_url,
+  currentPage,
+  rowsPerPage
+);
+
+// api 보내기 - 월간 재고비용 절감률
+const monitor_kpi_stock_url = "/api/monitor/kpi-stock";
+const monitor_kpi_stock = useSendApi<MonitorKpiStock>(
+  monitor_kpi_stock_url,
+  currentPage,
+  rowsPerPage
+);
+
 // api 보내기 - 안전재고 미달
-const url = "/api/monitor/safe";
-const monitor_safe = useSendApi<MonitorSafe>(url, currentPage, rowsPerPage);
+const monitor_safe_url = "/api/monitor/safe";
+const monitor_safe = useSendApi<MonitorSafe>(
+  monitor_safe_url,
+  currentPage,
+  rowsPerPage
+);
+
+// 안전재고 미달 어제 대비 상승 구하기
+const monitor_stock_url = "/api/monitor/stock";
+const monitor_stock = useSendApi<MonitorStock>(
+  monitor_stock_url,
+  currentPage,
+  rowsPerPage
+);
 
 // 날짜 구하기
 const now = ref(moment().format("YYYY-MM-DD HH:mm:ss"));
@@ -198,7 +244,9 @@ const table_width = [
                         </Tippy>
                       </div>
                     </div>
-                    <div class="mt-6 text-3xl font-medium leading-8">3</div>
+                    <div class="mt-6 text-3xl font-medium leading-8">
+                      {{ monitor_safe.dataCount }}
+                    </div>
                     <div class="mt-1 text-base text-slate-500">
                       안전재고 미달
                     </div>
@@ -418,7 +466,7 @@ const table_width = [
             </Table.Thead>
             <Table.Tbody style="position: relative; z-index: 1">
               <Table.Tr
-                v-for="(todo, index) in monitor_safe.datas.value"
+                v-for="(todo, index) in monitor_safe.dataAll.value"
                 :key="todo.NO"
                 class="intro-x"
               >

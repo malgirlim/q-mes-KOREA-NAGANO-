@@ -55,7 +55,12 @@ const now = moment().format("YYYY-MM-DD");
 const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
 const max_year = moment().format("YYYY");
 const min_year = moment().add(-3, "years").format("YYYY");
-const now2 = "전체기간";
+const now2 = ref("전체기간");
+// now2가 변경되면 실행
+watch([now2], (newValue, oldValue) => {
+  search();
+  pageChange();
+});
 
 // 날짜 리셋
 const reset_date = () => {
