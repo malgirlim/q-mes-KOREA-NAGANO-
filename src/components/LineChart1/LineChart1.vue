@@ -93,7 +93,7 @@ const options = computed<ChartOptions>(() => {
         },
         grid: {
           color: darkMode.value
-            ? getColor("slate.500", 0.3)
+            ? getColor("slate.500", 0.8)
             : getColor("slate.300"),
           borderDash: [2, 2],
           drawBorder: false,
