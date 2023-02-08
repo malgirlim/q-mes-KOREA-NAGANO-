@@ -17,14 +17,13 @@ import { MonitorSafe } from "../interfaces/menu/monitorInterface";
 
 // #####  페이지 로딩 시 데이터 불러오기 및 5초마다 데이터 다시 불러오기  #####
 onMounted(async () => {
-  await loadDatas();
+  await monitor_safe.loadDatas();
   setInterval(() => {
     now.value = moment().format("YYYY-MM-DD HH:mm:ss");
   }, 1000);
 });
 
 // 페이징기능
-
 const currentPage = ref(1); // 현재페이지
 const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
 
@@ -33,19 +32,9 @@ const pageChange = () => {
   currentPage.value = 1;
 };
 
-// api 보내기
+// api 보내기 - 안전재고 미달
 const url = "/api/monitor/safe";
-const {
-  datas,
-  dataCount,
-  datasAreLoading,
-  loadDatas,
-  searchDatas,
-  insertData,
-  editData,
-  deleteData,
-  numberOfPages,
-} = useSendApi<MonitorSafe>(url, currentPage, rowsPerPage);
+const monitor_safe = useSendApi<MonitorSafe>(url, currentPage, rowsPerPage);
 
 // 날짜 구하기
 const now = ref(moment().format("YYYY-MM-DD HH:mm:ss"));
@@ -149,7 +138,7 @@ const table_width = [
                     </div>
                     <div class="mt-6 text-3xl font-medium leading-8">12</div>
                     <div class="mt-1 text-base text-slate-500">
-                      KPI / 시간당 생산량
+                      KPI / 월 평균 시간당 생산량
                     </div>
                   </div>
                 </div>
@@ -180,7 +169,7 @@ const table_width = [
                     </div>
                     <div class="mt-6 text-3xl font-medium leading-8">92%</div>
                     <div class="mt-1 text-base text-slate-500">
-                      KPI / 재고 비용 절감률
+                      KPI / 월간 재고 비용 절감률
                     </div>
                   </div>
                 </div>
@@ -256,7 +245,7 @@ const table_width = [
           'after:content-[\'\'] after:block after:absolute after:w-16 after:right-0 after:top-0 after:bottom-0 after:mb-7 after:bg-gradient-to-l after:from-white after:via-white/80 after:to-transparent after:dark:from-darkmode-600',
         ]"
       >
-        <div><LineChart1 :height="275" class="mt-6 -mb-6" /></div>
+        <div><LineChart1 :height="300" class="mt-6 -mb-6" /></div>
       </div>
     </div>
     <!--KPI 시간당 생산량 차트-->
@@ -289,7 +278,7 @@ const table_width = [
           'after:content-[\'\'] after:block after:absolute after:w-16 after:right-0 after:top-0 after:bottom-0 after:mb-7 after:bg-gradient-to-l after:from-white after:via-white/80 after:to-transparent after:dark:from-darkmode-600',
         ]"
       >
-        <div><LineChart2 :height="275" class="mt-6 -mb-6" /></div>
+        <div><LineChart2 :height="300" class="mt-6 -mb-6" /></div>
       </div>
     </div>
     <!--KPI 재고비용 차트-->
@@ -322,7 +311,7 @@ const table_width = [
           'after:content-[\'\'] after:block after:absolute after:w-16 after:right-0 after:top-0 after:bottom-0 after:mb-7 after:bg-gradient-to-l after:from-white after:via-white/80 after:to-transparent after:dark:from-darkmode-600',
         ]"
       >
-        <div><LineChart3 :height="275" class="mt-6 -mb-6" /></div>
+        <div><LineChart3 :height="300" class="mt-6 -mb-6" /></div>
       </div>
     </div>
     <!-- END: Chart -->
@@ -355,7 +344,10 @@ const table_width = [
         class="col-span-12 overflow-auto intro-y lg:overflow-visible"
         id="printMe"
       >
-        <div class="mt-5">
+        <div
+          class="mt-5"
+          style="overflow-y: scroll; overflow-x: hidden; height: 300px"
+        >
           <Table class="border-spacing-y-[10px] border-separate -mt-2">
             <Table.Thead
               class="bg-slate-100"
@@ -426,7 +418,7 @@ const table_width = [
             </Table.Thead>
             <Table.Tbody style="position: relative; z-index: 1">
               <Table.Tr
-                v-for="(todo, index) in datas"
+                v-for="(todo, index) in monitor_safe.datas.value"
                 :key="todo.NO"
                 class="intro-x"
               >
@@ -496,7 +488,10 @@ const table_width = [
               </Table.Tr>
             </Table.Tbody>
           </Table>
-          <div class="text-center mt-20" v-if="dataCount == 0">
+          <div
+            class="text-center mt-20"
+            v-if="monitor_safe.dataCount.value == 0"
+          >
             저장된 데이터가 없습니다.
           </div>
         </div>

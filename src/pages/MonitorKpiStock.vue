@@ -415,7 +415,7 @@ const table_width = [
           <FormLabel htmlFor="vertical-form-1">연월</FormLabel>
           <FormInput
             id="vertical-form-1"
-            type="text"
+            type="month"
             v-model="insertModalData.연월"
             placeholder=""
           />
@@ -485,7 +485,7 @@ const table_width = [
           <FormLabel htmlFor="vertical-form-1">연월</FormLabel>
           <FormInput
             id="vertical-form-1"
-            type="text"
+            type="month"
             v-model="editModalData.연월"
             placeholder=""
           />
