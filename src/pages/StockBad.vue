@@ -832,19 +832,35 @@ const table_width = [
         <!-- 수정 필요 -->
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">불량명</FormLabel>
-          <FormSelect class="sm:mt-2 sm:mr-2" v-model="editModalData.불량명">
-            <option>오염</option>
-            <option>박리</option>
-            <option>사이즈</option>
-          </FormSelect>
+          <select
+            v-tom
+            v-model="editModalData.불량명"
+            @change="changeBadValue($event)"
+          >
+            <option value="" selected>=== 불량선택 ===</option>
+            <option
+              :value="b.불량명"
+              v-for="b in [...new Set(bad.dataAll.value)]"
+              :key="b.NO"
+            >
+              {{ b.불량명 }}
+            </option>
+          </select>
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">불량내용</FormLabel>
-          <FormSelect class="sm:mt-2 sm:mr-2" v-model="editModalData.불량내용">
-            <option>원단 오염</option>
-            <option>포장 오염</option>
-            <option>내부 오염</option>
-          </FormSelect>
+          <div :key="badContent">
+            <select v-tom v-model="editModalData.불량내용">
+              <option value="" selected>=== 불량내용선택 ===</option>
+              <option
+                :value="bc.불량내용"
+                v-for="bc in badContent"
+                :key="bc.NO"
+              >
+                {{ bc.불량내용 }}
+              </option>
+            </select>
+          </div>
         </div>
         <!-- 수정 필요 -->
         <div class="mt-3">

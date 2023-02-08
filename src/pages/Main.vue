@@ -20,31 +20,6 @@ import {
   MonitorStock,
 } from "../interfaces/menu/monitorInterface";
 
-// #####  페이지 로딩 시 데이터 불러오기 및 5초마다 데이터 다시 불러오기  #####
-onMounted(async () => {
-  await monitor_safe.loadDatas();
-  await monitor_kpi_prod.loadDatas();
-  await monitor_kpi_stock.loadDatas();
-  setInterval(async () => {
-    await monitor_stock.searchDatas(
-      "22/01/01 - " + moment().add(-1, "days").format("YY/MM/DD"),
-      "전체",
-      ""
-    );
-    const monitor_stock_data_past = monitor_stock.datas.value;
-    monitor_stock.searchDatas(
-      "22/01/01 - " + moment().format("YY/MM/DD"),
-      "전체",
-      ""
-    );
-    const monitor_stock_data_current = monitor_stock.datas.value;
-  }, 60000);
-
-  setInterval(() => {
-    now.value = moment().format("YYYY-MM-DD HH:mm:ss");
-  }, 1000);
-});
-
 // 페이징기능
 const currentPage = ref(1); // 현재페이지
 const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
@@ -80,13 +55,50 @@ const monitor_safe = useSendApi<MonitorSafe>(
   rowsPerPage
 );
 
-// 안전재고 미달 어제 대비 상승 구하기
+// api 보내기 - 안전재고 미달 어제 대비 수량 구하기
 const monitor_stock_url = "/api/monitor/stock";
 const monitor_stock = useSendApi<MonitorStock>(
   monitor_stock_url,
   currentPage,
   rowsPerPage
 );
+const monitor_stock_data_calculate = ref(0); // 안전재고 미달 어제 대비 수량
+
+// #####  페이지 로딩 시 데이터 불러오기 및 5초마다 데이터 다시 불러오기  #####
+onMounted(async () => {
+  loadData(); // ##### 가져올 데이터 참고
+  setInterval(async () => {
+    loadData();
+  }, 10000);
+
+  setInterval(() => {
+    now.value = moment().format("YYYY-MM-DD HH:mm:ss");
+  }, 1000);
+});
+// ###########  가져올 데이터 ##########
+const loadData = async () => {
+  await monitor_kpi_prod.loadDatas();
+  await monitor_kpi_stock.loadDatas();
+  await monitor_safe.loadDatas();
+  await monitor_stock.searchDatas(
+    "22/01/01 - " + moment().add(-1, "days").format("YY/MM/DD"),
+    "전체",
+    ""
+  );
+  const monitor_stock_data_past = monitor_stock.datas.value.filter(
+    (v) => (v.부족재고수 ? v.부족재고수 : 0) > 0
+  );
+  await monitor_stock.searchDatas(
+    "22/01/01 - " + moment().format("YY/MM/DD"),
+    "전체",
+    ""
+  );
+  const monitor_stock_data_current = monitor_stock.datas.value.filter(
+    (v) => (v.부족재고수 ? v.부족재고수 : 0) > 0
+  );
+  monitor_stock_data_calculate.value =
+    monitor_stock_data_current.length - monitor_stock_data_past.length;
+};
 
 // 날짜 구하기
 const now = ref(moment().format("YYYY-MM-DD HH:mm:ss"));
@@ -157,9 +169,9 @@ const table_width = [
                         </Tippy>
                       </div>
                     </div>
-                    <div class="mt-6 text-3xl font-medium leading-8">2 /10</div>
+                    <div class="mt-6 text-3xl font-medium leading-8">100</div>
                     <div class="mt-1 text-base text-slate-500">
-                      실시간 생산 현황 (현재/누적)
+                      금일 생산 현황
                     </div>
                   </div>
                 </div>
@@ -181,14 +193,28 @@ const table_width = [
                         <Tippy
                           as="div"
                           class="cursor-pointer bg-success py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
-                          content="어제보다 2개 감소"
+                          :content="
+                            '어제보다 ' +
+                            (Number(monitor_kpi_prod.datas.value[0]?.측정치) -
+                              Number(monitor_kpi_prod.datas.value[1]?.측정치)) +
+                            '개'
+                          "
+                          :key="monitor_kpi_prod.datas.value"
                         >
-                          2개
+                          {{
+                            Number(monitor_kpi_prod.datas.value[0]?.측정치) -
+                            Number(monitor_kpi_prod.datas.value[1]?.측정치)
+                          }}개
                           <Lucide icon="ChevronDown" class="w-4 h-4 ml-0.5" />
                         </Tippy>
                       </div>
                     </div>
-                    <div class="mt-6 text-3xl font-medium leading-8">12</div>
+                    <div class="mt-6 text-3xl font-medium leading-8">
+                      현재 :
+                      {{ monitor_kpi_prod.datas.value[0]?.측정치 }}
+                      / 목표 :
+                      {{ monitor_kpi_prod.datas.value[0]?.목표치 }}
+                    </div>
                     <div class="mt-1 text-base text-slate-500">
                       KPI / 월 평균 시간당 생산량
                     </div>
@@ -212,14 +238,74 @@ const table_width = [
                         <Tippy
                           as="div"
                           class="cursor-pointer bg-danger py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
-                          content="어제보다 12% 상승"
+                          :content="
+                            '어제보다 ' +
+                            (
+                              ((Number(
+                                monitor_kpi_stock.datas.value[0]?.목표치
+                              ) -
+                                Number(
+                                  monitor_kpi_stock.datas.value[0]?.측정치
+                                )) /
+                                Number(
+                                  monitor_kpi_stock.datas.value[0]?.목표치
+                                ) -
+                                (Number(
+                                  monitor_kpi_stock.datas.value[1]?.목표치
+                                ) -
+                                  Number(
+                                    monitor_kpi_stock.datas.value[1]?.측정치
+                                  )) /
+                                  Number(
+                                    monitor_kpi_stock.datas.value[1]?.목표치
+                                  )) *
+                              100
+                            ).toFixed(2) +
+                            '%'
+                          "
+                          :key="monitor_kpi_stock.datas.value"
                         >
-                          12%
+                          {{
+                            (
+                              ((Number(
+                                monitor_kpi_stock.datas.value[0]?.목표치
+                              ) -
+                                Number(
+                                  monitor_kpi_stock.datas.value[0]?.측정치
+                                )) /
+                                Number(
+                                  monitor_kpi_stock.datas.value[0]?.목표치
+                                ) -
+                                (Number(
+                                  monitor_kpi_stock.datas.value[1]?.목표치
+                                ) -
+                                  Number(
+                                    monitor_kpi_stock.datas.value[1]?.측정치
+                                  )) /
+                                  Number(
+                                    monitor_kpi_stock.datas.value[1]?.목표치
+                                  )) *
+                              100
+                            ).toFixed(2)
+                          }}%
                           <Lucide icon="ChevronUp" class="w-4 h-4 ml-0.5" />
                         </Tippy>
                       </div>
                     </div>
-                    <div class="mt-6 text-3xl font-medium leading-8">92%</div>
+                    <div class="mt-6 text-3xl font-medium leading-8">
+                      현재 :
+                      {{ monitor_kpi_stock.datas.value[0]?.측정치 }}
+                      / 목표 :
+                      {{ monitor_kpi_stock.datas.value[0]?.목표치 }} 달성율 :
+                      {{
+                        (
+                          ((Number(monitor_kpi_stock.datas.value[0]?.목표치) -
+                            Number(monitor_kpi_stock.datas.value[0]?.측정치)) /
+                            Number(monitor_kpi_stock.datas.value[0]?.목표치)) *
+                          100
+                        ).toFixed(2)
+                      }}%
+                    </div>
                     <div class="mt-1 text-base text-slate-500">
                       KPI / 월간 재고 비용 절감률
                     </div>
@@ -243,9 +329,12 @@ const table_width = [
                         <Tippy
                           as="div"
                           class="cursor-pointer bg-danger py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
-                          content="어제보다 3건 상승"
+                          :content="
+                            '어제보다 ' + monitor_stock_data_calculate + '건'
+                          "
+                          :key="monitor_stock_data_calculate"
                         >
-                          3건
+                          {{ monitor_stock_data_calculate }}건
                           <Lucide icon="ChevronUp" class="w-4 h-4 ml-0.5" />
                         </Tippy>
                       </div>
