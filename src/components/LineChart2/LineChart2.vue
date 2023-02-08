@@ -34,8 +34,8 @@ const data = computed<ChartData>(() => {
     ],
     datasets: [
       {
-        label: "2023",
-        data: [10, 20, 30, 50],
+        label: "측정치",
+        data: [12, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         borderWidth: 2,
         borderColor: colorScheme.value ? getColor("primary") : "",
         backgroundColor: "transparent",
@@ -43,8 +43,8 @@ const data = computed<ChartData>(() => {
         tension: 0.4,
       },
       {
-        label: "2022",
-        data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 80, 90, 100],
+        label: "목표치",
+        data: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15],
         borderWidth: 2,
         borderDash: [2, 2],
         borderColor: darkMode.value
@@ -77,7 +77,7 @@ const options = computed<ChartOptions>(() => {
           color: getColor("slate.500", 0.8),
         },
         grid: {
-          display: false,
+          display: true,
           drawBorder: false,
         },
       },

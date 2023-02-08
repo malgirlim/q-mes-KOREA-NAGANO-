@@ -302,13 +302,13 @@ const table_width2 = [
                     거래처명
                   </Table.Th>
                   <Table.Th
-                    class="text-center border-b-0 whitespace-nowrap"
+                    class="border-b-0 whitespace-nowrap"
                     :style="table_width[4]"
                   >
                     품명
                   </Table.Th>
                   <Table.Th
-                    class="text-center border-b-0 whitespace-nowrap"
+                    class="border-b-0 whitespace-nowrap"
                     :style="table_width[5]"
                   >
                     규격
@@ -370,7 +370,7 @@ const table_width2 = [
                   </Table.Td>
                   <Table.Td
                     :class="[
-                      'first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]',
+                      'first:rounded-l-md last:rounded-r-md w-10 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]',
                       { 'bg-warning': radioSelect[0] == todo.NO },
                     ]"
                     :style="table_width[4]"
@@ -379,7 +379,7 @@ const table_width2 = [
                   </Table.Td>
                   <Table.Td
                     :class="[
-                      'first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]',
+                      'first:rounded-l-md last:rounded-r-md w-10 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]',
                       { 'bg-warning': radioSelect[0] == todo.NO },
                     ]"
                     :style="table_width[5]"
@@ -510,7 +510,7 @@ const table_width2 = [
                     원자재코드
                   </Table.Th>
                   <Table.Th
-                    class="text-center border-b-0 whitespace-nowrap"
+                    class="border-b-0 whitespace-nowrap"
                     :style="table_width2[2]"
                   >
                     원자재명
@@ -519,7 +519,7 @@ const table_width2 = [
                     class="text-center border-b-0 whitespace-nowrap"
                     :style="table_width2[3]"
                   >
-                    수량
+                    구성수량
                   </Table.Th>
                   <Table.Th
                     class="text-center border-b-0 whitespace-nowrap"
@@ -563,7 +563,7 @@ const table_width2 = [
                     <div>{{ todo.원자재코드 }}</div>
                   </Table.Td>
                   <Table.Td
-                    class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                    class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                     :style="table_width2[2]"
                   >
                     <div>{{ todo.원자재명 }}</div>
@@ -639,7 +639,7 @@ const table_width2 = [
               </select>
             </div>
             <div class="mt-3">
-              <FormLabel htmlFor="vertical-form-3">수량</FormLabel>
+              <FormLabel htmlFor="vertical-form-3">구성수량</FormLabel>
               <FormInput
                 id="vertical-form-3"
                 type="text"
@@ -703,7 +703,7 @@ const table_width2 = [
               </FormSelect>
             </div>
             <div class="mt-3">
-              <FormLabel htmlFor="vertical-form-3">수량</FormLabel>
+              <FormLabel htmlFor="vertical-form-3">구성수량</FormLabel>
               <FormInput
                 id="vertical-form-3"
                 type="text"

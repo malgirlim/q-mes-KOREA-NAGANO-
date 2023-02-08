@@ -122,11 +122,12 @@ const table_width = [
   "width: 50px", // 순번
   "width: 150px", // 품목코드
   "width: 150px", // 거래처명
-  "width: 300px", // 품명
-  "width: 300px", // 규격
+  "width: 250px", // 품명
+  "width: 250px", // 규격
   "width: 50px", // 단위
   "width: 50px", // 안전재고
   "width: 50px", // 원가
+  "width: 100px", // 금액
   "width: 150px", // 비고
   "width: 100px", // 편집
 ];
@@ -352,12 +353,18 @@ const table_width = [
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[9]"
               >
+                금액
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[10]"
+              >
                 비고
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 id="edit"
-                :style="table_width[10]"
+                :style="table_width[11]"
               >
                 편집
               </Table.Th>
@@ -441,11 +448,17 @@ const table_width = [
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[9]"
               >
+                <div>{{ todo.금액?.toLocaleString() }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[10]"
+              >
                 <div>{{ todo.비고 }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
-                :style="table_width[10]"
+                :style="table_width[11]"
                 id="edit"
               >
                 <div class="flex items-center justify-center text-danger">
@@ -546,6 +559,15 @@ const table_width = [
             id="vertical-form-7"
             type="text"
             v-model="insertModalData.원가"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-8">금액</FormLabel>
+          <FormInput
+            id="vertical-form-8"
+            type="text"
+            v-model="insertModalData.금액"
             placeholder=""
           />
         </div>
@@ -661,6 +683,15 @@ const table_width = [
             id="vertical-form-7"
             type="text"
             v-model="editModalData.원가"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-8">금액</FormLabel>
+          <FormInput
+            id="vertical-form-8"
+            type="text"
+            v-model="editModalData.금액"
             placeholder=""
           />
         </div>

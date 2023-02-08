@@ -270,7 +270,7 @@ const table_width = [
                 품명
               </Table.Th>
               <Table.Th
-                class="text-center border-b-0 whitespace-nowrap"
+                class="border-b-0 whitespace-nowrap"
                 :style="table_width[4]"
               >
                 규격
@@ -368,7 +368,7 @@ const table_width = [
                 <div>{{ todo.품명 }}</div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-5 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md w-5 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[4]"
               >
                 <div>{{ todo.규격 }}</div>
