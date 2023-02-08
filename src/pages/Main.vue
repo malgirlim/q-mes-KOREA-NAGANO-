@@ -26,12 +26,11 @@ onMounted(async () => {
   await monitor_kpi_prod.loadDatas();
   await monitor_kpi_stock.loadDatas();
   setInterval(() => {
-    let monitor_stock_data = monitor_stock.searchDatas(
+    monitor_stock.searchDatas(
       "22/01/01 - " + moment().format("YY/MM/DD"),
       "전체",
       ""
     );
-    console.log(monitor_stock_data);
   }, 6000);
 
   setInterval(() => {
