@@ -50,19 +50,19 @@ router.post("/insert", async (req, res) => {
     // select
     const result = await Pool.request()
       .input(
-        "거래처명",
+        "이름",
         sql.NVarChar,
-        !req.body.data.거래처명 ? "" : req.body.data.거래처명
+        !req.body.data.이름 ? "" : req.body.data.이름
       )
       .input(
-        "사업자번호",
+        "아이디",
         sql.NVarChar,
-        !req.body.data.사업자번호 ? "" : req.body.data.사업자번호
+        !req.body.data.아이디 ? "" : req.body.data.아이디
       )
       .input(
-        "주소",
+        "부서",
         sql.NVarChar,
-        !req.body.data.주소 ? "" : req.body.data.주소
+        !req.body.data.부서 ? "" : req.body.data.부서
       )
       .input(
         "연락처",
@@ -70,22 +70,12 @@ router.post("/insert", async (req, res) => {
         !req.body.data.연락처 ? "" : req.body.data.연락처
       )
       .input(
-        "대표자",
-        sql.NVarChar,
-        !req.body.data.대표자 ? "" : req.body.data.대표자
-      )
-      .input(
-        "비고",
-        sql.NVarChar,
-        !req.body.data.비고 ? "" : req.body.data.비고
-      )
-      .input(
         "이메일",
         sql.NVarChar,
         !req.body.data.이메일 ? "" : req.body.data.이메일
       )
       .query(
-        "exec [QMES].[dbo].[MASTER_USER_INS_SP] 0,@거래처명,@사업자번호,@주소,@연락처,@대표자,@비고,@이메일"
+        "exec [QMES].[dbo].[MASTER_USER_INS_SP] 0,@이름,@아이디,@부서,@연락처,@이메일"
       );
     res.send("등록완료");
   } catch (err) {
@@ -102,15 +92,13 @@ router.post("/edit", async (req, res) => {
     // select
     const result = await Pool.request()
       .input("기본키", sql.Int, req.body.data.NO)
-      .input("거래처명", sql.NVarChar, req.body.data.거래처명)
-      .input("대표자", sql.NVarChar, req.body.data.대표자)
-      .input("사업자번호", sql.NVarChar, req.body.data.사업자번호)
+      .input("이름", sql.NVarChar, req.body.data.이름)
+      .input("아이디", sql.NVarChar, req.body.data.아이디)
+      .input("부서", sql.NVarChar, req.body.data.부서)
       .input("연락처", sql.NVarChar, req.body.data.연락처)
       .input("이메일", sql.NVarChar, req.body.data.이메일)
-      .input("주소", sql.NVarChar, req.body.data.주소)
-      .input("비고", sql.NVarChar, req.body.data.비고)
       .query(
-        "exec [QMES].[dbo].[MASTER_USER_UDT_SP] @기본키,@거래처명,@대표자,@사업자번호,@연락처,@이메일,@주소,@비고"
+        "exec [QMES].[dbo].[MASTER_USER_UDT_SP] @기본키,@이름,@아이디,@부서,@연락처,@이메일"
       );
     res.send("수정완료");
   } catch (err) {
