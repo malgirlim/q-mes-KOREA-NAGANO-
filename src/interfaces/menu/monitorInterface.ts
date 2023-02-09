@@ -64,3 +64,9 @@ export interface MonitorKpiStock {
   목표치?: string;
   측정치?: string;
 }
+
+// 재고 조회 - 일별 생산 현항
+export interface Monitor압력계조립 {
+  일자?: string;
+  생산수?: number;
+}

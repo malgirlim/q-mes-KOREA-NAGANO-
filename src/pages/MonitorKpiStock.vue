@@ -353,9 +353,11 @@ const table_width = [
               >
                 <div>
                   {{
-                    ((Number(todo.목표치) / Number(todo.측정치)) * 100).toFixed(
-                      2
-                    )
+                    (
+                      ((Number(todo.목표치) - Number(todo.측정치)) /
+                        Number(todo.목표치)) *
+                      100
+                    ).toFixed(2)
                   }}
                   %
                 </div>

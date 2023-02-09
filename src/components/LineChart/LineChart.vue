@@ -11,12 +11,12 @@ const props = defineProps<{
   width?: number;
   height?: number;
   lineColor?: string;
-  data_labels?: [];
+  data_labels?: string[];
   data_set: {
     target_label?: string;
-    target_data: [];
+    target_data: number[];
     output_label?: string;
-    output_data: [];
+    output_data: number[];
   };
 }>();
 
@@ -82,6 +82,11 @@ const options = computed<ChartOptions>(() => {
     },
     scales: {
       x: {
+        title: {
+          color: "red",
+          display: true,
+          text: "Month",
+        },
         ticks: {
           font: {
             size: 12,
@@ -94,6 +99,11 @@ const options = computed<ChartOptions>(() => {
         },
       },
       y: {
+        title: {
+          color: "red",
+          display: true,
+          text: "측정치",
+        },
         ticks: {
           font: {
             size: 12,

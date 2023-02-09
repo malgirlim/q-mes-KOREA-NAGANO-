@@ -3,6 +3,7 @@ import { onMounted, ref, Ref } from "vue";
 import _ from "lodash";
 import Lucide from "../base-components/Lucide";
 import Tippy from "../base-components/Tippy";
+import LineChart from "../components/LineChart";
 import LineChart1 from "../components/LineChart1";
 import LineChart2 from "../components/LineChart2";
 import LineChart3 from "../components/LineChart3";
@@ -18,6 +19,7 @@ import {
   MonitorKpiStock,
   MonitorSafe,
   MonitorStock,
+  Monitor압력계조립,
 } from "../interfaces/menu/monitorInterface";
 
 // 페이징기능
@@ -30,6 +32,15 @@ const pageChange = () => {
 };
 
 // api 보내기 - 실시간 생산량
+const monitor_압력계조립_url = "/api/monitor/press";
+const monitor_압력계조립 = useSendApi<Monitor압력계조립>(
+  monitor_압력계조립_url,
+  currentPage,
+  rowsPerPage
+);
+const monitor_압력계조립_data_calculate = ref(0); // 어제대비 수량
+const monitor_압력계조립_data_일자 = ref();
+const monitor_압력계조립_data_생산수 = ref();
 
 // api 보내기 - 월 평균 시간당 생산량
 const monitor_kpi_prod_url = "/api/monitor/kpi-prod";
@@ -38,6 +49,10 @@ const monitor_kpi_prod = useSendApi<MonitorKpiProd>(
   currentPage,
   rowsPerPage
 );
+const monitor_kpi_prod_data_calculate = ref(0); // 전 월 대비 수량
+const monitor_kpi_prod_data_연월 = ref();
+const monitor_kpi_prod_data_측정치 = ref();
+const monitor_kpi_prod_data_목표치 = ref();
 
 // api 보내기 - 월간 재고비용 절감률
 const monitor_kpi_stock_url = "/api/monitor/kpi-stock";
@@ -46,6 +61,10 @@ const monitor_kpi_stock = useSendApi<MonitorKpiStock>(
   currentPage,
   rowsPerPage
 );
+const monitor_kpi_stock_data_calculate = ref(0); // 전 월 대비 달성율
+const monitor_kpi_stock_data_연월 = ref();
+const monitor_kpi_stock_data_측정치 = ref();
+const monitor_kpi_stock_data_목표치 = ref();
 
 // api 보내기 - 안전재고 미달
 const monitor_safe_url = "/api/monitor/safe";
@@ -66,7 +85,7 @@ const monitor_stock_data_calculate = ref(0); // 안전재고 미달 어제 대�
 
 // #####  페이지 로딩 시 데이터 불러오기 및 5초마다 데이터 다시 불러오기  #####
 onMounted(async () => {
-  loadData(); // ##### 가져올 데이터 참고
+  await loadData(); // ##### 가져올 데이터 참고
   setInterval(async () => {
     loadData();
   }, 10000);
@@ -77,8 +96,98 @@ onMounted(async () => {
 });
 // ###########  가져올 데이터 ##########
 const loadData = async () => {
+  await monitor_압력계조립.loadDatas();
+  monitor_압력계조립_data_calculate.value = Number(
+    Number(
+      monitor_압력계조립.dataAll.value
+        .filter((v) => v.일자 == moment().format("YYYY-MM-DD"))
+        .map(({ 생산수 }) => 생산수)
+    ) -
+      Number(
+        monitor_압력계조립.dataAll.value
+          .filter(
+            (v) => v.일자 == moment().add(-1, "days").format("YYYY-MM-DD")
+          )
+          .map(({ 생산수 }) => 생산수)
+      )
+  );
+  monitor_압력계조립_data_일자.value = monitor_압력계조립.datas.value
+    ?.map(({ 일자 }) => 일자)
+    .reverse();
+  monitor_압력계조립_data_생산수.value = monitor_압력계조립.datas.value
+    ?.map(({ 생산수 }) => 생산수)
+    .reverse();
+
   await monitor_kpi_prod.loadDatas();
+  monitor_kpi_prod_data_calculate.value = Number(
+    Number(
+      monitor_kpi_prod.dataAll.value
+        .filter((v) => v.연월 == moment().format("YYYY-MM"))
+        .map(({ 측정치 }) => 측정치)
+    ) -
+      Number(
+        monitor_kpi_prod.dataAll.value
+          .filter((v) => v.연월 == moment().add(-1, "month").format("YYYY-MM"))
+          .map(({ 측정치 }) => 측정치)
+      )
+  );
+  monitor_kpi_prod_data_연월.value = monitor_kpi_prod.dataAll.value
+    ?.map(({ 연월 }) => 연월)
+    .reverse();
+  monitor_kpi_prod_data_측정치.value = monitor_kpi_prod.dataAll.value
+    ?.map(({ 측정치 }) => 측정치)
+    .reverse();
+  monitor_kpi_prod_data_목표치.value = monitor_kpi_prod.dataAll.value
+    ?.map(({ 목표치 }) => 목표치)
+    .reverse();
+
   await monitor_kpi_stock.loadDatas();
+  monitor_kpi_stock_data_calculate.value =
+    ((Number(
+      monitor_kpi_stock.dataAll.value
+        .filter((v) => v.연월 == moment().format("YYYY-MM"))
+        .map(({ 목표치 }) => 목표치)[0]
+    ) -
+      Number(
+        monitor_kpi_stock.dataAll.value
+          .filter((v) => v.연월 == moment().format("YYYY-MM"))
+          .map(({ 측정치 }) => 측정치)[0]
+      )) /
+      Number(
+        monitor_kpi_stock.dataAll.value
+          .filter((v) => v.연월 == moment().format("YYYY-MM"))
+          .map(({ 목표치 }) => 목표치)[0]
+      ) -
+      (Number(
+        monitor_kpi_stock.dataAll.value
+          .filter((v) => v.연월 == moment().add(-1, "month").format("YYYY-MM"))
+          .map(({ 목표치 }) => 목표치)[0]
+      ) -
+        Number(
+          monitor_kpi_stock.dataAll.value
+            .filter(
+              (v) => v.연월 == moment().add(-1, "month").format("YYYY-MM")
+            )
+            .map(({ 측정치 }) => 측정치)[0]
+        )) /
+        Number(
+          monitor_kpi_stock.dataAll.value
+            .filter(
+              (v) => v.연월 == moment().add(-1, "month").format("YYYY-MM")
+            )
+            .map(({ 목표치 }) => 목표치)[0]
+        )) *
+    100;
+  monitor_kpi_stock_data_연월.value = monitor_kpi_stock.dataAll.value
+    ?.map(({ 연월 }) => 연월)
+    .reverse();
+  monitor_kpi_stock_data_측정치.value = monitor_kpi_stock.dataAll.value
+    ?.map(({ 측정치 }) => 측정치)
+    .reverse();
+  monitor_kpi_stock_data_목표치.value = monitor_kpi_stock.dataAll.value
+    ?.map(({ 목표치 }) => 목표치)
+    .reverse();
+
   await monitor_safe.loadDatas();
   await monitor_stock.searchDatas(
     "22/01/01 - " + moment().add(-1, "days").format("YY/MM/DD"),
@@ -128,6 +237,21 @@ const table_width = [
   "width: 50px", // 부족재고수
   "width: 150px", // 링크
 ];
+
+const lineChartMonth = [
+  "1월",
+  "2월",
+  "3월",
+  "4월",
+  "5월",
+  "6월",
+  "7월",
+  "8월",
+  "9월",
+  "10월",
+  "11월",
+  "12월",
+];
 </script>
 
 <template>
@@ -138,7 +262,9 @@ const table_width = [
           <!-- BEGIN: General Report -->
           <div class="col-span-12 mt-8">
             <div class="flex items-center h-10 intro-y">
-              <h2 class="mr-5 text-lg font-medium truncate">{{ now }} 현재</h2>
+              <h2 class="mr-5 text-lg font-medium truncate" :key="now">
+                {{ now }} 현재
+              </h2>
 
               <a href="" class="flex items-center ml-auto text-primary">
                 <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
@@ -162,14 +288,30 @@ const table_width = [
                         <Tippy
                           as="div"
                           class="cursor-pointer bg-success py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
-                          content="1시간 전보다 2개 감소"
+                          :content="
+                            '어제보다 ' +
+                            monitor_압력계조립_data_calculate +
+                            '개' +
+                            (monitor_압력계조립_data_calculate >= 0
+                              ? ' 상승'
+                              : ' 하강')
+                          "
+                          :key="monitor_압력계조립_data_calculate"
                         >
-                          2개
+                          {{ monitor_압력계조립_data_calculate }}개
                           <Lucide icon="ChevronDown" class="w-4 h-4 ml-0.5" />
                         </Tippy>
                       </div>
                     </div>
-                    <div class="mt-6 text-3xl font-medium leading-8">100</div>
+                    <div class="mt-6 text-3xl font-medium leading-8">
+                      {{
+                        monitor_압력계조립.datas.value
+                          .filter(
+                            (v) => v.일자 == moment().format("YYYY-MM-DD")
+                          )
+                          .map(({ 생산수 }) => 생산수)[0]
+                      }}
+                    </div>
                     <div class="mt-1 text-base text-slate-500">
                       금일 생산 현황
                     </div>
@@ -192,31 +334,55 @@ const table_width = [
                       <div class="ml-auto">
                         <Tippy
                           as="div"
-                          class="cursor-pointer bg-success py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
+                          :class="[
+                            'cursor-pointerpy-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium',
+                            {
+                              'bg-success':
+                                monitor_kpi_prod_data_calculate >= 0,
+                            },
+                            {
+                              'bg-danger': monitor_kpi_prod_data_calculate < 0,
+                            },
+                          ]"
                           :content="
-                            '어제보다 ' +
-                            (Number(monitor_kpi_prod.datas.value[0]?.측정치) -
-                              Number(monitor_kpi_prod.datas.value[1]?.측정치)) +
-                            '개'
+                            '전 월보다 ' +
+                            monitor_kpi_prod_data_calculate +
+                            '개' +
+                            (monitor_kpi_prod_data_calculate >= 0
+                              ? ' 상승'
+                              : ' 하강')
                           "
-                          :key="monitor_kpi_prod.datas.value"
+                          :key="monitor_kpi_prod_data_calculate"
                         >
-                          {{
-                            Number(monitor_kpi_prod.datas.value[0]?.측정치) -
-                            Number(monitor_kpi_prod.datas.value[1]?.측정치)
-                          }}개
-                          <Lucide icon="ChevronDown" class="w-4 h-4 ml-0.5" />
+                          {{ monitor_kpi_prod_data_calculate }}개
+                          <Lucide
+                            :icon="
+                              monitor_kpi_prod_data_calculate >= 0
+                                ? 'ChevronUp'
+                                : 'ChevronDown'
+                            "
+                            class="w-4 h-4 ml-0.5"
+                          />
                         </Tippy>
                       </div>
                     </div>
                     <div class="mt-6 text-3xl font-medium leading-8">
-                      현재 :
-                      {{ monitor_kpi_prod.datas.value[0]?.측정치 }}
-                      / 목표 :
-                      {{ monitor_kpi_prod.datas.value[0]?.목표치 }}
+                      {{
+                        monitor_kpi_prod.dataAll.value
+                          .filter((v) => v.연월 == moment().format("YYYY-MM"))
+                          .map(({ 측정치 }) => 측정치)[0]
+                      }}
+
+                      <span class="ml-2"
+                        >&raquo;{{
+                          monitor_kpi_prod.dataAll.value
+                            .filter((v) => v.연월 == moment().format("YYYY-MM"))
+                            .map(({ 목표치 }) => 목표치)[0]
+                        }}</span
+                      >
                     </div>
                     <div class="mt-1 text-base text-slate-500">
-                      KPI / 월 평균 시간당 생산량
+                      KPI / 월 평균 시간당 생산량 &raquo; 목표량
                     </div>
                   </div>
                 </div>
@@ -237,71 +403,62 @@ const table_width = [
                       <div class="ml-auto">
                         <Tippy
                           as="div"
-                          class="cursor-pointer bg-danger py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
+                          :class="[
+                            'cursor-pointer py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium',
+                            {
+                              'bg-success':
+                                monitor_kpi_stock_data_calculate >= 0,
+                            },
+                            {
+                              'bg-danger': monitor_kpi_stock_data_calculate < 0,
+                            },
+                          ]"
                           :content="
-                            '어제보다 ' +
-                            (
-                              ((Number(
-                                monitor_kpi_stock.datas.value[0]?.목표치
-                              ) -
-                                Number(
-                                  monitor_kpi_stock.datas.value[0]?.측정치
-                                )) /
-                                Number(
-                                  monitor_kpi_stock.datas.value[0]?.목표치
-                                ) -
-                                (Number(
-                                  monitor_kpi_stock.datas.value[1]?.목표치
-                                ) -
-                                  Number(
-                                    monitor_kpi_stock.datas.value[1]?.측정치
-                                  )) /
-                                  Number(
-                                    monitor_kpi_stock.datas.value[1]?.목표치
-                                  )) *
-                              100
-                            ).toFixed(2) +
-                            '%'
+                            '전 월보다 ' +
+                            monitor_kpi_stock_data_calculate.toFixed(2) +
+                            '%' +
+                            (monitor_kpi_stock_data_calculate >= 0
+                              ? ' 상승'
+                              : ' 하강')
                           "
-                          :key="monitor_kpi_stock.datas.value"
+                          :key="monitor_kpi_stock_data_calculate"
                         >
-                          {{
-                            (
-                              ((Number(
-                                monitor_kpi_stock.datas.value[0]?.목표치
-                              ) -
-                                Number(
-                                  monitor_kpi_stock.datas.value[0]?.측정치
-                                )) /
-                                Number(
-                                  monitor_kpi_stock.datas.value[0]?.목표치
-                                ) -
-                                (Number(
-                                  monitor_kpi_stock.datas.value[1]?.목표치
-                                ) -
-                                  Number(
-                                    monitor_kpi_stock.datas.value[1]?.측정치
-                                  )) /
-                                  Number(
-                                    monitor_kpi_stock.datas.value[1]?.목표치
-                                  )) *
-                              100
-                            ).toFixed(2)
-                          }}%
-                          <Lucide icon="ChevronUp" class="w-4 h-4 ml-0.5" />
+                          {{ monitor_kpi_stock_data_calculate.toFixed(2) }}%
+                          <Lucide
+                            :icon="
+                              monitor_kpi_stock_data_calculate >= 0
+                                ? 'ChevronUp'
+                                : 'ChevronDown'
+                            "
+                            class="w-4 h-4 ml-0.5"
+                          />
                         </Tippy>
                       </div>
                     </div>
                     <div class="mt-6 text-3xl font-medium leading-8">
-                      현재 :
-                      {{ monitor_kpi_stock.datas.value[0]?.측정치 }}
-                      / 목표 :
-                      {{ monitor_kpi_stock.datas.value[0]?.목표치 }} 달성율 :
                       {{
                         (
-                          ((Number(monitor_kpi_stock.datas.value[0]?.목표치) -
-                            Number(monitor_kpi_stock.datas.value[0]?.측정치)) /
-                            Number(monitor_kpi_stock.datas.value[0]?.목표치)) *
+                          ((Number(
+                            monitor_kpi_stock.dataAll.value
+                              .filter(
+                                (v) => v.연월 == moment().format("YYYY-MM")
+                              )
+                              .map(({ 목표치 }) => 목표치)[0]
+                          ) -
+                            Number(
+                              monitor_kpi_stock.dataAll.value
+                                .filter(
+                                  (v) => v.연월 == moment().format("YYYY-MM")
+                                )
+                                .map(({ 측정치 }) => 측정치)[0]
+                            )) /
+                            Number(
+                              monitor_kpi_stock.dataAll.value
+                                .filter(
+                                  (v) => v.연월 == moment().format("YYYY-MM")
+                                )
+                                .map(({ 목표치 }) => 목표치)[0]
+                            )) *
                           100
                         ).toFixed(2)
                       }}%
@@ -328,14 +485,34 @@ const table_width = [
                       <div class="ml-auto">
                         <Tippy
                           as="div"
-                          class="cursor-pointer bg-danger py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
+                          :class="[
+                            'cursor-pointer py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium',
+                            {
+                              'bg-success': monitor_stock_data_calculate <= 0,
+                            },
+                            {
+                              'bg-danger': monitor_stock_data_calculate > 0,
+                            },
+                          ]"
                           :content="
-                            '어제보다 ' + monitor_stock_data_calculate + '건'
+                            '어제보다 ' +
+                            monitor_stock_data_calculate +
+                            '건' +
+                            (monitor_stock_data_calculate >= 0
+                              ? ' 상승'
+                              : ' 하강')
                           "
                           :key="monitor_stock_data_calculate"
                         >
                           {{ monitor_stock_data_calculate }}건
-                          <Lucide icon="ChevronUp" class="w-4 h-4 ml-0.5" />
+                          <Lucide
+                            :icon="
+                              monitor_stock_data_calculate <= 0
+                                ? 'ChevronUp'
+                                : 'ChevronDown'
+                            "
+                            class="w-4 h-4 ml-0.5"
+                          />
                         </Tippy>
                       </div>
                     </div>
@@ -382,8 +559,25 @@ const table_width = [
         </div>
       </div>
       <div class="text-lg font-medium text-center -mt-10">실시간 생산 현황</div>
-
-      <div><LineChart1 :height="300" class="mt-5 -mb-6" /></div>
+      <div
+        v-memo="[
+          monitor_압력계조립_data_생산수,
+          monitor_압력계조립_data_생산수,
+        ]"
+      >
+        <LineChart
+          :height="300"
+          :data_labels="monitor_압력계조립_data_일자"
+          :data_set="{
+            target_label: '생산수',
+            target_data: monitor_압력계조립_data_생산수,
+            output_label: '생산수',
+            output_data: monitor_압력계조립_data_생산수,
+          }"
+          class="mt-5 -mb-6"
+        />
+      </div>
+      <!-- div><LineChart1 :height="300" class="mt-5 -mb-6" /></div -->
     </div>
     <!--KPI 시간당 생산량 차트-->
     <div v-if="bottom == bottom_list[1]" class="p-5 mt-12 intro-y box sm:mt-5">
@@ -393,7 +587,7 @@ const table_width = [
             <div
               class="text-lg font-medium text-primary dark:text-slate-300 xl:text-xl"
             >
-              4,710개
+              {{ monitor_kpi_prod.datas.value[0]?.측정치 }} 개
             </div>
             <div class="mt-0.5 text-slate-500">이번 달</div>
           </div>
@@ -402,7 +596,7 @@ const table_width = [
           ></div>
           <div>
             <div class="text-lg font-medium text-slate-500 xl:text-xl">
-              2,130개
+              {{ monitor_kpi_prod.datas.value[1]?.측정치 }} 개
             </div>
             <div class="mt-0.5 text-slate-500">지난 달</div>
           </div>
@@ -412,7 +606,22 @@ const table_width = [
         KPI - 월 평균 시간당 생산량
       </div>
 
-      <div><LineChart2 :height="300" class="mt-5 -mb-6" /></div>
+      <div
+        v-memo="[monitor_kpi_prod_data_측정치, monitor_kpi_prod_data_측정치]"
+      >
+        <LineChart
+          :height="300"
+          :data_labels="monitor_kpi_prod_data_연월"
+          :data_set="{
+            target_label: '측정치',
+            target_data: monitor_kpi_prod_data_측정치,
+            output_label: '목표치',
+            output_data: monitor_kpi_prod_data_목표치,
+          }"
+          class="mt-5 -mb-6"
+        />
+      </div>
+      <!-- div><LineChart2 :height="300" class="mt-5 -mb-6" /></div -->
     </div>
     <!--KPI 재고비용 차트-->
     <div v-if="bottom == bottom_list[2]" class="p-5 mt-12 intro-y box sm:mt-5">
@@ -440,7 +649,22 @@ const table_width = [
       <div class="text-lg font-medium text-center -mt-10">
         KPI / 월간 재고 비용 절감률
       </div>
-      <div><LineChart3 :height="300" class="mt-5 -mb-6" /></div>
+      <div
+        v-memo="[monitor_kpi_stock_data_측정치, monitor_kpi_stock_data_측정치]"
+      >
+        <LineChart
+          :height="300"
+          :data_labels="monitor_kpi_stock_data_연월"
+          :data_set="{
+            target_label: '측정치',
+            target_data: monitor_kpi_stock_data_측정치,
+            output_label: '목표치',
+            output_data: monitor_kpi_stock_data_목표치,
+          }"
+          class="mt-5 -mb-6"
+        />
+      </div>
+      <!-- div><LineChart3 :height="300" class="mt-5 -mb-6" /></div -->
     </div>
     <!-- END: Chart -->
     <!--안전재고 미달 리스트-->
