@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
     const result = await Pool.request()
       .input("content", sql.NVarChar, req.body.content)
       .query(
-        "SELECT ITEM_SKU AS content, ITEM_NAME AS name, ITEM_SIZE AS size, 1 AS number FROM MASTER_ITEM_TB WHERE ITEM_SKU = @content"
+        "SELECT ITEM_SKU AS content, ITEM_NAME AS name, ITEM_SIZE AS size, 1 AS number FROM [QINNOTEK].[dbo].[MASTER_ITEM_TB] WHERE ITEM_SKU = @content"
       );
     // console.log(result.recordset);
     res.send(result.recordset);
