@@ -59,7 +59,9 @@ router.post("/receive", async (req, res) => {
       await Pool.request()
         .input("content", sql.NVarChar, req.body[i].content)
         .input("number", sql.Int, req.body[i].number)
-        .query(`exec [MANAGE_ITEM_RECEIVE_MOBILE2_INS_SP] '@content', @number`);
+        .query(
+          `exec [QINNOTEK].[dbo].[MANAGE_ITEM_RECEIVE_MOBILE2_INS_SP] @content, @number`
+        );
     }
     res.send("POST 입고");
   } catch (err) {
@@ -78,7 +80,9 @@ router.post("/deliver", async (req, res) => {
       await Pool.request()
         .input("content", sql.NVarChar, req.body[i].content)
         .input("number", sql.Int, req.body[i].number)
-        .query(`exec [MANAGE_ITEM_DELIVER_MOBILE2_INS_SP] '@content', @number`);
+        .query(
+          `exec [QINNOTEK].[dbo].[MANAGE_ITEM_DELIVER_MOBILE2_INS_SP] @content, @number`
+        );
     }
     res.send("POST 출고");
   } catch (err) {
@@ -97,7 +101,9 @@ router.post("/bad", async (req, res) => {
       await Pool.request()
         .input("content", sql.NVarChar, req.body[i].content)
         .input("number", sql.Int, req.body[i].number)
-        .query(`exec [MANAGE_ITEM_BAD_MOBILE2_INS_SP] '@content', @number`);
+        .query(
+          `exec [QINNOTEK].[dbo].[MANAGE_ITEM_BAD_MOBILE2_INS_SP] @content, @number`
+        );
     }
     res.send("POST 불량");
   } catch (err) {
