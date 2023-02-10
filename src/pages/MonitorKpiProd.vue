@@ -217,22 +217,33 @@ const onFileChange = async (event: any) => {
               <Lucide icon="MoreVertical" class="w-4 h-4" />
             </span>
           </Menu.Button>
-          <Menu.Items class="w-40">
+          <Menu.Items style="width: 170px">
             <Menu.Item>
               <Lucide icon="Printer" class="w-4 h-4 mr-2" />
               <Print />
             </Menu.Item>
             <Menu.Item>
-              <Lucide icon="FileText" class="w-4 h-4 mr-2" />
+              <Lucide icon="FileDown" class="w-4 h-4 mr-2" />
               <Excel />
             </Menu.Item>
+
             <Menu.Item>
-              <Lucide icon="FileText" class="w-4 h-4 mr-2" />
               <input
+                id="upload"
+                style="display: none"
                 type="file"
                 @change="onFileChange"
                 accept="appliction/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
               />
+
+              <label for="upload"
+                ><Lucide icon="FileUp" class="w-4 h-4 mr-2" />
+              </label>
+              <label class="pr-8" for="upload">Excel 업로드 </label>
+            </Menu.Item>
+            <Menu.Item>
+              <Lucide icon="FileCheck" class="w-4 h-4 mr-2" />
+              Excel 업로드 양식
             </Menu.Item>
           </Menu.Items>
         </Menu>
