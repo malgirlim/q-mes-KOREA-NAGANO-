@@ -70,6 +70,15 @@ export function useSendApi<T>(
     }
   };
 
+  // 엑셀로 한번에 등록
+  const insertExcel = async (data: any) => {
+    try {
+      await axios.post(url + "/insertExcel", { data });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   // 페이징 기능
   const { paginatedArray, numberOfPages } = usePagination<T>({
     rowsPerPage,
@@ -87,6 +96,7 @@ export function useSendApi<T>(
     insertData,
     editData,
     deleteData,
+    insertExcel,
     numberOfPages,
   };
 }

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import * as XLSX from "xlsx";
+
 import _, { isArguments } from "lodash";
 import { ref, Ref } from "vue";
 import Button from "../base-components/Button";
@@ -37,6 +39,7 @@ const {
   insertData,
   editData,
   deleteData,
+  insertExcel,
   numberOfPages,
 } = useSendApi<MonitorKpiProd>(url, currentPage, rowsPerPage);
 
@@ -127,6 +130,30 @@ const table_width = [
   "width: 100px", // 달성률
   "width: 100px", // 편집
 ];
+
+const file = ref();
+const file_data = ref();
+const onFileChange = async (event: any) => {
+  file.value = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    /* read file.value */
+    const bstr = e.target?.result;
+    const wb = XLSX.read(bstr, { type: "array" });
+
+    wb.SheetNames.forEach((sheetName) => {
+      // 들어온 데이터 key 값을 바꿀 수 있음
+      // wb.Sheets[sheetName].A1.w = "날짜";
+      // wb.Sheets[sheetName].B1.w = "test2";
+
+      // console.log(wb.Sheets[sheetName].A1);
+      file_data.value = XLSX.utils.sheet_to_json(wb.Sheets[sheetName]); // {header: 1} key 값까지 가져옴
+    });
+    console.log(file_data.value);
+    insertExcel(file_data.value);
+  };
+  reader.readAsArrayBuffer(file.value);
+};
 </script>
 
 <template>
@@ -198,6 +225,14 @@ const table_width = [
             <Menu.Item>
               <Lucide icon="FileText" class="w-4 h-4 mr-2" />
               <Excel />
+            </Menu.Item>
+            <Menu.Item>
+              <Lucide icon="FileText" class="w-4 h-4 mr-2" />
+              <input
+                type="file"
+                @change="onFileChange"
+                accept="appliction/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              />
             </Menu.Item>
           </Menu.Items>
         </Menu>
