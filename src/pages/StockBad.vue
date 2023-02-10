@@ -74,7 +74,7 @@ const setInsertModal = (value: boolean) => {
 let insertModalData: StockBad; // 등록할 변수
 // 등록 함수
 const insertDataFunction = () => {
-  if (insertModalData.NO > 0) {
+  if ((insertModalData.NO ? insertModalData.NO : 0) > 0) {
     insertModalData.품목코드 = product.dataAll.value.filter(
       (c) => c.NO === insertModalData.NO
     )[0].품목코드;
@@ -832,11 +832,7 @@ const table_width = [
         <!-- 수정 필요 -->
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">불량명</FormLabel>
-          <select
-            v-tom
-            v-model="editModalData.불량명"
-            @change="changeBadValue($event)"
-          >
+          <select v-tom v-model="editModalData.불량명">
             <option value="" selected>=== 불량선택 ===</option>
             <option
               :value="b.불량명"
@@ -849,12 +845,14 @@ const table_width = [
         </div>
         <div class="mt-3">
           <FormLabel htmlFor="vertical-form-2">불량내용</FormLabel>
-          <div :key="badContent">
+          <div :key="editModalData.불량명">
             <select v-tom v-model="editModalData.불량내용">
               <option value="" selected>=== 불량내용선택 ===</option>
               <option
                 :value="bc.불량내용"
-                v-for="bc in badContent"
+                v-for="bc in bad.dataAll.value.filter(
+                  (v) => v.불량명 === editModalData.불량명
+                )"
                 :key="bc.NO"
               >
                 {{ bc.불량내용 }}
