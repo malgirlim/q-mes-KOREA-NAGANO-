@@ -81,6 +81,37 @@ const deleteDataFunction = async () => {
   search();
 };
 
+// 엑셀 업로드 Modal
+const excelImportModal = ref(false);
+const setExcelImportModal = (value: boolean) => {
+  excelImportModal.value = value;
+  onFileEvent.value = null;
+};
+// 엑셀 업로드 용 함수
+const onFileEvent = ref();
+const onFileChangeEvent = (event: any) => {
+  onFileEvent.value = event;
+};
+const onFileImport = (event: any) => {
+  if (event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const file_data = ref();
+      const wb = XLSX.read(e.target?.result, { type: "array" });
+      wb.SheetNames.forEach((sheetName) => {
+        // wb.Sheets[sheetName].A1.w = "날짜"; // 들어온 데이터 key 값을 바꿀 수 있음
+        // console.log(wb.Sheets[sheetName].A1);
+        file_data.value = XLSX.utils.sheet_to_json(wb.Sheets[sheetName]); // ,{header: 1} key 값까지 가져옴
+      });
+      await insertExcel(file_data.value);
+      search();
+      pageChange();
+    };
+    reader.readAsArrayBuffer(file);
+  }
+};
+
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
 const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
@@ -130,26 +161,6 @@ const table_width = [
   "width: 100px", // 달성률
   "width: 100px", // 편집
 ];
-
-// 엑셀 업로드 용
-const file = ref();
-const file_data = ref();
-const onFileChange = async (event: any) => {
-  file.value = event.target.files[0];
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    /* read file.value */
-    const bstr = e.target?.result;
-    const wb = XLSX.read(bstr, { type: "array" });
-    wb.SheetNames.forEach((sheetName) => {
-      // wb.Sheets[sheetName].A1.w = "날짜"; // 들어온 데이터 key 값을 바꿀 수 있음
-      // console.log(wb.Sheets[sheetName].A1);
-      file_data.value = XLSX.utils.sheet_to_json(wb.Sheets[sheetName]); // ,{header: 1} key 값까지 가져옴
-    });
-    insertExcel(onFileChange(file_data.value));
-  };
-  reader.readAsArrayBuffer(file.value);
-};
 </script>
 
 <template>
@@ -223,19 +234,20 @@ const onFileChange = async (event: any) => {
               <Excel />
             </Menu.Item>
 
-            <Menu.Item>
-              <input
+            <Menu.Item @click="setExcelImportModal(true)">
+              <!-- <input
                 id="upload"
                 style="display: none"
                 type="file"
                 @change="onFileChange"
                 accept="appliction/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              />
-
-              <label for="upload"
+              /> -->
+              <!-- <label for="upload"
                 ><Lucide icon="FileUp" class="w-4 h-4 mr-2" />
               </label>
-              <label class="pr-8" for="upload">Excel 업로드 </label>
+              <label class="pr-8" for="upload">Excel 업로드 </label> -->
+              <Lucide icon="FileUp" class="w-4 h-4 mr-2" />
+              Excel 업로드
             </Menu.Item>
             <Menu.Item>
               <Lucide icon="FileCheck" class="w-4 h-4 mr-2" />
@@ -619,6 +631,40 @@ const onFileChange = async (event: any) => {
           "
         >
           삭제
+        </Button>
+      </div>
+    </Dialog.Panel>
+  </Dialog>
+  <!-- END: Delete Confirmation Modal -->
+  <!-- BEGIN: 엑셀 업로드 Modal -->
+  <Dialog :open="excelImportModal" @close="setExcelImportModal(false)">
+    <Dialog.Panel>
+      <input
+        type="file"
+        accept="appliction/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        @change="onFileChangeEvent($event)"
+      />
+      <div class="px-5 pb-8 text-center">
+        <Button
+          variant="outline-secondary"
+          type="button"
+          @click="setExcelImportModal(false)"
+          class="w-24 mr-1"
+        >
+          취소
+        </Button>
+        <Button
+          variant="primary"
+          type="button"
+          class="w-24"
+          @click="
+            () => {
+              onFileImport(onFileEvent);
+              setExcelImportModal(false);
+            }
+          "
+        >
+          업로드
         </Button>
       </div>
     </Dialog.Panel>
