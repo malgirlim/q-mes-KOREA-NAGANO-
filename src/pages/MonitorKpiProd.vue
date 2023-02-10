@@ -131,23 +131,20 @@ const table_width = [
   "width: 100px", // 편집
 ];
 
+// 엑셀 업로드 용
 const file = ref();
 const file_data = ref();
 const onFileChange = async (event: any) => {
-  console.log("onFileChange 시작");
   file.value = event.target.files[0];
   const reader = new FileReader();
   reader.onload = (e) => {
     /* read file.value */
     const bstr = e.target?.result;
     const wb = XLSX.read(bstr, { type: "array" });
-
     wb.SheetNames.forEach((sheetName) => {
-      // 들어온 데이터 key 값을 바꿀 수 있음
-      // wb.Sheets[sheetName].A1.w = "날짜";
-      // wb.Sheets[sheetName].B1.w = "test2";
+      // wb.Sheets[sheetName].A1.w = "날짜"; // 들어온 데이터 key 값을 바꿀 수 있음
       // console.log(wb.Sheets[sheetName].A1);
-      file_data.value = XLSX.utils.sheet_to_json(wb.Sheets[sheetName]); // {header: 1} key 값까지 가져옴
+      file_data.value = XLSX.utils.sheet_to_json(wb.Sheets[sheetName]); // ,{header: 1} key 값까지 가져옴
     });
     insertExcel(onFileChange(file_data.value));
   };
