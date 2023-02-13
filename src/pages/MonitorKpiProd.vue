@@ -689,7 +689,7 @@ const table_width = [
       </div>
     </Dialog.Panel>
   </Dialog>
-  <!-- END: 엑셀 업로드 Modal -->
+  <!-- END: 엑셀 다운로드 Modal -->
   <!-- BEGIN: 엑셀 업로드 Modal -->
   <Dialog :open="excelImportModal" @close="setExcelImportModal(false)">
     <Dialog.Panel>
