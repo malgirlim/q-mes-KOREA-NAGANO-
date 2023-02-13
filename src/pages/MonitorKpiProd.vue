@@ -83,11 +83,23 @@ const deleteDataFunction = async () => {
   search();
 };
 
+// ########################## 엑셀 다운로드 및 업로드 ##########################
 // 엑셀 다운로드 Modal
 const excelExportModal = ref(false);
 const setExcelExportModal = (value: boolean) => {
   excelExportModal.value = value;
 };
+// SheetJS(엑셀출력) 용
+function exportFile(data: any) {
+  console.log(data);
+  const ws = utils.json_to_sheet(data);
+  const wb = utils.book_new();
+  utils.book_append_sheet(wb, ws, "Data");
+  writeFileXLSX(
+    wb,
+    "KPI_시간당_생산량_" + moment().format("YYMMDD_HHmmss") + "_export.xlsx"
+  );
+}
 
 // 엑셀 업로드 Modal
 const excelImportModal = ref(false);
@@ -96,7 +108,8 @@ const setExcelImportModal = (value: boolean) => {
   onFileEvent.value = null;
 };
 // 엑셀 업로드 용 함수
-const onFileImportForm = "../../src/assets/xlsx/MasterBad.xlsx";
+const onFileImportForm =
+  "../../src/assets/xlsx/업로드양식_KPI시간당생산량.xlsx"; // 엑셀 양식주소
 const onFileEvent = ref();
 const onFileChangeEvent = (event: any) => {
   onFileEvent.value = event;
@@ -120,19 +133,7 @@ const onFileImport = (event: any) => {
     reader.readAsArrayBuffer(file);
   }
 };
-
-// SheetJS(엑셀출력) 용
-
-function exportFile(data: any) {
-  console.log(data);
-  const ws = utils.json_to_sheet(data);
-  const wb = utils.book_new();
-  utils.book_append_sheet(wb, ws, "Data");
-  writeFileXLSX(
-    wb,
-    "KPI_시간당_생산량_" + moment().format("YYMMDD_HHmmss") + "_export.xlsx"
-  );
-}
+// ########################## 엑셀 다운로드 및 업로드 끝 ##########################
 
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
@@ -697,11 +698,11 @@ const table_width = [
         <div class="mt-5 text-3xl">엑셀 업로드</div>
       </div>
       <div class="text-center mb-5">
-        <a :href="onFileImportForm"
-          ><Button variant="outline-primary" size="sm" type="button" as="a"
+        <a :href="onFileImportForm" download>
+          <Button variant="outline-primary" size="sm" type="button" as="a"
             >업로드 양식 다운로드</Button
-          ></a
-        >
+          >
+        </a>
       </div>
       <div class="text-center mb-5">
         <input
