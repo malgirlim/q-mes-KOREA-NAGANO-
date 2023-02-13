@@ -69,7 +69,7 @@ const setInsertModal = (value: boolean) => {
 let insertModalData: StockReceive; // 등록할 변수
 // 등록 함수
 const insertDataFunction = () => {
-  if (insertModalData.NO > 0) {
+  if ((insertModalData.NO ? insertModalData.NO : 0) > 0) {
     insertModalData.품목코드 = product.dataAll.value.filter(
       (c) => c.NO === insertModalData.NO
     )[0].품목코드;
