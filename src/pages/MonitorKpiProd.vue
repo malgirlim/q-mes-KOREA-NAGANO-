@@ -234,25 +234,9 @@ const table_width = [
               <Lucide icon="FileDown" class="w-4 h-4 mr-2" />
               <Excel />
             </Menu.Item>
-
             <Menu.Item @click="setExcelImportModal(true)">
-              <!-- <input
-                id="upload"
-                style="display: none"
-                type="file"
-                @change="onFileChange"
-                accept="appliction/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              /> -->
-              <!-- <label for="upload"
-                ><Lucide icon="FileUp" class="w-4 h-4 mr-2" />
-              </label>
-              <label class="pr-8" for="upload">Excel 업로드 </label> -->
               <Lucide icon="FileUp" class="w-4 h-4 mr-2" />
               Excel 업로드
-            </Menu.Item>
-            <Menu.Item>
-              <Lucide icon="FileCheck" class="w-4 h-4 mr-2" />
-              Excel 업로드 양식
             </Menu.Item>
           </Menu.Items>
         </Menu>
@@ -683,5 +667,5 @@ const table_width = [
       </div>
     </Dialog.Panel>
   </Dialog>
-  <!-- END: Delete Confirmation Modal -->
+  <!-- END: 엑셀 업로드 Modal -->
 </template>
