@@ -109,7 +109,7 @@ const setExcelImportModal = (value: boolean) => {
 };
 // 엑셀 업로드 용 함수
 const onFileImportForm =
-  "../../src/assets/xlsx/업로드양식_KPI시간당생산량.xlsx"; // 엑셀 양식주소
+  "../../src/assets/xlsx/업로드양식_모니터링_KPI시간당생산량.xlsx"; // 엑셀 양식주소
 const onFileEvent = ref();
 const onFileChangeEvent = (event: any) => {
   onFileEvent.value = event;

@@ -18,7 +18,6 @@ export interface MasterProduct {
   단위?: string;
   안전재고?: number;
   원가?: number;
-  금액?: number;
   비고?: string;
   등록자?: string;
   등록일시?: string;
