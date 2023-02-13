@@ -20,6 +20,7 @@ import { MonitorKpiProd } from "../interfaces/menu/monitorInterface";
 // 페이징기능
 import { onMounted, watch } from "vue";
 import PaginationComponent from "../components/Pagination/PaginationComponent.vue"; // 페이징설정
+
 const currentPage = ref(1); // 현재페이지
 const rowsPerPage = ref(10); // 한 페이지에 보여질 데이터 갯수
 
@@ -639,11 +640,24 @@ const table_width = [
   <!-- BEGIN: 엑셀 업로드 Modal -->
   <Dialog :open="excelImportModal" @close="setExcelImportModal(false)">
     <Dialog.Panel>
-      <input
-        type="file"
-        accept="appliction/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        @change="onFileChangeEvent($event)"
-      />
+      <div class="p-5 text-center">
+        <Lucide icon="FileCheck" class="w-16 h-16 mx-auto mt-3 text-primary" />
+        <div class="mt-5 text-3xl">엑셀 업로드</div>
+      </div>
+      <div class="text-center mb-5">
+        <Button variant="outline-primary" type="button" as="a"
+          >양식 다운로드</Button
+        >
+      </div>
+      <div class="text-center border-2 mb-5">
+        <input
+          class="form-control"
+          id="formFile"
+          type="file"
+          accept="appliction/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          @change="onFileChangeEvent($event)"
+        />
+      </div>
       <div class="px-5 pb-8 text-center">
         <Button
           variant="outline-secondary"
