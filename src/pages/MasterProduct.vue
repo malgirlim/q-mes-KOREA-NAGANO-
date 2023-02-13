@@ -351,12 +351,6 @@ const table_width = [
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
-                :style="table_width[9]"
-              >
-                금액
-              </Table.Th>
-              <Table.Th
-                class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[10]"
               >
                 비고
@@ -443,12 +437,6 @@ const table_width = [
                 :style="table_width[8]"
               >
                 <div>{{ todo.원가?.toLocaleString() }}</div>
-              </Table.Td>
-              <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-                :style="table_width[9]"
-              >
-                <div>{{ todo.금액?.toLocaleString() }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -559,15 +547,6 @@ const table_width = [
             id="vertical-form-7"
             type="text"
             v-model="insertModalData.원가"
-            placeholder=""
-          />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-8">금액</FormLabel>
-          <FormInput
-            id="vertical-form-8"
-            type="text"
-            v-model="insertModalData.금액"
             placeholder=""
           />
         </div>
@@ -683,15 +662,6 @@ const table_width = [
             id="vertical-form-7"
             type="text"
             v-model="editModalData.원가"
-            placeholder=""
-          />
-        </div>
-        <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-8">금액</FormLabel>
-          <FormInput
-            id="vertical-form-8"
-            type="text"
-            v-model="editModalData.금액"
             placeholder=""
           />
         </div>
