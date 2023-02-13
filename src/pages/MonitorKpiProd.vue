@@ -250,10 +250,6 @@ const table_width = [
               <Lucide icon="FileUp" class="w-4 h-4 mr-2" />
               Excel 업로드
             </Menu.Item>
-            <Menu.Item>
-              <Lucide icon="FileCheck" class="w-4 h-4 mr-2" />
-              Excel 업로드 양식
-            </Menu.Item>
           </Menu.Items>
         </Menu>
       </div>
@@ -645,11 +641,11 @@ const table_width = [
         <div class="mt-5 text-3xl">엑셀 업로드</div>
       </div>
       <div class="text-center mb-5">
-        <Button variant="outline-primary" type="button" as="a"
-          >양식 다운로드</Button
+        <Button variant="outline-primary" size="sm" type="button" as="a"
+          >업로드 양식 다운로드</Button
         >
       </div>
-      <div class="text-center border-2 mb-5">
+      <div class="text-center mb-5">
         <input
           class="form-control"
           id="formFile"
