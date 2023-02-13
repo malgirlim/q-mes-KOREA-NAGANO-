@@ -113,6 +113,30 @@ const onFileImport = (event: any) => {
   }
 };
 
+// SheetJS(엑셀 출력) 용
+function exportFormFile() {
+  const wb = XLSX.utils.book_new();
+  const data = [
+    ["연월", "목표치", "측정치"],
+    ["2023-01", "100.0", "100.0", "예시이므로 삭제해주세요"],
+  ];
+  const sheetName = "Kpi시간당생산량";
+  const fileName = "Kpi시간당생산량_양식" + "_" + moment().format("YYMMDD");
+  const ws = XLSX.utils.json_to_sheet(data, {
+    skipHeader: true,
+  });
+  ws["A2"].s = {
+    font: {
+      name: "arial",
+      sz: 24,
+      bold: true,
+      color: "#F2F2F2",
+    },
+  };
+  XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  XLSX.writeFileXLSX(wb, fileName + ".xlsx");
+}
+
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
 const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
@@ -234,19 +258,7 @@ const table_width = [
               <Lucide icon="FileDown" class="w-4 h-4 mr-2" />
               <Excel />
             </Menu.Item>
-
             <Menu.Item @click="setExcelImportModal(true)">
-              <!-- <input
-                id="upload"
-                style="display: none"
-                type="file"
-                @change="onFileChange"
-                accept="appliction/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              /> -->
-              <!-- <label for="upload"
-                ><Lucide icon="FileUp" class="w-4 h-4 mr-2" />
-              </label>
-              <label class="pr-8" for="upload">Excel 업로드 </label> -->
               <Lucide icon="FileUp" class="w-4 h-4 mr-2" />
               Excel 업로드
             </Menu.Item>
@@ -641,8 +653,17 @@ const table_width = [
         <div class="mt-5 text-3xl">엑셀 업로드</div>
       </div>
       <div class="text-center mb-5">
+<<<<<<< HEAD
         <Button variant="outline-primary" size="sm" type="button" as="a"
           >업로드 양식 다운로드</Button
+=======
+        <Button
+          variant="outline-primary"
+          type="button"
+          as="a"
+          @click="exportFormFile()"
+          >양식 다운로드</Button
+>>>>>>> eb8cd1f956f132f96e576108484638087039456d
         >
       </div>
       <div class="text-center mb-5">
@@ -679,5 +700,5 @@ const table_width = [
       </div>
     </Dialog.Panel>
   </Dialog>
-  <!-- END: Delete Confirmation Modal -->
+  <!-- END: 엑셀 업로드 Modal -->
 </template>
