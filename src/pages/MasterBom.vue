@@ -432,25 +432,6 @@ const table_width2 = [
           >
             <Lucide icon="Trash2" class="w-4 h-4 mr-2" /> 삭제</Button
           >
-          <div class="ml-2 mr-3">
-            <Menu>
-              <Menu.Button :as="Button" class="px-2 !box">
-                <span class="flex items-center justify-center w-5 h-5">
-                  <Lucide icon="MoreVertical" class="w-4 h-4" />
-                </span>
-              </Menu.Button>
-              <Menu.Items class="w-40">
-                <Menu.Item>
-                  <Lucide icon="Printer" class="w-4 h-4 mr-2" />
-                  <Print />
-                </Menu.Item>
-                <Menu.Item>
-                  <Lucide icon="FileText" class="w-4 h-4 mr-2" />
-                  <Excel />
-                </Menu.Item>
-              </Menu.Items>
-            </Menu>
-          </div>
         </div>
         <!-- BEGIN: Pagination-->
         <div

@@ -8,8 +8,9 @@ import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
 import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
-import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 import Litepicker from "../base-components/Litepicker";
+import * as XLSX from "xlsx";
+import { read, utils, writeFileXLSX } from "xlsx";
 import { toast } from "vue3-toastify";
 
 // API 보내는 함수 및 인터페이스 불러오기
@@ -31,6 +32,7 @@ const pageChange = () => {
 const url = "/api/monitor/safe";
 const {
   datas,
+  dataAll,
   dataCount,
   datasAreLoading,
   loadDatas,
@@ -38,6 +40,7 @@ const {
   insertData,
   editData,
   deleteData,
+  insertExcel,
   numberOfPages,
 } = useSendApi<MonitorSafe>(url, currentPage, rowsPerPage);
 
@@ -55,6 +58,27 @@ const search = () => {
   // console.log(searchKey.value, searchInput.value);
   searchDatas("", searchKey.value, searchInput.value);
 };
+
+// ########################## 엑셀 다운로드 ##########################
+// 엑셀 다운로드 Modal
+const excelExportModal = ref(false);
+const setExcelExportModal = (value: boolean) => {
+  excelExportModal.value = value;
+};
+// SheetJS(엑셀출력) 용
+function exportFile(data: any) {
+  console.log(data);
+  const ws = utils.json_to_sheet(data);
+  const wb = utils.book_new();
+  utils.book_append_sheet(wb, ws, "Data");
+  writeFileXLSX(
+    wb,
+    "모니터링_안전재고미달통보" +
+      moment().format("YYMMDD_HHmmss") +
+      "_export.xlsx"
+  );
+}
+// ########################## 엑셀 다운로드 끝 ##########################
 
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
@@ -148,14 +172,14 @@ const table_width = [
               <Lucide icon="MoreVertical" class="w-4 h-4" />
             </span>
           </Menu.Button>
-          <Menu.Items class="w-40">
+          <Menu.Items style="width: 170px">
             <Menu.Item>
               <Lucide icon="Printer" class="w-4 h-4 mr-2" />
               <Print />
             </Menu.Item>
-            <Menu.Item>
-              <Lucide icon="FileText" class="w-4 h-4 mr-2" />
-              <Excel />
+            <Menu.Item @click="setExcelExportModal(true)">
+              <Lucide icon="FileDown" class="w-4 h-4 mr-2" />
+              Excel 다운로드
             </Menu.Item>
           </Menu.Items>
         </Menu>
@@ -349,4 +373,51 @@ const table_width = [
     <footer>&copy;2023 QInnotek. All rights reserved.</footer>
   </div>
   <!-- END: FOOTER(COPYRIGHT) -->
+  <!-- BEGIN: 엑셀 다운로드 Modal -->
+  <Dialog :open="excelExportModal" @close="setExcelExportModal(false)">
+    <Dialog.Panel>
+      <div class="p-5 text-center">
+        <Lucide icon="FileDown" class="w-16 h-16 mx-auto mt-3 text-primary" />
+        <div class="mt-5 text-3xl">Excel 다운로드</div>
+      </div>
+
+      <div class="px-5 pb-8 text-center">
+        <Button
+          variant="primary"
+          type="button"
+          class="w-38 mr-3"
+          @click="
+            () => {
+              exportFile(datas);
+              setExcelExportModal(false);
+            }
+          "
+        >
+          다운로드(현재 페이지)
+        </Button>
+        <Button
+          variant="primary"
+          type="button"
+          class="w-38 mr-3"
+          @click="
+            () => {
+              exportFile(dataAll);
+              setExcelExportModal(false);
+            }
+          "
+        >
+          다운로드(전체)
+        </Button>
+        <Button
+          variant="outline-secondary"
+          type="button"
+          @click="setExcelExportModal(false)"
+          class="w-24 mr-1"
+        >
+          취소
+        </Button>
+      </div>
+    </Dialog.Panel>
+  </Dialog>
+  <!-- END: 엑셀 다운로드 Modal -->
 </template>

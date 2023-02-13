@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import * as XLSX from "xlsx";
-
 import _, { isArguments } from "lodash";
 import { ref, Ref } from "vue";
 import Button from "../base-components/Button";
@@ -11,6 +9,7 @@ import Table from "../base-components/Table";
 import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Litepicker from "../base-components/Litepicker";
+import * as XLSX from "xlsx";
 import { read, utils, writeFileXLSX } from "xlsx";
 
 // API 보내는 함수 및 인터페이스 불러오기
@@ -97,7 +96,9 @@ function exportFile(data: any) {
   utils.book_append_sheet(wb, ws, "Data");
   writeFileXLSX(
     wb,
-    "KPI_시간당_생산량_" + moment().format("YYMMDD_HHmmss") + "_export.xlsx"
+    "모니터링_KPI시간당생산량_" +
+      moment().format("YYMMDD_HHmmss") +
+      "_export.xlsx"
   );
 }
 

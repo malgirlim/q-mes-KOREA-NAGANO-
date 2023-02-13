@@ -8,8 +8,9 @@ import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
 import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
-import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 import Litepicker from "../base-components/Litepicker";
+import * as XLSX from "xlsx";
+import { read, utils, writeFileXLSX } from "xlsx";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
@@ -30,6 +31,7 @@ const pageChange = () => {
 const url = "/api/master/process";
 const {
   datas,
+  dataAll,
   dataCount,
   datasAreLoading,
   loadDatas,
@@ -37,6 +39,7 @@ const {
   insertData,
   editData,
   deleteData,
+  insertExcel,
   numberOfPages,
 } = useSendApi<MasterProcess>(url, currentPage, rowsPerPage);
 
@@ -77,6 +80,58 @@ const deleteDataFunction = async () => {
   resetCheckBox();
   search();
 };
+
+// ########################## 엑셀 다운로드 및 업로드 ##########################
+// 엑셀 다운로드 Modal
+const excelExportModal = ref(false);
+const setExcelExportModal = (value: boolean) => {
+  excelExportModal.value = value;
+};
+// SheetJS(엑셀출력) 용
+function exportFile(data: any) {
+  console.log(data);
+  const ws = utils.json_to_sheet(data);
+  const wb = utils.book_new();
+  utils.book_append_sheet(wb, ws, "Data");
+  writeFileXLSX(
+    wb,
+    "기준정보_공정등록" + moment().format("YYMMDD_HHmmss") + "_export.xlsx"
+  );
+}
+
+// 엑셀 업로드 Modal
+const excelImportModal = ref(false);
+const setExcelImportModal = (value: boolean) => {
+  excelImportModal.value = value;
+  onFileEvent.value = null;
+};
+// 엑셀 업로드 용 함수
+const onFileImportForm =
+  "../../src/assets/xlsx/업로드양식_기준정보_공정등록.xlsx"; // 엑셀 양식주소
+const onFileEvent = ref();
+const onFileChangeEvent = (event: any) => {
+  onFileEvent.value = event;
+};
+const onFileImport = (event: any) => {
+  if (event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const file_data = ref();
+      const wb = XLSX.read(e.target?.result, { type: "array" });
+      wb.SheetNames.forEach((sheetName) => {
+        // wb.Sheets[sheetName].A1.w = "날짜"; // 들어온 데이터 key 값을 바꿀 수 있음
+        // console.log(wb.Sheets[sheetName].A1);
+        file_data.value = XLSX.utils.sheet_to_json(wb.Sheets[sheetName]); // ,{header: 1} key 값까지 가져옴
+      });
+      await insertExcel(file_data.value);
+      search();
+      pageChange();
+    };
+    reader.readAsArrayBuffer(file);
+  }
+};
+// ########################## 엑셀 다운로드 및 업로드 끝 ##########################
 
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
@@ -225,14 +280,18 @@ const table_width = [
               <Lucide icon="MoreVertical" class="w-4 h-4" />
             </span>
           </Menu.Button>
-          <Menu.Items class="w-40">
+          <Menu.Items style="width: 170px">
             <Menu.Item>
               <Lucide icon="Printer" class="w-4 h-4 mr-2" />
               <Print />
             </Menu.Item>
-            <Menu.Item>
-              <Lucide icon="FileText" class="w-4 h-4 mr-2" />
-              <Excel />
+            <Menu.Item @click="setExcelExportModal(true)">
+              <Lucide icon="FileDown" class="w-4 h-4 mr-2" />
+              Excel 다운로드
+            </Menu.Item>
+            <Menu.Item @click="setExcelImportModal(true)">
+              <Lucide icon="FileUp" class="w-4 h-4 mr-2" />
+              Excel 업로드
             </Menu.Item>
           </Menu.Items>
         </Menu>
@@ -597,4 +656,100 @@ const table_width = [
     </Dialog.Panel>
   </Dialog>
   <!-- END: Delete Confirmation Modal -->
+  <!-- BEGIN: 엑셀 다운로드 Modal -->
+  <Dialog :open="excelExportModal" @close="setExcelExportModal(false)">
+    <Dialog.Panel>
+      <div class="p-5 text-center">
+        <Lucide icon="FileDown" class="w-16 h-16 mx-auto mt-3 text-primary" />
+        <div class="mt-5 text-3xl">Excel 다운로드</div>
+      </div>
+
+      <div class="px-5 pb-8 text-center">
+        <Button
+          variant="primary"
+          type="button"
+          class="w-38 mr-3"
+          @click="
+            () => {
+              exportFile(datas);
+              setExcelExportModal(false);
+            }
+          "
+        >
+          다운로드(현재 페이지)
+        </Button>
+        <Button
+          variant="primary"
+          type="button"
+          class="w-38 mr-3"
+          @click="
+            () => {
+              exportFile(dataAll);
+              setExcelExportModal(false);
+            }
+          "
+        >
+          다운로드(전체)
+        </Button>
+        <Button
+          variant="outline-secondary"
+          type="button"
+          @click="setExcelExportModal(false)"
+          class="w-24 mr-1"
+        >
+          취소
+        </Button>
+      </div>
+    </Dialog.Panel>
+  </Dialog>
+  <!-- END: 엑셀 다운로드 Modal -->
+  <!-- BEGIN: 엑셀 업로드 Modal -->
+  <Dialog :open="excelImportModal" @close="setExcelImportModal(false)">
+    <Dialog.Panel>
+      <div class="p-5 text-center">
+        <Lucide icon="FileUp" class="w-16 h-16 mx-auto mt-3 text-primary" />
+        <div class="mt-5 text-3xl">Excel 업로드</div>
+      </div>
+      <div class="text-center mb-5">
+        <a :href="onFileImportForm" download>
+          <Button variant="outline-primary" size="sm" type="button" as="a"
+            >업로드 양식 다운로드</Button
+          >
+        </a>
+      </div>
+      <div class="text-center mb-5">
+        <input
+          class="form-control"
+          id="formFile"
+          type="file"
+          accept="appliction/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          @change="onFileChangeEvent($event)"
+        />
+      </div>
+      <div class="px-5 pb-8 text-center">
+        <Button
+          variant="primary"
+          type="button"
+          class="w-24 mr-3"
+          @click="
+            () => {
+              onFileImport(onFileEvent);
+              setExcelImportModal(false);
+            }
+          "
+        >
+          업로드
+        </Button>
+        <Button
+          variant="outline-secondary"
+          type="button"
+          @click="setExcelImportModal(false)"
+          class="w-24 mr-1"
+        >
+          취소
+        </Button>
+      </div>
+    </Dialog.Panel>
+  </Dialog>
+  <!-- END: 엑셀 업로드 Modal -->
 </template>
