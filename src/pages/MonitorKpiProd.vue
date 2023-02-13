@@ -96,6 +96,7 @@ const setExcelImportModal = (value: boolean) => {
   onFileEvent.value = null;
 };
 // 엑셀 업로드 용 함수
+const onFileImportForm = "../../src/assets/xlsx/MasterBad.xlsx";
 const onFileEvent = ref();
 const onFileChangeEvent = (event: any) => {
   onFileEvent.value = event;
@@ -683,7 +684,7 @@ const table_width = [
         <div class="mt-5 text-3xl">엑셀 업로드</div>
       </div>
       <div class="text-center mb-5">
-        <a href="../../src/assets/xlsx/MasterBad.xlsx"
+        <a :href="onFileImportForm"
           ><Button variant="outline-primary" size="sm" type="button" as="a"
             >업로드 양식 다운로드</Button
           ></a

@@ -65,6 +65,7 @@ const monitor_kpi_stock_data_calculate = ref(0); // 전 월 대비 달성율
 const monitor_kpi_stock_data_연월 = ref();
 const monitor_kpi_stock_data_측정치 = ref();
 const monitor_kpi_stock_data_목표치 = ref();
+const monitor_kpi_stock_data_절감률 = ref();
 
 // api 보내기 - 안전재고 미달
 const monitor_safe_url = "/api/monitor/safe";
@@ -186,6 +187,12 @@ const loadData = async () => {
     .reverse();
   monitor_kpi_stock_data_목표치.value = monitor_kpi_stock.dataAll.value
     ?.map(({ 목표치 }) => 목표치)
+    .reverse();
+  monitor_kpi_stock_data_절감률.value = monitor_kpi_stock.dataAll.value
+    ?.map(
+      ({ 목표치, 측정치 }) =>
+        ((Number(목표치) - Number(측정치)) / Number(목표치)) * 100
+    )
     .reverse();
 
   await monitor_safe.loadDatas();
@@ -650,16 +657,16 @@ const lineChartMonth = [
         KPI / 월간 재고 비용 절감률
       </div>
       <div
-        v-memo="[monitor_kpi_stock_data_측정치, monitor_kpi_stock_data_측정치]"
+        v-memo="[monitor_kpi_stock_data_절감률, monitor_kpi_stock_data_절감률]"
       >
         <LineChart
           :height="300"
           :data_labels="monitor_kpi_stock_data_연월"
           :data_set="{
-            target_label: '측정치',
-            target_data: monitor_kpi_stock_data_측정치,
-            output_label: '목표치',
-            output_data: monitor_kpi_stock_data_목표치,
+            target_label: '절감률',
+            target_data: monitor_kpi_stock_data_절감률,
+            output_label: '절감률',
+            output_data: monitor_kpi_stock_data_절감률,
           }"
           class="mt-5 -mb-6"
         />
