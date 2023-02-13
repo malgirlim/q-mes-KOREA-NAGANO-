@@ -10,8 +10,8 @@ import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
 import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
-import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 import Litepicker from "../base-components/Litepicker";
+import { read, utils, writeFileXLSX } from "xlsx";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
@@ -33,6 +33,7 @@ const pageChange = () => {
 const url = "/api/monitor/kpi-prod";
 const {
   datas,
+  dataAll,
   dataCount,
   datasAreLoading,
   loadDatas,
@@ -86,7 +87,6 @@ const deleteDataFunction = async () => {
 const excelExportModal = ref(false);
 const setExcelExportModal = (value: boolean) => {
   excelExportModal.value = value;
-  onFileEvent.value = null;
 };
 
 // 엑셀 업로드 Modal
@@ -120,26 +120,18 @@ const onFileImport = (event: any) => {
   }
 };
 
-// SheetJS(엑셀 출력) 용
-const exportFormFile = () => {
-  const wb = XLSX.utils.book_new();
-  const data = [
-    ["연월", "목표치", "측정치"],
-    ["2023-01", "100.0", "100.0", "예시이므로 삭제해주세요"],
-  ];
-  const sheetName = "Kpi시간당생산량";
-  const fileName = "Kpi시간당생산량_양식" + "_" + moment().format("YYMMDD");
-  const ws = XLSX.utils.json_to_sheet(data, {
-    skipHeader: true,
-  });
-  ws["A1"].s = {
-    font: {
-      color: { rgb: "FFFFAA00" },
-    },
-  };
-  XLSX.utils.book_append_sheet(wb, ws, sheetName);
-  XLSX.writeFileXLSX(wb, fileName + ".xlsx");
-};
+// SheetJS(엑셀출력) 용
+
+function exportFile(data: any) {
+  console.log(data);
+  const ws = utils.json_to_sheet(data);
+  const wb = utils.book_new();
+  utils.book_append_sheet(wb, ws, "Data");
+  writeFileXLSX(
+    wb,
+    "KPI_시간당_생산량_" + moment().format("YYMMDD_HHmmss") + "_export.xlsx"
+  );
+}
 
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
@@ -664,7 +656,7 @@ const table_width = [
           class="w-38 mr-3"
           @click="
             () => {
-              onFileImport(onFileEvent);
+              exportFile(datas);
               setExcelExportModal(false);
             }
           "
@@ -677,7 +669,7 @@ const table_width = [
           class="w-38 mr-3"
           @click="
             () => {
-              onFileImport(onFileEvent);
+              exportFile(dataAll);
               setExcelExportModal(false);
             }
           "
@@ -704,20 +696,10 @@ const table_width = [
         <div class="mt-5 text-3xl">엑셀 업로드</div>
       </div>
       <div class="text-center mb-5">
-<<<<<<< HEAD
         <a href="../../src/assets/xlsx/MasterBad.xlsx"
           ><Button variant="outline-primary" size="sm" type="button" as="a"
             >업로드 양식 다운로드</Button
           ></a
-=======
-        <Button
-          variant="outline-primary"
-          size="sm"
-          type="button"
-          as="a"
-          @click="exportFormFile()"
-          >업로드 양식 다운로드</Button
->>>>>>> 430ed14ae237175101e21f63a1a7a7e1e318ac0b
         >
       </div>
       <div class="text-center mb-5">
