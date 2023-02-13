@@ -121,7 +121,7 @@ const onFileImport = (event: any) => {
 };
 
 // SheetJS(엑셀 출력) 용
-function exportFormFile() {
+const exportFormFile = () => {
   const wb = XLSX.utils.book_new();
   const data = [
     ["연월", "목표치", "측정치"],
@@ -132,17 +132,14 @@ function exportFormFile() {
   const ws = XLSX.utils.json_to_sheet(data, {
     skipHeader: true,
   });
-  ws["A2"].s = {
+  ws["A1"].s = {
     font: {
-      name: "arial",
-      sz: 24,
-      bold: true,
-      color: "#F2F2F2",
+      color: { rgb: "FFFFAA00" },
     },
   };
   XLSX.utils.book_append_sheet(wb, ws, sheetName);
   XLSX.writeFileXLSX(wb, fileName + ".xlsx");
-}
+};
 
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
@@ -707,10 +704,20 @@ const table_width = [
         <div class="mt-5 text-3xl">엑셀 업로드</div>
       </div>
       <div class="text-center mb-5">
+<<<<<<< HEAD
         <a href="../../src/assets/xlsx/MasterBad.xlsx"
           ><Button variant="outline-primary" size="sm" type="button" as="a"
             >업로드 양식 다운로드</Button
           ></a
+=======
+        <Button
+          variant="outline-primary"
+          size="sm"
+          type="button"
+          as="a"
+          @click="exportFormFile()"
+          >업로드 양식 다운로드</Button
+>>>>>>> 430ed14ae237175101e21f63a1a7a7e1e318ac0b
         >
       </div>
       <div class="text-center mb-5">
