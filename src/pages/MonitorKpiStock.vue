@@ -274,13 +274,13 @@ const table_width = [
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[3]"
               >
-                목표치
+                목표금액
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[4]"
               >
-                측정치
+                월재고금액
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
@@ -423,7 +423,7 @@ const table_width = [
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">목표치</FormLabel>
+          <FormLabel htmlFor="vertical-form-2">목표금액</FormLabel>
           <FormInput
             id="vertical-form-2"
             type="text"
@@ -432,7 +432,7 @@ const table_width = [
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-3">측정치</FormLabel>
+          <FormLabel htmlFor="vertical-form-3">월재고금액</FormLabel>
           <FormInput
             id="vertical-form-3"
             type="text"
@@ -493,7 +493,7 @@ const table_width = [
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-2">목표치</FormLabel>
+          <FormLabel htmlFor="vertical-form-2">목표금액</FormLabel>
           <FormInput
             id="vertical-form-2"
             type="text"
@@ -502,7 +502,7 @@ const table_width = [
           />
         </div>
         <div class="mt-3">
-          <FormLabel htmlFor="vertical-form-3">측정치</FormLabel>
+          <FormLabel htmlFor="vertical-form-3">월재고금액</FormLabel>
           <FormInput
             id="vertical-form-3"
             type="text"
