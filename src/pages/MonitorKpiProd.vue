@@ -120,7 +120,6 @@ const onFileImport = (event: any) => {
   }
 };
 
-<<<<<<< HEAD
 // SheetJS(엑셀출력) 용
 
 function exportFile(data: any) {
@@ -134,8 +133,6 @@ function exportFile(data: any) {
   );
 }
 
-=======
->>>>>>> 2346231c621d148e11bae62a6adfb08f9e76c463
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
 const nowPlus = moment().add(7, "days").format("YYYY-MM-DD");
@@ -699,7 +696,7 @@ const table_width = [
         <div class="mt-5 text-3xl">엑셀 업로드</div>
       </div>
       <div class="text-center mb-5">
-        <a href="../../src/assets/xlsx/MasterBad.xlsx"
+        <a href="../../src/assets/xlsx/업로드양식_KPI시간당생산량.xlsx"
           ><Button variant="outline-primary" size="sm" type="button" as="a"
             >업로드 양식 다운로드</Button
           ></a
