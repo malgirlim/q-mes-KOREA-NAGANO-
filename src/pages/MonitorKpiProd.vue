@@ -10,8 +10,8 @@ import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
 import moment from "moment";
 import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
-import Excel from "../components/MakeExcelFile/MakeExcelFile.vue";
 import Litepicker from "../base-components/Litepicker";
+import { read, utils, writeFileXLSX } from "xlsx";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
@@ -33,6 +33,7 @@ const pageChange = () => {
 const url = "/api/monitor/kpi-prod";
 const {
   datas,
+  dataAll,
   dataCount,
   datasAreLoading,
   loadDatas,
@@ -86,7 +87,6 @@ const deleteDataFunction = async () => {
 const excelExportModal = ref(false);
 const setExcelExportModal = (value: boolean) => {
   excelExportModal.value = value;
-  onFileEvent.value = null;
 };
 
 // 엑셀 업로드 Modal
@@ -120,6 +120,19 @@ const onFileImport = (event: any) => {
     reader.readAsArrayBuffer(file);
   }
 };
+
+// SheetJS(엑셀출력) 용
+
+function exportFile(data: any) {
+  console.log(data);
+  const ws = utils.json_to_sheet(data);
+  const wb = utils.book_new();
+  utils.book_append_sheet(wb, ws, "Data");
+  writeFileXLSX(
+    wb,
+    "KPI_시간당_생산량_" + moment().format("YYMMDD_HHmmss") + "_export.xlsx"
+  );
+}
 
 // 날짜 구하기
 const now = moment().format("YYYY-MM-DD");
@@ -357,7 +370,7 @@ const table_width = [
               class="intro-x"
             >
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 id="checkbox"
                 :style="table_width[0]"
               >
@@ -644,7 +657,7 @@ const table_width = [
           class="w-38 mr-3"
           @click="
             () => {
-              onFileImport(onFileEvent);
+              exportFile(datas);
               setExcelExportModal(false);
             }
           "
@@ -657,7 +670,7 @@ const table_width = [
           class="w-38 mr-3"
           @click="
             () => {
-              onFileImport(onFileEvent);
+              exportFile(dataAll);
               setExcelExportModal(false);
             }
           "
