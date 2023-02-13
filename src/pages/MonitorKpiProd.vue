@@ -82,6 +82,13 @@ const deleteDataFunction = async () => {
   search();
 };
 
+// 엑셀 다운로드 Modal
+const excelExportModal = ref(false);
+const setExcelExportModal = (value: boolean) => {
+  excelExportModal.value = value;
+  onFileEvent.value = null;
+};
+
 // 엑셀 업로드 Modal
 const excelImportModal = ref(false);
 const setExcelImportModal = (value: boolean) => {
@@ -230,9 +237,9 @@ const table_width = [
               <Lucide icon="Printer" class="w-4 h-4 mr-2" />
               <Print />
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item @click="setExcelExportModal(true)">
               <Lucide icon="FileDown" class="w-4 h-4 mr-2" />
-              <Excel />
+              Excel 다운로드
             </Menu.Item>
             <Menu.Item @click="setExcelImportModal(true)">
               <Lucide icon="FileUp" class="w-4 h-4 mr-2" />
@@ -621,6 +628,53 @@ const table_width = [
     </Dialog.Panel>
   </Dialog>
   <!-- END: Delete Confirmation Modal -->
+  <!-- BEGIN: 엑셀 다운로드 Modal -->
+  <Dialog :open="excelExportModal" @close="setExcelExportModal(false)">
+    <Dialog.Panel>
+      <div class="p-5 text-center">
+        <Lucide icon="FileCheck" class="w-16 h-16 mx-auto mt-3 text-primary" />
+        <div class="mt-5 text-3xl">엑셀 다운로드</div>
+      </div>
+
+      <div class="px-5 pb-8 text-center">
+        <Button
+          variant="primary"
+          type="button"
+          class="w-38 mr-3"
+          @click="
+            () => {
+              onFileImport(onFileEvent);
+              setExcelExportModal(false);
+            }
+          "
+        >
+          다운로드(현재 페이지)
+        </Button>
+        <Button
+          variant="primary"
+          type="button"
+          class="w-38 mr-3"
+          @click="
+            () => {
+              onFileImport(onFileEvent);
+              setExcelExportModal(false);
+            }
+          "
+        >
+          다운로드(전체)
+        </Button>
+        <Button
+          variant="outline-secondary"
+          type="button"
+          @click="setExcelExportModal(false)"
+          class="w-24 mr-1"
+        >
+          취소
+        </Button>
+      </div>
+    </Dialog.Panel>
+  </Dialog>
+  <!-- END: 엑셀 업로드 Modal -->
   <!-- BEGIN: 엑셀 업로드 Modal -->
   <Dialog :open="excelImportModal" @close="setExcelImportModal(false)">
     <Dialog.Panel>
@@ -629,8 +683,10 @@ const table_width = [
         <div class="mt-5 text-3xl">엑셀 업로드</div>
       </div>
       <div class="text-center mb-5">
-        <Button variant="outline-primary" size="sm" type="button" as="a"
-          >업로드 양식 다운로드</Button
+        <a href="../../src/assets/xlsx/MasterBad.xlsx"
+          ><Button variant="outline-primary" size="sm" type="button" as="a"
+            >업로드 양식 다운로드</Button
+          ></a
         >
       </div>
       <div class="text-center mb-5">
@@ -644,17 +700,9 @@ const table_width = [
       </div>
       <div class="px-5 pb-8 text-center">
         <Button
-          variant="outline-secondary"
-          type="button"
-          @click="setExcelImportModal(false)"
-          class="w-24 mr-1"
-        >
-          취소
-        </Button>
-        <Button
           variant="primary"
           type="button"
-          class="w-24"
+          class="w-24 mr-3"
           @click="
             () => {
               onFileImport(onFileEvent);
@@ -663,6 +711,14 @@ const table_width = [
           "
         >
           업로드
+        </Button>
+        <Button
+          variant="outline-secondary"
+          type="button"
+          @click="setExcelImportModal(false)"
+          class="w-24 mr-1"
+        >
+          취소
         </Button>
       </div>
     </Dialog.Panel>
