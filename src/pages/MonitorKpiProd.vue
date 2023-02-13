@@ -647,8 +647,8 @@ const table_width = [
   <Dialog :open="excelExportModal" @close="setExcelExportModal(false)">
     <Dialog.Panel>
       <div class="p-5 text-center">
-        <Lucide icon="FileCheck" class="w-16 h-16 mx-auto mt-3 text-primary" />
-        <div class="mt-5 text-3xl">엑셀 다운로드</div>
+        <Lucide icon="FileDown" class="w-16 h-16 mx-auto mt-3 text-primary" />
+        <div class="mt-5 text-3xl">Excel 다운로드</div>
       </div>
 
       <div class="px-5 pb-8 text-center">
@@ -694,8 +694,8 @@ const table_width = [
   <Dialog :open="excelImportModal" @close="setExcelImportModal(false)">
     <Dialog.Panel>
       <div class="p-5 text-center">
-        <Lucide icon="FileCheck" class="w-16 h-16 mx-auto mt-3 text-primary" />
-        <div class="mt-5 text-3xl">엑셀 업로드</div>
+        <Lucide icon="FileUp" class="w-16 h-16 mx-auto mt-3 text-primary" />
+        <div class="mt-5 text-3xl">Excel 업로드</div>
       </div>
       <div class="text-center mb-5">
         <a :href="onFileImportForm" download>
