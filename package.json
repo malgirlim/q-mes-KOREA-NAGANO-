@@ -45,7 +45,6 @@
     "vue": "^3.2.41",
     "vue-moment": "^4.1.0",
     "vue-router": "^4.1.6",
-    "vue3-cookies": "^1.0.6",
     "vue3-toastify": "^0.0.5",
     "vuex": "^4.1.0",
     "xlsx": "^0.18.5",

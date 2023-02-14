@@ -2,7 +2,6 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
-// import store from "./store";
 import Vue3Toasity from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import "./assets/css/app.css";
@@ -27,12 +26,3 @@ createApp(App)
     autoClose: 3000,
   })
   .mount("#app");
-
-// createApp(App)
-//   .use(router(store))
-//   .use(store)
-//   .use(createPinia())
-//   .use(Vue3Toasity, {
-//     autoClose: 3000,
-//   })
-//   .mount("#app");
