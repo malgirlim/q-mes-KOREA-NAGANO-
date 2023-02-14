@@ -73,7 +73,7 @@ export function useSendApi<T>(
   // 엑셀로 한번에 등록
   const insertExcel = async (data: any) => {
     try {
-      await axios.post(url + "/insertExcel", { data });
+      await axios.post(url + "/insertAll", { data });
     } catch (err) {
       console.log(err);
     }

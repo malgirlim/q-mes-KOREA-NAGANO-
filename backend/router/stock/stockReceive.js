@@ -153,4 +153,62 @@ router.post("/delete", async (req, res) => {
   }
 });
 
+// 한번에 등록
+router.post("/insertAll", async (req, res) => {
+  try {
+    const Pool = await pool;
+    for (var i = 0; i < req.body.data.length; i++) {
+      // select
+      await Pool.request()
+        .input(
+          "입고일시",
+          sql.NVarChar,
+          !req.body.data[i].입고일시 ? "" : req.body.data[i].입고일시
+        )
+        .input(
+          "품목코드",
+          sql.NVarChar,
+          !req.body.data[i].품목코드 ? "" : req.body.data[i].품목코드
+        )
+        .input(
+          "거래처명",
+          sql.NVarChar,
+          !req.body.data[i].거래처명 ? "" : req.body.data[i].거래처명
+        )
+        .input(
+          "품명",
+          sql.NVarChar,
+          !req.body.data[i].품명 ? "" : req.body.data[i].품명
+        )
+        .input(
+          "규격",
+          sql.NVarChar,
+          !req.body.data[i].규격 ? "" : req.body.data[i].규격
+        )
+        .input(
+          "단위",
+          sql.NVarChar,
+          !req.body.data[i].단위 ? "" : req.body.data[i].단위
+        )
+        .input(
+          "입고수",
+          sql.Int,
+          !req.body.data[i].입고수 ? 0 : req.body.data[i].입고수
+        )
+        .input(
+          "비고",
+          sql.NVarChar,
+          !req.body.data[i].비고 ? "" : req.body.data[i].비고
+        )
+        .query(
+          "exec [QMES].[dbo].[MANAGE_ITEM_RECEIVE_INS_SP] @입고일시,@품목코드,@거래처명,@품명,@규격,@단위,@입고수,@비고"
+        );
+    }
+    res.send("등록완료");
+  } catch (err) {
+    res.status(500);
+    res.send(err.message);
+  }
+});
+
 module.exports = router;

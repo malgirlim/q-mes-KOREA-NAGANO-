@@ -230,6 +230,22 @@ const onFileImport = (event: any) => {
         // console.log(wb.Sheets[sheetName].A1);
         file_data.value = XLSX.utils.sheet_to_json(wb.Sheets[sheetName]); // ,{header: 1} key 값까지 가져옴
       });
+      file_data.value.forEach((fd: any) => {
+        if (isNaN(Date.parse(fd.불량일시.toLocaleString())))
+          fd.불량일시 = moment().format("YYYY-MM-DD HH:mm:ss");
+        fd.품명 = product.dataAll.value.filter(
+          (c) => c.품목코드 === fd.품목코드
+        )[0].품명;
+        fd.거래처명 = product.dataAll.value.filter(
+          (c) => c.품목코드 === fd.품목코드
+        )[0].거래처명;
+        fd.규격 = product.dataAll.value.filter(
+          (c) => c.품목코드 === fd.품목코드
+        )[0].규격;
+        fd.단위 = product.dataAll.value.filter(
+          (c) => c.품목코드 === fd.품목코드
+        )[0].단위;
+      });
       await insertExcel(file_data.value);
       search();
       pageChange();

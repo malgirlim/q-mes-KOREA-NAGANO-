@@ -72,6 +72,39 @@ router.post("/insert", async (req, res) => {
   }
 });
 
+// 한번에 등록
+router.post("/insertAll", async (req, res) => {
+  try {
+    const Pool = await pool;
+    for (var i = 0; i < req.body.data.length; i++) {
+      // select
+      await Pool.request()
+        .input(
+          "공정명",
+          sql.NVarChar,
+          !req.body.data[i].공정명 ? "" : req.body.data[i].공정명
+        )
+        .input(
+          "공정내용",
+          sql.NVarChar,
+          !req.body.data[i].공정내용 ? "" : req.body.data[i].공정내용
+        )
+        .input(
+          "비고",
+          sql.NVarChar,
+          !req.body.data[i].비고 ? "" : req.body.data[i].비고
+        )
+        .query(
+          "exec [QMES].[dbo].[MASTER_PROCESS_KN_INS_SP] 0,@공정명,@공정내용,@비고"
+        );
+    }
+    res.send("등록완료");
+  } catch (err) {
+    res.status(500);
+    res.send(err.message);
+  }
+});
+
 // 수정
 router.post("/edit", async (req, res) => {
   try {

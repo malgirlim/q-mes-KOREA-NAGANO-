@@ -92,6 +92,59 @@ router.post("/insert", async (req, res) => {
   }
 });
 
+// 한번에 등록
+router.post("/insertAll", async (req, res) => {
+  try {
+    const Pool = await pool;
+    for (var i = 0; i < req.body.data.length; i++) {
+      // select
+      await Pool.request()
+        .input(
+          "거래처명",
+          sql.NVarChar,
+          !req.body.data[i].거래처명 ? "" : req.body.data[i].거래처명
+        )
+        .input(
+          "사업자번호",
+          sql.NVarChar,
+          !req.body.data[i].사업자번호 ? "" : req.body.data[i].사업자번호
+        )
+        .input(
+          "주소",
+          sql.NVarChar,
+          !req.body.data[i].주소 ? "" : req.body.data[i].주소
+        )
+        .input(
+          "연락처",
+          sql.NVarChar,
+          !req.body.data[i].연락처 ? "" : req.body.data[i].연락처
+        )
+        .input(
+          "대표자",
+          sql.NVarChar,
+          !req.body.data[i].대표자 ? "" : req.body.data[i].대표자
+        )
+        .input(
+          "비고",
+          sql.NVarChar,
+          !req.body.data[i].비고 ? "" : req.body.data[i].비고
+        )
+        .input(
+          "이메일",
+          sql.NVarChar,
+          !req.body.data[i].이메일 ? "" : req.body.data[i].이메일
+        )
+        .query(
+          "exec [QMES].[dbo].[MASTER_ACCOUNT_INS_SP] 0,@거래처명,@사업자번호,@주소,@연락처,@대표자,@비고,@이메일"
+        );
+    }
+    res.send("등록완료");
+  } catch (err) {
+    res.status(500);
+    res.send(err.message);
+  }
+});
+
 // 수정
 router.post("/edit", async (req, res) => {
   try {

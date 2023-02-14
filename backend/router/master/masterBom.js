@@ -73,6 +73,44 @@ router.post("/insert", async (req, res) => {
   }
 });
 
+// 한번에 등록
+// router.post("/insertAll", async (req, res) => {
+//   try {
+//     const Pool = await pool;
+//     for (var i = 0; i < req.body.data.length; i++) {
+//       // select
+//       await Pool.request()
+//         .input(
+//           "품목NO",
+//           sql.Int,
+//           !req.body.data[i].품목NO ? "" : req.body.data[i].품목NO
+//         )
+//         .input(
+//           "원자재코드",
+//           sql.NVarChar,
+//           !req.body.data[i].원자재코드 ? "" : req.body.data[i].원자재코드
+//         )
+//         .input(
+//           "수량",
+//           sql.Int,
+//           !req.body.data[i].수량 ? "" : req.body.data[i].수량
+//         )
+//         .input(
+//           "비고",
+//           sql.NVarChar,
+//           !req.body.data[i].비고 ? "" : req.body.data[i].비고
+//         )
+//         .query(
+//           "exec [QMES].[dbo].[MASTER_BOM_INS_SP] @품목NO,@원자재코드,@수량,@비고"
+//         );
+//     }
+//     res.send("등록완료");
+//   } catch (err) {
+//     res.status(500);
+//     res.send(err.message);
+//   }
+// });
+
 // 수정
 router.post("/edit", async (req, res) => {
   try {
