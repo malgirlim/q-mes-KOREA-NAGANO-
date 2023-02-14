@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
+// import { useCookies } from "vue3-cookies";
+// const { cookies } = useCookies();
+
 import SideMenu from "../layouts/SideMenu/SideMenu.vue";
 import SimpleMenu from "../layouts/SimpleMenu/SimpleMenu.vue";
 import TopMenu from "../layouts/TopMenu/TopMenu.vue";
