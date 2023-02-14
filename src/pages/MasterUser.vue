@@ -184,7 +184,7 @@ const checkAll = (value: boolean) => {
 };
 
 const resetCheckBox = () => {
-  // 페이징 넘기면 체크박스 데이터 초기화
+  // 페이징 넘기면 체크박스 데이터 초기화\
   const mBox = document.querySelector<HTMLElement>(
     "input[id=checkbox_all]"
   ) as HTMLInputElement | null; // 오류 안뜨게 하려고 넣어둔것
@@ -193,6 +193,20 @@ const resetCheckBox = () => {
   mainCheckBox.value = true; // 메인체크박스 데이터 초기화
   checkDebug.value = [];
 };
+
+const menu_list = [
+  [
+    "사용자 등록",
+    "품목 등록",
+    "거래처 등록",
+    "불량 내용 등록",
+    "공정 등록",
+    "원자재 위치 등록",
+    "BOM 등록",
+  ],
+  ["원자재 입고 등록", "원자재 사용 등록", "원자재 불량 등록"],
+  ["원자재 재고조회", "원자재 불량조회", "안전재고 미달통보"],
+];
 </script>
 
 <template>
@@ -598,7 +612,11 @@ const resetCheckBox = () => {
                   </Tab>
                 </Tab.List>
                 <Tab.Panels class="border-b border-l border-r">
-                  <Tab.Panel class="p-5 leading-relaxed">
+                  <Tab.Panel
+                    class="p-5 leading-relaxed"
+                    v-for="(menu, index) in menu_list"
+                    :key="index"
+                  >
                     <div class="text-right mr-3 mb-5 flex">
                       <div></div>
                       <div class="flex" style="margin-left: auto">
@@ -608,10 +626,9 @@ const resetCheckBox = () => {
                         <div class="ml-3">Level 4</div>
                       </div>
                     </div>
-
-                    <div class="text-left">
+                    <div class="text-left" v-for="e in menu" :key="e">
                       <div class="flex mt-2 mb-2">
-                        <div>사용자 등록</div>
+                        <div>{{ e }}</div>
                         <div
                           class="flex flex-col sm:flex-row"
                           style="margin-left: auto"
@@ -620,7 +637,7 @@ const resetCheckBox = () => {
                             <FormCheck.Input
                               id="radio-switch-1"
                               type="radio"
-                              name="radio_button1"
+                              :name="e"
                               value=""
                             />
                           </FormCheck>
@@ -628,7 +645,7 @@ const resetCheckBox = () => {
                             <FormCheck.Input
                               id="radio-switch-2"
                               type="radio"
-                              name="radio_button1"
+                              :name="e"
                               value=""
                             />
                           </FormCheck>
@@ -636,7 +653,7 @@ const resetCheckBox = () => {
                             <FormCheck.Input
                               id="radio-switch-3"
                               type="radio"
-                              name="radio_button1"
+                              :name="e"
                               value=""
                             />
                           </FormCheck>
@@ -644,238 +661,7 @@ const resetCheckBox = () => {
                             <FormCheck.Input
                               id="radio-switch-4"
                               type="radio"
-                              name="radio_button1"
-                              value=""
-                            />
-                          </FormCheck>
-                        </div>
-                      </div>
-
-                      <div class="flex mt-2 mb-2">
-                        <div>품목 등록</div>
-                        <div
-                          class="flex flex-col sm:flex-row"
-                          style="margin-left: auto"
-                        >
-                          <FormCheck>
-                            <FormCheck.Input
-                              id="radio-switch-1"
-                              type="radio"
-                              name="radio_button2"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-2"
-                              type="radio"
-                              name="radio_button2"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-3"
-                              type="radio"
-                              name="radio_button2"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 mr-6 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-4"
-                              type="radio"
-                              name="radio_button2"
-                              value=""
-                            />
-                          </FormCheck>
-                        </div>
-                      </div>
-                    </div>
-                  </Tab.Panel>
-                  <Tab.Panel class="p-5 leading-relaxed">
-                    <div class="text-right mr-3 mb-5 flex">
-                      <div></div>
-                      <div class="flex" style="margin-left: auto">
-                        <div>Level 1</div>
-                        <div class="ml-3">Level 2</div>
-                        <div class="ml-3">Level 3</div>
-                        <div class="ml-3">Level 4</div>
-                      </div>
-                    </div>
-
-                    <div class="text-left">
-                      <div class="flex mt-2 mb-2">
-                        <div>원자재 입고 등록</div>
-                        <div
-                          class="flex flex-col sm:flex-row"
-                          style="margin-left: auto"
-                        >
-                          <FormCheck>
-                            <FormCheck.Input
-                              id="radio-switch-1"
-                              type="radio"
-                              name="radio_button1"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-2"
-                              type="radio"
-                              name="radio_button1"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-3"
-                              type="radio"
-                              name="radio_button1"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 mr-6 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-4"
-                              type="radio"
-                              name="radio_button1"
-                              value=""
-                            />
-                          </FormCheck>
-                        </div>
-                      </div>
-
-                      <div class="flex mt-2 mb-2">
-                        <div>원자재 출고 등록</div>
-                        <div
-                          class="flex flex-col sm:flex-row"
-                          style="margin-left: auto"
-                        >
-                          <FormCheck>
-                            <FormCheck.Input
-                              id="radio-switch-1"
-                              type="radio"
-                              name="radio_button2"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-2"
-                              type="radio"
-                              name="radio_button2"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-3"
-                              type="radio"
-                              name="radio_button2"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 mr-6 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-4"
-                              type="radio"
-                              name="radio_button2"
-                              value=""
-                            />
-                          </FormCheck>
-                        </div>
-                      </div>
-                    </div>
-                  </Tab.Panel>
-                  <Tab.Panel class="p-5 leading-relaxed">
-                    <div class="text-right mr-3 mb-5 flex">
-                      <div></div>
-                      <div class="flex" style="margin-left: auto">
-                        <div>Level 1</div>
-                        <div class="ml-3">Level 2</div>
-                        <div class="ml-3">Level 3</div>
-                        <div class="ml-3">Level 4</div>
-                      </div>
-                    </div>
-
-                    <div class="text-left">
-                      <div class="flex mt-2 mb-2">
-                        <div>원자재 재고 조회</div>
-                        <div
-                          class="flex flex-col sm:flex-row"
-                          style="margin-left: auto"
-                        >
-                          <FormCheck>
-                            <FormCheck.Input
-                              id="radio-switch-1"
-                              type="radio"
-                              name="radio_button1"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-2"
-                              type="radio"
-                              name="radio_button1"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-3"
-                              type="radio"
-                              name="radio_button1"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 mr-6 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-4"
-                              type="radio"
-                              name="radio_button1"
-                              value=""
-                            />
-                          </FormCheck>
-                        </div>
-                      </div>
-
-                      <div class="flex mt-2 mb-2">
-                        <div>KPI 재고비용 절감률</div>
-                        <div
-                          class="flex flex-col sm:flex-row"
-                          style="margin-left: auto"
-                        >
-                          <FormCheck>
-                            <FormCheck.Input
-                              id="radio-switch-1"
-                              type="radio"
-                              name="radio_button2"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-2"
-                              type="radio"
-                              name="radio_button2"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-3"
-                              type="radio"
-                              name="radio_button2"
-                              value=""
-                            />
-                          </FormCheck>
-                          <FormCheck class="ml-10 mr-6 sm:mt-0">
-                            <FormCheck.Input
-                              id="radio-switch-4"
-                              type="radio"
-                              name="radio_button2"
+                              :name="e"
                               value=""
                             />
                           </FormCheck>
