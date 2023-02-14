@@ -11,6 +11,7 @@ import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
 import Litepicker from "../base-components/Litepicker";
 import * as XLSX from "xlsx";
 import { read, utils, writeFileXLSX } from "xlsx";
+import printJS from "print-js";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
@@ -51,6 +52,39 @@ onMounted(async () => loadDatas()); // 페이지 로딩 시 데이터 불러오�
 const search = () => {
   // console.log(searchKey.value, searchInput.value);
   searchDatas(now2.value, searchKey.value, searchInput.value);
+};
+
+// print.js 프린트 기능
+
+const printPage = (data: any) => {
+  printJS({
+    printable: data,
+    properties: [
+      "품목코드",
+      "거래처명",
+      "품명",
+      "규격",
+      "단위",
+      "재고수",
+      "안전재고수",
+      "부족재고수",
+      "입고수",
+      "출고수",
+      "불량수",
+      "원가",
+      "재고금액",
+    ],
+    type: "json",
+    documentTitle: "모니터링 > 원자재 재고 조회",
+    repeatTableHeader: true,
+    style: "*{font-size:12px;}",
+  });
+};
+
+// Print.js  Modal
+const printModal = ref(false);
+const setPrintModal = (value: boolean) => {
+  printModal.value = value;
 };
 
 // ########################## 엑셀 다운로드 ##########################
@@ -225,9 +259,9 @@ const table_width = [
             </span>
           </Menu.Button>
           <Menu.Items style="width: 170px">
-            <Menu.Item>
+            <Menu.Item @click="setPrintModal(true)">
               <Lucide icon="Printer" class="w-4 h-4 mr-2" />
-              <Print />
+              Print (PDF출력)
             </Menu.Item>
             <Menu.Item @click="setExcelExportModal(true)">
               <Lucide icon="FileDown" class="w-4 h-4 mr-2" />
@@ -524,4 +558,54 @@ const table_width = [
     </Dialog.Panel>
   </Dialog>
   <!-- END: 엑셀 다운로드 Modal -->
+  <!-- BEGIN: 프린트 출력 Modal -->
+  <Dialog :open="printModal" @close="setPrintModal(false)">
+    <Dialog.Panel>
+      <div class="p-5 text-center">
+        <Lucide icon="Printer" class="w-16 h-16 mx-auto mt-3 text-primary" />
+        <div class="mt-5 text-3xl">Print (PDF출력)</div>
+        <div class="mt-5">
+          PDF출력은 인쇄 대상을 <strong>PDF 저장</strong>으로 지정하세요.
+        </div>
+      </div>
+
+      <div class="px-5 pb-8 text-center">
+        <Button
+          variant="primary"
+          type="button"
+          class="w-38 mr-3"
+          @click="
+            () => {
+              printPage(datas);
+              setPrintModal(false);
+            }
+          "
+        >
+          출력(현재 페이지)
+        </Button>
+        <Button
+          variant="primary"
+          type="button"
+          class="w-38 mr-3"
+          @click="
+            () => {
+              printPage(dataAll);
+              setPrintModal(false);
+            }
+          "
+        >
+          출력(전체)
+        </Button>
+        <Button
+          variant="outline-secondary"
+          type="button"
+          @click="setPrintModal(false)"
+          class="w-24 mr-1"
+        >
+          취소
+        </Button>
+      </div>
+    </Dialog.Panel>
+  </Dialog>
+  <!-- END: 프린트 출력 Modal -->
 </template>
