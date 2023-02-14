@@ -7,8 +7,6 @@ import Lucide from "../base-components/Lucide";
 import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
 import moment from "moment";
-import Print from "../components/HtmlToPaper/HtmlToPaper.vue";
-import Litepicker from "../base-components/Litepicker";
 import * as XLSX from "xlsx";
 import { read, utils, writeFileXLSX } from "xlsx";
 import printJS from "print-js";
@@ -89,7 +87,7 @@ const printPage = (data: any) => {
     printable: data,
     properties: ["불량명", "불량내용", "비고"],
     type: "json",
-    documentTitle: "기준정보 > 불량 내용 등록",
+    documentTitle: "기준 정보 > 불량 내용 등록",
     repeatTableHeader: true,
     style: "*{font-size:12px;}",
   });
@@ -340,10 +338,7 @@ const table_width = [
     </div>
     <!-- BEGIN: Data List -->
     <!-- style="height: calc(100vh - 350px)" : 브라우저 화면 창크기에 맞게 변경됨 -->
-    <div
-      class="col-span-12 overflow-auto intro-y lg:overflow-visible"
-      id="printMe"
-    >
+    <div class="col-span-12 overflow-auto intro-y lg:overflow-visible">
       <div
         class="mr-3"
         style="overflow-y: scroll; overflow-x: hidden; height: 580px"
@@ -457,7 +452,6 @@ const table_width = [
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
                 :style="table_width[5]"
-                id="edit"
               >
                 <div class="flex items-center justify-center text-danger">
                   <a

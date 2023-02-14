@@ -87,7 +87,7 @@ const printPage = (data: any) => {
     printable: data,
     properties: ["공정명", "공정내용", "비고"],
     type: "json",
-    documentTitle: "기준정보 > 공정 등록",
+    documentTitle: "기준 정보 > 공정 등록",
     repeatTableHeader: true,
     style: "*{font-size:12px;}",
   });
@@ -338,10 +338,7 @@ const table_width = [
     </div>
     <!-- BEGIN: Data List -->
     <!-- style="height: calc(100vh - 350px)" : 브라우저 화면 창크기에 맞게 변경됨 -->
-    <div
-      class="col-span-12 overflow-auto intro-y lg:overflow-visible"
-      id="printMe"
-    >
+    <div class="col-span-12 overflow-auto intro-y lg:overflow-visible">
       <div
         class="mr-3"
         style="overflow-y: scroll; overflow-x: hidden; height: 580px"
