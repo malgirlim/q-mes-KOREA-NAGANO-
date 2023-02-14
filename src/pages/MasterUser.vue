@@ -205,7 +205,13 @@ const menu_list = [
     "BOM 등록",
   ],
   ["원자재 입고 등록", "원자재 사용 등록", "원자재 불량 등록"],
-  ["원자재 재고조회", "원자재 불량조회", "안전재고 미달통보"],
+  [
+    "원자재 재고조회",
+    "원자재 불량조회",
+    "안전재고 미달통보",
+    "KPI 시간당 생산량",
+    "KPI 재고비용 절감률",
+  ],
 ];
 </script>
 
@@ -523,7 +529,7 @@ const menu_list = [
             </Tab>
             <Tab>
               <Tab.Button class="w-full py-2" as="button">
-                권한 설정
+                메뉴 권한 설정
               </Tab.Button>
             </Tab>
           </Tab.List>
