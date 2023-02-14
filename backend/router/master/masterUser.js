@@ -60,6 +60,11 @@ router.post("/insert", async (req, res) => {
         !req.body.data.아이디 ? "" : req.body.data.아이디
       )
       .input(
+        "비밀번호",
+        sql.NVarChar,
+        !req.body.data.비밀번호 ? "" : req.body.data.비밀번호
+      )
+      .input(
         "부서",
         sql.NVarChar,
         !req.body.data.부서 ? "" : req.body.data.부서
@@ -75,7 +80,7 @@ router.post("/insert", async (req, res) => {
         !req.body.data.이메일 ? "" : req.body.data.이메일
       )
       .query(
-        "exec [QMES].[dbo].[MASTER_USER_INS_SP] 0,@이름,@아이디,@부서,@연락처,@이메일"
+        "exec [QMES].[dbo].[MASTER_USER_INS_SP] 0,@이름,@아이디,@비밀번호,@부서,@연락처,@이메일"
       );
     res.send("등록완료");
   } catch (err) {
@@ -103,6 +108,11 @@ router.post("/insertAll", async (req, res) => {
           !req.body.data[i].아이디 ? "" : req.body.data[i].아이디
         )
         .input(
+          "비밀번호",
+          sql.NVarChar,
+          !req.body.data[i].비밀번호 ? "" : req.body.data[i].비밀번호
+        )
+        .input(
           "부서",
           sql.NVarChar,
           !req.body.data[i].부서 ? "" : req.body.data[i].부서
@@ -118,7 +128,7 @@ router.post("/insertAll", async (req, res) => {
           !req.body.data[i].이메일 ? "" : req.body.data[i].이메일
         )
         .query(
-          "exec [QMES].[dbo].[MASTER_USER_INS_SP] 0,@이름,@아이디,@부서,@연락처,@이메일"
+          "exec [QMES].[dbo].[MASTER_USER_INS_SP] 0,@이름,@아이디,@비밀번호,@부서,@연락처,@이메일"
         );
     }
     res.send("등록완료");
@@ -137,11 +147,12 @@ router.post("/edit", async (req, res) => {
       .input("기본키", sql.Int, req.body.data.NO)
       .input("이름", sql.NVarChar, req.body.data.이름)
       .input("아이디", sql.NVarChar, req.body.data.아이디)
+      .input("비밀번호", sql.NVarChar, req.body.data.비밀번호)
       .input("부서", sql.NVarChar, req.body.data.부서)
       .input("연락처", sql.NVarChar, req.body.data.연락처)
       .input("이메일", sql.NVarChar, req.body.data.이메일)
       .query(
-        "exec [QMES].[dbo].[MASTER_USER_UDT_SP] @기본키,@이름,@아이디,@부서,@연락처,@이메일"
+        "exec [QMES].[dbo].[MASTER_USER_UDT_SP] @기본키,@이름,@아이디,@비밀번호,@부서,@연락처,@이메일"
       );
     res.send("수정완료");
   } catch (err) {

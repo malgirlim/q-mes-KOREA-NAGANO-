@@ -422,6 +422,15 @@ const resetCheckBox = () => {
             />
           </div>
           <div class="mt-3">
+            <FormLabel htmlFor="vertical-form-2">비밀번호</FormLabel>
+            <FormInput
+              id="vertical-form-2"
+              type="text"
+              v-model="insertModalData.비밀번호"
+              placeholder=""
+            />
+          </div>
+          <div class="mt-3">
             <FormLabel htmlFor="vertical-form-3">부서</FormLabel>
             <FormInput
               id="vertical-form-3"
@@ -506,6 +515,15 @@ const resetCheckBox = () => {
               id="vertical-form-2"
               type="text"
               v-model="editModalData.아이디"
+              placeholder=""
+            />
+          </div>
+          <div class="mt-3">
+            <FormLabel htmlFor="vertical-form-2">비밀번호</FormLabel>
+            <FormInput
+              id="vertical-form-2"
+              type="text"
+              v-model="editModalData.비밀번호"
               placeholder=""
             />
           </div>

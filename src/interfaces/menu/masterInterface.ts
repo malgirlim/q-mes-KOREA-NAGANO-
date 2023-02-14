@@ -3,6 +3,7 @@ export interface MasterUser {
   NO?: number;
   이름?: string;
   아이디?: string;
+  비밀번호?: string;
   부서?: string;
   연락처?: string;
   이메일?: string;
