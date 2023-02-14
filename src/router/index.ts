@@ -3,6 +3,7 @@ import SideMenu from "../layouts/SideMenu/SideMenu.vue";
 import SimpleMenu from "../layouts/SimpleMenu/SimpleMenu.vue";
 import TopMenu from "../layouts/TopMenu/TopMenu.vue";
 import Main from "../pages/Main.vue";
+import Login from "../pages/Login.vue";
 
 import MasterUser from "../pages/MasterUser.vue";
 import MasterProduct from "../pages/MasterProduct.vue";
@@ -21,6 +22,10 @@ import MonitorKpiProd from "../pages/MonitorKpiProd.vue";
 import MonitorKpiStock from "../pages/MonitorKpiStock.vue";
 
 const routes = [
+  {
+    path: "/login",
+    component: Login,
+  },
   {
     path: "/side-menu",
     component: SideMenu,
@@ -166,11 +171,6 @@ const routes = [
     path: "/simple-menu",
     component: SimpleMenu,
     children: [
-      {
-        path: "/main",
-        name: "simple-menu-main",
-        component: Main,
-      },
       {
         path: "master/user",
         name: "simple-menu-master-user",

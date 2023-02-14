@@ -248,7 +248,7 @@ const hideSearchDropdown = () => {
         </Popover.Panel>
       </Popover>
       END: Notifications -->
-      <!-- BEGIN: Account Menu
+      <!-- BEGIN: Account Menu -->
       <Menu>
         <Menu.Button
           class="block w-8 h-8 overflow-hidden rounded-full shadow-lg image-fit zoom-in intro-x"
@@ -269,24 +269,22 @@ const hideSearchDropdown = () => {
           </Menu.Header>
           <Menu.Devider class="bg-white/[0.08]" />
           <Menu.Item class="hover:bg-white/5">
-            <Lucide icon="User" class="w-4 h-4 mr-2" /> Profile
+            <Lucide icon="User" class="w-4 h-4 mr-2" /> 사용자 정보
+          </Menu.Item>
+
+          <Menu.Item class="hover:bg-white/5">
+            <Lucide icon="Lock" class="w-4 h-4 mr-2" /> 비밀번호 변경
           </Menu.Item>
           <Menu.Item class="hover:bg-white/5">
-            <Lucide icon="Edit" class="w-4 h-4 mr-2" /> Add Account
-          </Menu.Item>
-          <Menu.Item class="hover:bg-white/5">
-            <Lucide icon="Lock" class="w-4 h-4 mr-2" /> Reset Password
-          </Menu.Item>
-          <Menu.Item class="hover:bg-white/5">
-            <Lucide icon="HelpCircle" class="w-4 h-4 mr-2" /> Help
+            <Lucide icon="HelpCircle" class="w-4 h-4 mr-2" /> 도움말
           </Menu.Item>
           <Menu.Devider class="bg-white/[0.08]" />
           <Menu.Item class="hover:bg-white/5">
-            <Lucide icon="ToggleRight" class="w-4 h-4 mr-2" /> Logout
+            <Lucide icon="ToggleRight" class="w-4 h-4 mr-2" /> 로그아웃
           </Menu.Item>
         </Menu.Items>
       </Menu>
-      END: Account Menu -->
+      <!-- END: Account Menu -->
     </div>
   </div>
 </template>
