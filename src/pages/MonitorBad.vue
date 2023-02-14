@@ -8,7 +8,6 @@ import { Dialog, Menu } from "../base-components/Headless";
 import Table from "../base-components/Table";
 import moment from "moment";
 import Litepicker from "../base-components/Litepicker";
-import * as XLSX from "xlsx";
 import { read, utils, writeFileXLSX } from "xlsx";
 import printJS from "print-js";
 
@@ -285,10 +284,7 @@ const table_width = [
     </div>
     <!-- BEGIN: Data List -->
     <!-- style="height: calc(100vh - 350px)" : 브라우저 화면 창크기에 맞게 변경됨 -->
-    <div
-      class="col-span-12 overflow-auto intro-y lg:overflow-visible"
-      id="printMe"
-    >
+    <div class="col-span-12 overflow-auto intro-y lg:overflow-visible">
       <div
         class="mr-3"
         style="overflow-y: scroll; overflow-x: hidden; height: 580px"

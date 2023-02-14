@@ -96,7 +96,7 @@ const printPage = (data: any) => {
       "비고",
     ],
     type: "json",
-    documentTitle: "기준정보 > 품목 등록",
+    documentTitle: "기준 정보 > 품목 등록",
     repeatTableHeader: true,
     style: "*{font-size:12px;}",
   });
@@ -356,7 +356,6 @@ const table_width = [
     <!-- style="height: calc(100vh - 350px)" : 브라우저 화면 창크기에 맞게 변경됨 : 100vh - 브라우저 창 크기 -->
     <div
       class="col-span-12 overflow-auto intro-y lg:overflow-visible"
-      id="printMe"
       style="height: calc(100vh - 350px)"
     >
       <div

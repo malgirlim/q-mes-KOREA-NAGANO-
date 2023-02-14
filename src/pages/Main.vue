@@ -4,9 +4,6 @@ import _ from "lodash";
 import Lucide from "../base-components/Lucide";
 import Tippy from "../base-components/Tippy";
 import LineChart from "../components/LineChart";
-import LineChart1 from "../components/LineChart1";
-import LineChart2 from "../components/LineChart2";
-import LineChart3 from "../components/LineChart3";
 import moment from "moment";
 import Table from "../base-components/Table";
 
@@ -703,10 +700,7 @@ const lineChartMonth = [
 
       <!-- BEGIN: Data List -->
       <!-- style="height: calc(100vh - 350px)" : 브라우저 화면 창크기에 맞게 변경됨 -->
-      <div
-        class="col-span-12 overflow-auto intro-y lg:overflow-visible"
-        id="printMe"
-      >
+      <div class="col-span-12 overflow-auto intro-y lg:overflow-visible">
         <div
           class="mt-5"
           style="overflow-y: scroll; overflow-x: hidden; height: 300px"

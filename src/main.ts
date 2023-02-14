@@ -6,8 +6,6 @@ import Vue3Toasity from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import "./assets/css/app.css";
 
-import VueHtmlToPaper from "vue-html-to-paper";
-
 const options = {
   name: "_blank",
   specs: ["fullscreen=yes", "titlebar=yes", "scrollbars=yes"],
@@ -24,9 +22,7 @@ const options = {
 createApp(App)
   .use(router)
   .use(createPinia())
-  .use(VueHtmlToPaper, options)
   .use(Vue3Toasity, {
     autoClose: 3000,
   })
   .mount("#app");
-// createApp(App).use(router).use(createPinia()).mount("#app");

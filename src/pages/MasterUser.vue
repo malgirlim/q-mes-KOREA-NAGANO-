@@ -89,7 +89,7 @@ const printPage = (data: any) => {
     printable: data,
     properties: ["이름", "아이디", "부서", "연락처", "이메일"],
     type: "json",
-    documentTitle: "기준정보 > 사용자 등록",
+    documentTitle: "기준 정보 > 사용자 등록",
     repeatTableHeader: true,
     style: "*{font-size:12px;}",
   });
