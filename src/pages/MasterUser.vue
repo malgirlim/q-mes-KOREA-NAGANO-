@@ -12,6 +12,7 @@ import Progress from "../base-components/Progress";
 import * as XLSX from "xlsx";
 import { read, utils, writeFileXLSX } from "xlsx";
 import printJS from "print-js";
+import { Tab } from "../base-components/Headless";
 
 // API 보내는 함수 및 인터페이스 불러오기
 import { useSendApi } from "../composables/useSendApi";
@@ -497,63 +498,397 @@ const resetCheckBox = () => {
         }
       "
     >
-      <Dialog.Panel class="p-10 text-center">
+      <Dialog.Panel class="p-8 text-center">
         <div class="mb-5" style="font-weight: bold">수정</div>
+        <Tab.Group>
+          <Tab.List variant="boxed-tabs">
+            <Tab>
+              <Tab.Button class="w-full py-2" as="button">
+                기본 정보
+              </Tab.Button>
+            </Tab>
+            <Tab>
+              <Tab.Button class="w-full py-2" as="button">
+                권한 설정
+              </Tab.Button>
+            </Tab>
+          </Tab.List>
+          <Tab.Panels class="mt-5">
+            <Tab.Panel class="leading-relaxed">
+              <div class="text-left">
+                <div>
+                  <FormLabel htmlFor="vertical-form-1">이름</FormLabel>
+                  <FormInput
+                    id="vertical-form-1"
+                    type="text"
+                    v-model="editModalData.이름"
+                    placeholder=""
+                  />
+                </div>
+                <div class="mt-3">
+                  <FormLabel htmlFor="vertical-form-2">아이디</FormLabel>
+                  <FormInput
+                    id="vertical-form-2"
+                    type="text"
+                    v-model="editModalData.아이디"
+                    placeholder=""
+                  />
+                </div>
+                <div class="mt-3">
+                  <FormLabel htmlFor="vertical-form-3">비밀번호</FormLabel>
+                  <FormInput
+                    id="vertical-form-3"
+                    type="password"
+                    v-model="editModalData.비밀번호"
+                    placeholder=""
+                  />
+                </div>
+                <div class="mt-3">
+                  <FormLabel htmlFor="vertical-form-4">부서</FormLabel>
+                  <FormInput
+                    id="vertical-form-4"
+                    type="text"
+                    v-model="editModalData.부서"
+                    placeholder=""
+                  />
+                </div>
+                <div class="mt-3">
+                  <FormLabel htmlFor="vertical-form-5">연락처</FormLabel>
+                  <FormInput
+                    id="vertical-form-5"
+                    type="text"
+                    v-model="editModalData.연락처"
+                    placeholder=""
+                  />
+                </div>
+                <div class="mt-3">
+                  <FormLabel htmlFor="vertical-form-6">이메일</FormLabel>
+                  <FormInput
+                    id="vertical-form-6"
+                    type="text"
+                    v-model="editModalData.이메일"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+            </Tab.Panel>
+            <Tab.Panel class="leading-relaxed">
+              <div class="text-left mb-5 p-2 border-2">
+                <div>Level 1 : 권한 없음 (기본)</div>
+                <div>Level 2 : 조회 권한 부여</div>
+                <div>Level 3 : 조회, 등록, 수정 권한 부여</div>
+                <div>Level 4 : 조회, 등록, 수정, 삭제 권한 부여</div>
+              </div>
+              <Tab.Group>
+                <Tab.List variant="tabs">
+                  <Tab>
+                    <Tab.Button class="w-full py-2" as="button">
+                      기준 정보
+                    </Tab.Button>
+                  </Tab>
+                  <Tab>
+                    <Tab.Button class="w-full py-2" as="button">
+                      재고 관리
+                    </Tab.Button>
+                  </Tab>
+                  <Tab>
+                    <Tab.Button class="w-full py-2" as="button">
+                      모니터링
+                    </Tab.Button>
+                  </Tab>
+                </Tab.List>
+                <Tab.Panels class="border-b border-l border-r">
+                  <Tab.Panel class="p-5 leading-relaxed">
+                    <div class="text-right mr-3 mb-5 flex">
+                      <div></div>
+                      <div class="flex" style="margin-left: auto">
+                        <div>Level 1</div>
+                        <div class="ml-3">Level 2</div>
+                        <div class="ml-3">Level 3</div>
+                        <div class="ml-3">Level 4</div>
+                      </div>
+                    </div>
+
+                    <div class="text-left">
+                      <div class="flex mt-2 mb-2">
+                        <div>사용자 등록</div>
+                        <div
+                          class="flex flex-col sm:flex-row"
+                          style="margin-left: auto"
+                        >
+                          <FormCheck>
+                            <FormCheck.Input
+                              id="radio-switch-1"
+                              type="radio"
+                              name="radio_button1"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-2"
+                              type="radio"
+                              name="radio_button1"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-3"
+                              type="radio"
+                              name="radio_button1"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 mr-6 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-4"
+                              type="radio"
+                              name="radio_button1"
+                              value=""
+                            />
+                          </FormCheck>
+                        </div>
+                      </div>
+
+                      <div class="flex mt-2 mb-2">
+                        <div>품목 등록</div>
+                        <div
+                          class="flex flex-col sm:flex-row"
+                          style="margin-left: auto"
+                        >
+                          <FormCheck>
+                            <FormCheck.Input
+                              id="radio-switch-1"
+                              type="radio"
+                              name="radio_button2"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-2"
+                              type="radio"
+                              name="radio_button2"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-3"
+                              type="radio"
+                              name="radio_button2"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 mr-6 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-4"
+                              type="radio"
+                              name="radio_button2"
+                              value=""
+                            />
+                          </FormCheck>
+                        </div>
+                      </div>
+                    </div>
+                  </Tab.Panel>
+                  <Tab.Panel class="p-5 leading-relaxed">
+                    <div class="text-right mr-3 mb-5 flex">
+                      <div></div>
+                      <div class="flex" style="margin-left: auto">
+                        <div>Level 1</div>
+                        <div class="ml-3">Level 2</div>
+                        <div class="ml-3">Level 3</div>
+                        <div class="ml-3">Level 4</div>
+                      </div>
+                    </div>
+
+                    <div class="text-left">
+                      <div class="flex mt-2 mb-2">
+                        <div>원자재 입고 등록</div>
+                        <div
+                          class="flex flex-col sm:flex-row"
+                          style="margin-left: auto"
+                        >
+                          <FormCheck>
+                            <FormCheck.Input
+                              id="radio-switch-1"
+                              type="radio"
+                              name="radio_button1"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-2"
+                              type="radio"
+                              name="radio_button1"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-3"
+                              type="radio"
+                              name="radio_button1"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 mr-6 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-4"
+                              type="radio"
+                              name="radio_button1"
+                              value=""
+                            />
+                          </FormCheck>
+                        </div>
+                      </div>
+
+                      <div class="flex mt-2 mb-2">
+                        <div>원자재 출고 등록</div>
+                        <div
+                          class="flex flex-col sm:flex-row"
+                          style="margin-left: auto"
+                        >
+                          <FormCheck>
+                            <FormCheck.Input
+                              id="radio-switch-1"
+                              type="radio"
+                              name="radio_button2"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-2"
+                              type="radio"
+                              name="radio_button2"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-3"
+                              type="radio"
+                              name="radio_button2"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 mr-6 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-4"
+                              type="radio"
+                              name="radio_button2"
+                              value=""
+                            />
+                          </FormCheck>
+                        </div>
+                      </div>
+                    </div>
+                  </Tab.Panel>
+                  <Tab.Panel class="p-5 leading-relaxed">
+                    <div class="text-right mr-3 mb-5 flex">
+                      <div></div>
+                      <div class="flex" style="margin-left: auto">
+                        <div>Level 1</div>
+                        <div class="ml-3">Level 2</div>
+                        <div class="ml-3">Level 3</div>
+                        <div class="ml-3">Level 4</div>
+                      </div>
+                    </div>
+
+                    <div class="text-left">
+                      <div class="flex mt-2 mb-2">
+                        <div>원자재 재고 조회</div>
+                        <div
+                          class="flex flex-col sm:flex-row"
+                          style="margin-left: auto"
+                        >
+                          <FormCheck>
+                            <FormCheck.Input
+                              id="radio-switch-1"
+                              type="radio"
+                              name="radio_button1"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-2"
+                              type="radio"
+                              name="radio_button1"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-3"
+                              type="radio"
+                              name="radio_button1"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 mr-6 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-4"
+                              type="radio"
+                              name="radio_button1"
+                              value=""
+                            />
+                          </FormCheck>
+                        </div>
+                      </div>
+
+                      <div class="flex mt-2 mb-2">
+                        <div>KPI 재고비용 절감률</div>
+                        <div
+                          class="flex flex-col sm:flex-row"
+                          style="margin-left: auto"
+                        >
+                          <FormCheck>
+                            <FormCheck.Input
+                              id="radio-switch-1"
+                              type="radio"
+                              name="radio_button2"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-2"
+                              type="radio"
+                              name="radio_button2"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-3"
+                              type="radio"
+                              name="radio_button2"
+                              value=""
+                            />
+                          </FormCheck>
+                          <FormCheck class="ml-10 mr-6 sm:mt-0">
+                            <FormCheck.Input
+                              id="radio-switch-4"
+                              type="radio"
+                              name="radio_button2"
+                              value=""
+                            />
+                          </FormCheck>
+                        </div>
+                      </div>
+                    </div>
+                  </Tab.Panel>
+                </Tab.Panels>
+              </Tab.Group>
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
         <div style="text-align: left">
-          <div>
-            <FormLabel htmlFor="vertical-form-1">이름</FormLabel>
-            <FormInput
-              id="vertical-form-1"
-              type="text"
-              v-model="editModalData.이름"
-              placeholder=""
-            />
-          </div>
-          <div class="mt-3">
-            <FormLabel htmlFor="vertical-form-2">아이디</FormLabel>
-            <FormInput
-              id="vertical-form-2"
-              type="text"
-              v-model="editModalData.아이디"
-              placeholder=""
-            />
-          </div>
-          <div class="mt-3">
-            <FormLabel htmlFor="vertical-form-2">비밀번호</FormLabel>
-            <FormInput
-              id="vertical-form-2"
-              type="text"
-              v-model="editModalData.비밀번호"
-              placeholder=""
-            />
-          </div>
-          <div class="mt-3">
-            <FormLabel htmlFor="vertical-form-3">부서</FormLabel>
-            <FormInput
-              id="vertical-form-3"
-              type="text"
-              v-model="editModalData.부서"
-              placeholder=""
-            />
-          </div>
-          <div class="mt-3">
-            <FormLabel htmlFor="vertical-form-4">연락처</FormLabel>
-            <FormInput
-              id="vertical-form-4"
-              type="text"
-              v-model="editModalData.연락처"
-              placeholder=""
-            />
-          </div>
-          <div class="mt-3">
-            <FormLabel htmlFor="vertical-form-5">이메일</FormLabel>
-            <FormInput
-              id="vertical-form-5"
-              type="text"
-              v-model="editModalData.이메일"
-              placeholder=""
-            />
-          </div>
           <div class="mt-5 text-right">
             <Button
               class="mr-2 shadow-md"
