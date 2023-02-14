@@ -70,6 +70,39 @@ router.post("/insert", async (req, res) => {
   }
 });
 
+// 한번에 등록
+router.post("/insertAll", async (req, res) => {
+  try {
+    const Pool = await pool;
+    for (var i = 0; i < req.body.data.length; i++) {
+      // select
+      await Pool.request()
+        .input(
+          "불량명",
+          sql.NVarChar,
+          !req.body.data[i].불량명 ? "" : req.body.data[i].불량명
+        )
+        .input(
+          "불량내용",
+          sql.NVarChar,
+          !req.body.data[i].불량내용 ? "" : req.body.data[i].불량내용
+        )
+        .input(
+          "비고",
+          sql.NVarChar,
+          !req.body.data[i].비고 ? "" : req.body.data[i].비고
+        )
+        .query(
+          "exec [QMES].[dbo].[MASTER_BAD_INS_SP] 0,@불량명,@불량내용,@비고"
+        );
+    }
+    res.send("등록완료");
+  } catch (err) {
+    res.status(500);
+    res.send(err.message);
+  }
+});
+
 // 수정
 router.post("/edit", async (req, res) => {
   try {

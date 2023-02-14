@@ -85,6 +85,49 @@ router.post("/insert", async (req, res) => {
   // res.send("GET 전송완료");
 });
 
+// 한번에 등록
+router.post("/insertAll", async (req, res) => {
+  try {
+    const Pool = await pool;
+    for (var i = 0; i < req.body.data.length; i++) {
+      // select
+      await Pool.request()
+        .input(
+          "이름",
+          sql.NVarChar,
+          !req.body.data[i].이름 ? "" : req.body.data[i].이름
+        )
+        .input(
+          "아이디",
+          sql.NVarChar,
+          !req.body.data[i].아이디 ? "" : req.body.data[i].아이디
+        )
+        .input(
+          "부서",
+          sql.NVarChar,
+          !req.body.data[i].부서 ? "" : req.body.data[i].부서
+        )
+        .input(
+          "연락처",
+          sql.NVarChar,
+          !req.body.data[i].연락처 ? "" : req.body.data[i].연락처
+        )
+        .input(
+          "이메일",
+          sql.NVarChar,
+          !req.body.data[i].이메일 ? "" : req.body.data[i].이메일
+        )
+        .query(
+          "exec [QMES].[dbo].[MASTER_USER_INS_SP] 0,@이름,@아이디,@부서,@연락처,@이메일"
+        );
+    }
+    res.send("등록완료");
+  } catch (err) {
+    res.status(500);
+    res.send(err.message);
+  }
+});
+
 // 수정
 router.post("/edit", async (req, res) => {
   try {

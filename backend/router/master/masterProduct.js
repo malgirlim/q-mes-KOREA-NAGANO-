@@ -93,6 +93,64 @@ router.post("/insert", async (req, res) => {
   }
 });
 
+// 한번에 등록
+router.post("/insertAll", async (req, res) => {
+  try {
+    const Pool = await pool;
+    for (var i = 0; i < req.body.data.length; i++) {
+      // select
+      await Pool.request()
+        .input(
+          "품목코드",
+          sql.NVarChar,
+          !req.body.data[i].품목코드 ? "" : req.body.data[i].품목코드
+        )
+        .input(
+          "거래처명",
+          sql.NVarChar,
+          !req.body.data[i].거래처명 ? "" : req.body.data[i].거래처명
+        )
+        .input(
+          "품명",
+          sql.NVarChar,
+          !req.body.data[i].품명 ? "" : req.body.data[i].품명
+        )
+        .input(
+          "규격",
+          sql.NVarChar,
+          !req.body.data[i].규격 ? "" : req.body.data[i].규격
+        )
+        .input(
+          "단위",
+          sql.NVarChar,
+          !req.body.data[i].단위 ? "" : req.body.data[i].단위
+        )
+        .input(
+          "안전재고",
+          sql.Int,
+          !req.body.data[i].안전재고 ? 0 : req.body.data[i].안전재고
+        )
+        .input(
+          "원가",
+          sql.Int,
+          !req.body.data[i].원가 ? 0 : req.body.data[i].원가
+        )
+        .input(
+          "비고",
+          sql.NVarChar,
+          !req.body.data[i].비고 ? "" : req.body.data[i].비고
+        )
+        .query(
+          "exec [QMES].[dbo].[MASTER_ITEM_INS_SP] 0,@안전재고,@원가,'','',@거래처명,@품명,@품목코드,@규격,@단위,@비고"
+        );
+    }
+    res.send("등록완료");
+  } catch (err) {
+    res.status(500);
+    res.send(err.message);
+  }
+});
+
 // 수정
 router.post("/edit", async (req, res) => {
   try {

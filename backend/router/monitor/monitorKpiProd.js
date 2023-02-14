@@ -71,6 +71,39 @@ router.post("/insert", async (req, res) => {
   }
 });
 
+// 한번에 등록
+router.post("/insertAll", async (req, res) => {
+  try {
+    const Pool = await pool;
+    for (var i = 0; i < req.body.data.length; i++) {
+      // select
+      await Pool.request()
+        .input(
+          "연월",
+          sql.NVarChar,
+          !req.body.data[i].연월 ? "" : req.body.data[i].연월
+        )
+        .input(
+          "목표치",
+          sql.NVarChar,
+          !req.body.data[i].목표치 ? "" : req.body.data[i].목표치
+        )
+        .input(
+          "측정치",
+          sql.NVarChar,
+          !req.body.data[i].측정치 ? "" : req.body.data[i].측정치
+        )
+        .query(
+          "exec [QMES].[dbo].[MANAGE_KPI_PROD_INS_SP] @연월,@목표치,@측정치"
+        );
+    }
+    res.send("등록완료");
+  } catch (err) {
+    res.status(500);
+    res.send(err.message);
+  }
+});
+
 // 수정
 router.post("/edit", async (req, res) => {
   try {
@@ -105,39 +138,6 @@ router.post("/delete", async (req, res) => {
     res.send("삭제완료");
   } catch (err) {
     // console.log(err);
-    res.status(500);
-    res.send(err.message);
-  }
-});
-
-// 등록
-router.post("/insertExcel", async (req, res) => {
-  try {
-    const Pool = await pool;
-    for (var i = 0; i < req.body.data.length; i++) {
-      // select
-      await Pool.request()
-        .input(
-          "연월",
-          sql.NVarChar,
-          !req.body.data[i].연월 ? "" : req.body.data[i].연월
-        )
-        .input(
-          "목표치",
-          sql.NVarChar,
-          !req.body.data[i].목표치 ? "" : req.body.data[i].목표치
-        )
-        .input(
-          "측정치",
-          sql.NVarChar,
-          !req.body.data[i].측정치 ? "" : req.body.data[i].측정치
-        )
-        .query(
-          "exec [QMES].[dbo].[MANAGE_KPI_PROD_INS_SP] @연월,@목표치,@측정치"
-        );
-    }
-    res.send("등록완료");
-  } catch (err) {
     res.status(500);
     res.send(err.message);
   }
