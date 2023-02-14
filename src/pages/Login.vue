@@ -5,6 +5,21 @@ import logoUrl from "../assets/images/logo.png";
 import illustrationUrl from "../assets/images/illustration.png";
 import { FormInput, FormCheck } from "../base-components/Form";
 import Button from "../base-components/Button";
+import { ref } from "vue";
+import axios from "axios";
+
+const login_id = ref("");
+const login_pw = ref("");
+
+const loginButton = async () => {
+  try {
+    await axios.post("/api/login", { login_id, login_pw }).then((res) => {
+      console.log(res.data.value);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 </script>
 
 <template>
@@ -66,11 +81,13 @@ import Button from "../base-components/Button";
               <FormInput
                 type="text"
                 class="block px-4 py-3 intro-x login__input min-w-full xl:min-w-[350px]"
+                v-model="login_id"
                 placeholder="ID"
               />
               <FormInput
                 type="password"
                 class="block px-4 py-3 mt-4 intro-x login__input min-w-full xl:min-w-[350px]"
+                v-model="login_pw"
                 placeholder="Password"
               />
             </div>
@@ -79,6 +96,7 @@ import Button from "../base-components/Button";
               <Button
                 variant="primary"
                 class="w-full px-4 py-3 align-top xl:w-32 xl:mr-3"
+                @click="loginButton()"
               >
                 로그인
               </Button>
