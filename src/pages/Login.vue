@@ -7,17 +7,32 @@ import { FormInput, FormCheck } from "../base-components/Form";
 import Button from "../base-components/Button";
 import { ref } from "vue";
 import axios from "axios";
+import router from "../router";
+
+import { useCookies } from "vue3-cookies";
+import { useStore } from "vuex";
+const { cookies } = useCookies();
 
 const login_id = ref("");
 const login_pw = ref("");
 
-const loginButton = async () => {
+//@@ 로그인 처리
+const login = async () => {
   try {
-    await axios.post("/api/login", { login_id, login_pw }).then((res) => {
-      console.log(res.data.value);
-    });
-  } catch (err) {
-    console.log(err);
+    await axios
+      .post("/api/auth/login", {
+        login_id: login_id.value,
+        login_pw: login_pw.value,
+      })
+      .then((res) => {
+        console.log(res);
+        router.push({ path: "/" });
+      })
+      .catch((err) => {
+        alert(err.response.data);
+      });
+  } catch (err: any) {
+    alert(err);
   }
 };
 </script>
@@ -96,7 +111,7 @@ const loginButton = async () => {
               <Button
                 variant="primary"
                 class="w-full px-4 py-3 align-top xl:w-32 xl:mr-3"
-                @click="loginButton()"
+                @click="login()"
               >
                 로그인
               </Button>
