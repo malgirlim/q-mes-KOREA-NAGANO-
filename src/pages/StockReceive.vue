@@ -610,7 +610,7 @@ const table_width = [
                 :style="table_width[2]"
               >
                 <div>
-                  {{ moment(todo.입고일시).format("YYYY-MM-DD HH:mm") }}
+                  {{ moment(todo.입고일시).format("YYYY-MM-DD") }}
                 </div>
               </Table.Td>
               <Table.Td
@@ -701,7 +701,7 @@ const table_width = [
           <FormLabel htmlFor="vertical-form-1">입고일시</FormLabel>
           <FormInput
             id="vertical-form-1"
-            type="text"
+            type="date"
             v-model="insertModalData.입고일시"
             placeholder=""
           />
@@ -783,10 +783,9 @@ const table_width = [
           <FormLabel htmlFor="vertical-form-1">입고일시</FormLabel>
           <FormInput
             id="vertical-form-1"
-            type="text"
+            type="date"
             v-model="editModalData.입고일시"
             placeholder=""
-            readonly
           />
         </div>
         <div class="mt-3">
