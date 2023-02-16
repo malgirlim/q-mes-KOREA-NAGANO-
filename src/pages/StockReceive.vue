@@ -73,21 +73,14 @@ let insertModalData: StockReceive; // 등록할 변수
 // 등록 함수
 const insertDataFunction = () => {
   if ((insertModalData.NO ? insertModalData.NO : 0) > 0) {
-    insertModalData.품목코드 = product.dataAll.value.filter(
+    let pf = product.dataAll.value.filter(
       (c) => c.NO === insertModalData.NO
-    )[0].품목코드;
-    insertModalData.품명 = product.dataAll.value.filter(
-      (c) => c.NO === insertModalData.NO
-    )[0].품명;
-    insertModalData.거래처명 = product.dataAll.value.filter(
-      (c) => c.NO === insertModalData.NO
-    )[0].거래처명;
-    insertModalData.규격 = product.dataAll.value.filter(
-      (c) => c.NO === insertModalData.NO
-    )[0].규격;
-    insertModalData.단위 = product.dataAll.value.filter(
-      (c) => c.NO === insertModalData.NO
-    )[0].단위;
+    )[0];
+    insertModalData.품목코드 = pf.품목코드;
+    insertModalData.품명 = pf.품명;
+    insertModalData.거래처명 = pf.거래처명;
+    insertModalData.규격 = pf.규격;
+    insertModalData.단위 = pf.단위;
     insertModalData.입고일시 = moment().format("YYYY-MM-DD HH:mm:ss");
     insertData(insertModalData);
     setInsertModal(false);
@@ -614,31 +607,57 @@ const table_width = [
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[3]"
               >
-                <div>{{ todo.품목코드 }}</div>
+                <div>
+                  {{ todo.품목코드 }}
+                </div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[4]"
               >
-                <div>{{ todo.거래처명 }}</div>
+                <div>
+                  {{
+                    product.dataAll.value.filter(
+                      (c) => c.품목코드 === todo.품목코드
+                    )[0]?.거래처명
+                  }}
+                </div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[5]"
               >
-                <div>{{ todo.품명 }}</div>
+                <div>
+                  {{
+                    product.dataAll.value.filter(
+                      (c) => c.품목코드 === todo.품목코드
+                    )[0]?.품명
+                  }}
+                </div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-5 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[6]"
               >
-                <div>{{ todo.규격 }}</div>
+                <div>
+                  {{
+                    product.dataAll.value.filter(
+                      (c) => c.품목코드 === todo.품목코드
+                    )[0]?.규격
+                  }}
+                </div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[7]"
               >
-                <div>{{ todo.단위 }}</div>
+                <div>
+                  {{
+                    product.dataAll.value.filter(
+                      (c) => c.품목코드 === todo.품목코드
+                    )[0]?.단위
+                  }}
+                </div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
