@@ -212,18 +212,13 @@ const onFileImport = (event: any) => {
       file_data.value.forEach((fd: any) => {
         if (isNaN(Date.parse(String(fd.출고일시))))
           fd.출고일시 = moment().format("YYYY-MM-DD HH:mm:ss");
-        fd.품명 = product.dataAll.value.filter(
+        let dataFil = product.dataAll.value.filter(
           (c) => c.품목코드 === fd.품목코드
-        )[0].품명;
-        fd.거래처명 = product.dataAll.value.filter(
-          (c) => c.품목코드 === fd.품목코드
-        )[0].거래처명;
-        fd.규격 = product.dataAll.value.filter(
-          (c) => c.품목코드 === fd.품목코드
-        )[0].규격;
-        fd.단위 = product.dataAll.value.filter(
-          (c) => c.품목코드 === fd.품목코드
-        )[0].단위;
+        )[0];
+        fd.품명 = dataFil.품명 ? dataFil.품명 : "";
+        fd.거래처명 = dataFil.거래처명 ? dataFil.거래처명 : "";
+        fd.규격 = dataFil.규격 ? dataFil.규격 : "";
+        fd.단위 = dataFil.단위 ? dataFil.단위 : "";
       });
       await insertExcel(file_data.value);
       search();
