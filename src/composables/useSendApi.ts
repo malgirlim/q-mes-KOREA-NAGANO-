@@ -76,6 +76,9 @@ export function useSendApi<T>(
       await axios.post(url + "/insertAll", { data });
     } catch (err) {
       console.log(err);
+      alert(
+        "엑셀 업로드에 실패했습니다. 기준정보에 등록되지 않은 품목코드가 들어있거나 잘못된 데이터가 없는지 확인해주세요"
+      );
     }
   };
 
