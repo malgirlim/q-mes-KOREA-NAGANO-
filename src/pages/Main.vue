@@ -339,7 +339,7 @@ const lineChartMonth = [
                         <Tippy
                           as="div"
                           :class="[
-                            'cursor-pointerpy-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium',
+                            'cursor-pointer py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium',
                             {
                               'bg-success':
                                 monitor_kpi_prod_data_calculate >= 0,
