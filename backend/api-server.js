@@ -4,7 +4,7 @@ const port = 3000;
 
 const memoRouter = require("./router/memos");
 
-const loginRouter = require("./router/login");
+const authRouter = require("./router/auth");
 
 const masterRouter = require("./router/masterRouter");
 const stockRouter = require("./router/stockRouter");
@@ -13,8 +13,8 @@ const monitorRouter = require("./router/monitorRouter");
 // 테스트 - router/memos.js
 app.use("/api/memos", memoRouter);
 
-// 로그인 - router/login.js
-app.use("/api/login", loginRouter);
+// 로그인 - router/auth.js
+app.use("/api/auth", authRouter);
 
 // 기준정보 - router/master/masterRouter.js
 app.use("/api/master", masterRouter);

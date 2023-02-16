@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-// import { useCookies } from "vue3-cookies";
-// const { cookies } = useCookies();
+import { useCookies } from "vue3-cookies";
+const { cookies } = useCookies();
 
 import SideMenu from "../layouts/SideMenu/SideMenu.vue";
 import SimpleMenu from "../layouts/SimpleMenu/SimpleMenu.vue";
@@ -23,6 +23,7 @@ import MonitorBad from "../pages/MonitorBad.vue";
 import MonitorSafe from "../pages/MonitorSafe.vue";
 import MonitorKpiProd from "../pages/MonitorKpiProd.vue";
 import MonitorKpiStock from "../pages/MonitorKpiStock.vue";
+import axios from "axios";
 
 const routes = [
   {

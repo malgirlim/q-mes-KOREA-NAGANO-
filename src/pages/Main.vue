@@ -86,7 +86,7 @@ onMounted(async () => {
   await loadData(); // ##### 가져올 데이터 참고
   setInterval(async () => {
     loadData();
-  }, 10000);
+  }, 60000);
 
   setInterval(() => {
     now.value = moment().format("YYYY-MM-DD HH:mm:ss");

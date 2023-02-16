@@ -230,7 +230,7 @@ const onFileImport = (event: any) => {
         file_data.value = XLSX.utils.sheet_to_json(wb.Sheets[sheetName]); // ,{header: 1} key 값까지 가져옴
       });
       file_data.value.forEach((fd: any) => {
-        if (isNaN(Date.parse(fd.불량일시.toLocaleString())))
+        if (isNaN(Date.parse(String(fd.불량일시))))
           fd.불량일시 = moment().format("YYYY-MM-DD HH:mm:ss");
         fd.품명 = product.dataAll.value.filter(
           (c) => c.품목코드 === fd.품목코드
