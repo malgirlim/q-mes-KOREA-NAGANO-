@@ -215,10 +215,12 @@ const onFileImport = (event: any) => {
         let dataFil = product.dataAll.value.filter(
           (c) => c.품목코드 === fd.품목코드
         )[0];
-        fd.품명 = dataFil.품명 != undefined ? dataFil.품명 : "";
-        fd.거래처명 = dataFil.거래처명 != undefined ? dataFil.거래처명 : "";
-        fd.규격 = dataFil.규격 != undefined ? dataFil.규격 : "";
-        fd.단위 = dataFil.단위 != undefined ? dataFil.단위 : "";
+        if (dataFil != undefined) {
+          fd.품명 = dataFil.품명;
+          fd.거래처명 = dataFil.거래처명;
+          fd.규격 = dataFil.규격;
+          fd.단위 = dataFil.단위;
+        }
       });
       await insertExcel(file_data.value);
       search();
