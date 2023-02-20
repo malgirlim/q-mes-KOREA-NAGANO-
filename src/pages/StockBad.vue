@@ -78,13 +78,22 @@ let insertModalData: StockBad; // 등록할 변수
 // 등록 함수
 const insertDataFunction = () => {
   if ((insertModalData.NO ? insertModalData.NO : 0) > 0) {
-    let pf = product.dataAll.value.filter(
+    insertModalData.품목코드 = product.dataAll.value.filter(
       (c) => c.NO === insertModalData.NO
-    )[0];
-    insertModalData.품목코드 = pf.품목코드;
-    insertModalData.품명 = pf.품명;
-    insertModalData.규격 = pf.규격;
-    insertModalData.단위 = pf.단위;
+    )[0].품목코드;
+    insertModalData.품명 = product.dataAll.value.filter(
+      (c) => c.NO === insertModalData.NO
+    )[0].품명;
+    insertModalData.거래처명 = product.dataAll.value.filter(
+      (c) => c.NO === insertModalData.NO
+    )[0].거래처명;
+    insertModalData.규격 = product.dataAll.value.filter(
+      (c) => c.NO === insertModalData.NO
+    )[0].규격;
+    insertModalData.단위 = product.dataAll.value.filter(
+      (c) => c.NO === insertModalData.NO
+    )[0].단위;
+    insertModalData.불량일시 = moment().format("YYYY-MM-DD HH:mm:ss");
     console.log(insertModalData);
     insertData(insertModalData);
     setInsertModal(false);
@@ -130,13 +139,6 @@ const editModal = ref(false);
 const setEditModal = (value: boolean) => {
   editModal.value = value;
   search();
-  let pfe = product.dataAll.value.filter(
-    (c) => c.품목코드 === editModalData.품목코드
-  )[0];
-  editModalData.품명 = pfe?.품명;
-  editModalData.거래처명 = pfe?.거래처명;
-  editModalData.규격 = pfe?.규격;
-  editModalData.단위 = pfe?.단위;
 };
 let editModalData: StockBad; // 수정할 변수
 
@@ -228,17 +230,20 @@ const onFileImport = (event: any) => {
         file_data.value = XLSX.utils.sheet_to_json(wb.Sheets[sheetName]); // ,{header: 1} key 값까지 가져옴
       });
       file_data.value.forEach((fd: any) => {
-        if (isNaN(Date.parse(String(fd.불량일시))))
+        if (isNaN(Date.parse(fd.불량일시.toLocaleString())))
           fd.불량일시 = moment().format("YYYY-MM-DD HH:mm:ss");
-        let dataFil = product.dataAll.value.filter(
+        fd.품명 = product.dataAll.value.filter(
           (c) => c.품목코드 === fd.품목코드
-        )[0];
-        if (dataFil != undefined) {
-          fd.품명 = dataFil.품명;
-          fd.거래처명 = dataFil.거래처명;
-          fd.규격 = dataFil.규격;
-          fd.단위 = dataFil.단위;
-        }
+        )[0].품명;
+        fd.거래처명 = product.dataAll.value.filter(
+          (c) => c.품목코드 === fd.품목코드
+        )[0].거래처명;
+        fd.규격 = product.dataAll.value.filter(
+          (c) => c.품목코드 === fd.품목코드
+        )[0].규격;
+        fd.단위 = product.dataAll.value.filter(
+          (c) => c.품목코드 === fd.품목코드
+        )[0].단위;
       });
       await insertExcel(file_data.value);
       search();
@@ -543,12 +548,12 @@ const table_width = [
               >
                 품목코드
               </Table.Th>
-              <Table.Th
+              <!-- <Table.Th
                 class="border-b-0 whitespace-nowrap"
                 :style="table_width[4]"
               >
                 거래처명
-              </Table.Th>
+              </Table.Th>-->
               <Table.Th
                 class="border-b-0 whitespace-nowrap"
                 :style="table_width[5]"
@@ -593,7 +598,6 @@ const table_width = [
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
-                id="edit"
                 :style="table_width[12]"
               >
                 편집
@@ -636,64 +640,38 @@ const table_width = [
                 :style="table_width[2]"
               >
                 <div>
-                  {{ moment(todo.불량일시).format("YYYY-MM-DD") }}
+                  {{ moment(todo.불량일시).format("YYYY-MM-DD HH:mm") }}
                 </div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[3]"
               >
-                <div>
-                  {{ todo.품목코드 }}
-                </div>
+                <div>{{ todo.품목코드 }}</div>
               </Table.Td>
-              <Table.Td
+              <!-- <Table.Td
                 class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[4]"
               >
-                <div>
-                  {{
-                    product.dataAll.value.filter(
-                      (c) => c.품목코드 === todo.품목코드
-                    )[0]?.거래처명
-                  }}
-                </div>
-              </Table.Td>
+                <div>{{ todo.거래처명 }}</div>
+              </Table.Td>-->
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[5]"
               >
-                <div>
-                  {{
-                    product.dataAll.value.filter(
-                      (c) => c.품목코드 === todo.품목코드
-                    )[0]?.품명
-                  }}
-                </div>
+                <div>{{ todo.품명 }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-5 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[6]"
               >
-                <div>
-                  {{
-                    product.dataAll.value.filter(
-                      (c) => c.품목코드 === todo.품목코드
-                    )[0]?.규격
-                  }}
-                </div>
+                <div>{{ todo.규격 }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[7]"
               >
-                <div>
-                  {{
-                    product.dataAll.value.filter(
-                      (c) => c.품목코드 === todo.품목코드
-                    )[0]?.단위
-                  }}
-                </div>
+                <div>{{ todo.단위 }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -722,7 +700,6 @@ const table_width = [
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
                 :style="table_width[12]"
-                id="edit"
               >
                 <div class="flex items-center justify-center text-danger">
                   <a
@@ -730,8 +707,8 @@ const table_width = [
                     href="#"
                     @click="
                       () => {
-                        editModalData = todo;
                         setEditModal(true);
+                        editModalData = todo;
                       }
                     "
                   >
@@ -773,7 +750,7 @@ const table_width = [
           <FormLabel htmlFor="vertical-form-1">불량일시</FormLabel>
           <FormInput
             id="vertical-form-1"
-            type="date"
+            type="text"
             v-model="insertModalData.불량일시"
             placeholder=""
           />
@@ -889,9 +866,10 @@ const table_width = [
           <FormLabel htmlFor="vertical-form-1">불량일시</FormLabel>
           <FormInput
             id="vertical-form-1"
-            type="date"
+            type="text"
             v-model="editModalData.불량일시"
             placeholder=""
+            readonly
           />
         </div>
         <div class="mt-3">

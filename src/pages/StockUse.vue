@@ -522,12 +522,12 @@ const table_width = [
               >
                 품목코드
               </Table.Th>
-              <Table.Th
+              <!--<Table.Th
                 class="border-b-0 whitespace-nowrap"
                 :style="table_width[4]"
               >
                 거래처명
-              </Table.Th>
+              </Table.Th>-->
               <Table.Th
                 class="border-b-0 whitespace-nowrap"
                 :style="table_width[5]"
@@ -611,7 +611,7 @@ const table_width = [
               >
                 <div>{{ todo.품목코드 }}</div>
               </Table.Td>
-              <Table.Td
+              <!-- <Table.Td
                 class="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[4]"
               >
@@ -622,7 +622,7 @@ const table_width = [
                     )[0]?.거래처명
                   }}
                 </div>
-              </Table.Td>
+              </Table.Td>-->
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-50 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[5]"
