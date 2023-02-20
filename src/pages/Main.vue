@@ -274,7 +274,7 @@ const lineChartMonth = [
                 <Lucide icon="RefreshCcw" class="w-4 h-4 mr-3" /> 새로고침
               </a>
             </div>
-            <div class="grid grid-cols-12 gap-6 mt-5">
+            <div class="grid grid-cols-9 gap-6 mt-5">
               <!--<div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
                 <div
                   :class="[
@@ -539,7 +539,7 @@ const lineChartMonth = [
   <!-- BEGIN: Chart -->
   <div>
     <div class="mt-10 intro-y"></div>
-    <!--실시간 생산량 차트-->
+    <!--실시간 생산량 차트
     <div v-if="bottom == bottom_list[0]" class="p-5 mt-12 intro-y box sm:mt-5">
       <div class="flex flex-col md:flex-row md:items-center">
         <div class="flex">
@@ -581,9 +581,9 @@ const lineChartMonth = [
           class="mt-5 -mb-6"
         />
       </div>
-      <!-- div><LineChart1 :height="300" class="mt-5 -mb-6" /></div -->
+     
     </div>
-    <!--KPI 시간당 생산량 차트-->
+    KPI 시간당 생산량 차트-->
     <div v-if="bottom == bottom_list[1]" class="p-5 mt-12 intro-y box sm:mt-5">
       <div class="flex flex-col md:flex-row md:items-center">
         <div class="flex">
@@ -607,7 +607,7 @@ const lineChartMonth = [
         </div>
       </div>
       <div class="text-lg font-medium text-center -mt-10">
-        KPI - 월 평균 시간당 생산량
+        KPI - 월 평균 시간당 생산량(UPH)
       </div>
 
       <div
@@ -617,7 +617,7 @@ const lineChartMonth = [
           :height="300"
           :data_labels="monitor_kpi_prod_data_연월"
           :data_set="{
-            target_label: '측정치',
+            target_label: '시간당 생산량(UPH)',
             target_data: monitor_kpi_prod_data_측정치,
             output_label: '목표치',
             output_data: monitor_kpi_prod_data_목표치,
@@ -634,24 +634,20 @@ const lineChartMonth = [
           <div>
             <div
               class="text-lg font-medium text-primary dark:text-slate-300 xl:text-xl"
-            >
-              310개
-            </div>
-            <div class="mt-0.5 text-slate-500">이번 달</div>
+            ></div>
+            <div class="mt-0.5 text-slate-500"></div>
           </div>
           <div
             class="w-px h-12 mx-4 border border-r border-dashed border-slate-200 dark:border-darkmode-300 xl:mx-5"
           ></div>
           <div>
-            <div class="text-lg font-medium text-slate-500 xl:text-xl">
-              320개
-            </div>
-            <div class="mt-0.5 text-slate-500">지난 달</div>
+            <div class="text-lg font-medium text-slate-500 xl:text-xl"></div>
+            <div class="mt-0.5 text-slate-500"></div>
           </div>
         </div>
       </div>
       <div class="text-lg font-medium text-center -mt-10">
-        KPI / 월간 재고 비용 절감률
+        KPI / 월간 재고 비용 절감률(%)
       </div>
       <div
         v-memo="[monitor_kpi_stock_data_절감률, monitor_kpi_stock_data_절감률]"
@@ -660,10 +656,10 @@ const lineChartMonth = [
           :height="300"
           :data_labels="monitor_kpi_stock_data_연월"
           :data_set="{
-            target_label: '절감률',
+            target_label: '절감률(%)',
             target_data: monitor_kpi_stock_data_절감률,
-            output_label: '절감률',
-            output_data: monitor_kpi_stock_data_절감률,
+            output_label: '목표치',
+            output_data: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
           }"
           class="mt-5 -mb-6"
         />
@@ -678,19 +674,15 @@ const lineChartMonth = [
           <div>
             <div
               class="text-lg font-medium text-primary dark:text-slate-300 xl:text-xl"
-            >
-              10개
-            </div>
-            <div class="mt-0.5 text-slate-500">이번 달</div>
+            ></div>
+            <div class="mt-0.5 text-slate-500"></div>
           </div>
           <div
             class="w-px h-12 mx-4 border border-r border-dashed border-slate-200 dark:border-darkmode-300 xl:mx-5"
           ></div>
           <div>
-            <div class="text-lg font-medium text-slate-500 xl:text-xl">
-              30개
-            </div>
-            <div class="mt-0.5 text-slate-500">지난 달</div>
+            <div class="text-lg font-medium text-slate-500 xl:text-xl"></div>
+            <div class="mt-0.5 text-slate-500"></div>
           </div>
         </div>
       </div>
