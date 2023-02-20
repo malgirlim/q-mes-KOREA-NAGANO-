@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
     const Pool = await pool;
     // select
     const result = await Pool.request().query(
-      "exec [QMES].[dbo].[STATUS_INVENTORY_READ_SP] '전체','','010101','990101'"
+      "exec [QMES].[dbo].[STATUS_INVENTORY2_READ_SP] '전체','','010101','990101'"
     );
     res.send(JSON.stringify(result.recordset));
   } catch (err) {
@@ -43,7 +43,7 @@ router.post("/", async (req, res) => {
       .input("startDate", sql.NVarChar, stardDate)
       .input("endDate", sql.NVarChar, endDate)
       .query(
-        "exec [QMES].[dbo].[STATUS_INVENTORY_READ_SP] @key,@input,@startDate,@endDate"
+        "exec [QMES].[dbo].[STATUS_INVENTORY2_READ_SP] @key,@input,@startDate,@endDate"
       );
     res.send(JSON.stringify(result.recordset));
   } catch (err) {
