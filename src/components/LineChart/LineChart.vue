@@ -102,7 +102,7 @@ const options = computed<ChartOptions>(() => {
         title: {
           color: "red",
           display: true,
-          text: "측정치",
+          text: props.data_set.target_label,
         },
         ticks: {
           font: {
