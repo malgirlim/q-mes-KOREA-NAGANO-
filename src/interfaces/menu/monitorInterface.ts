@@ -2,6 +2,27 @@
 export interface MonitorStock {
   NO?: number;
   품목코드?: string;
+  품명?: string;
+  규격?: string;
+  단위?: string;
+  기초재고_수량?: number;
+  기초재고_평균단가?: number;
+  기초재고_금액?: number;
+  당기입고_수량?: number;
+  당기입고_평균단가?: number;
+  당기입고_금액?: number;
+  당기출고_수량?: number;
+  당기출고_평균단가?: number;
+  당기출고_금액?: number;
+  기말재고_수량?: number;
+  기말재고_평균단가?: number;
+  기말재고_금액?: number;
+}
+
+/* 양식 변경 백업
+export interface MonitorStock {
+  NO?: number;
+  품목코드?: string;
   거래처명?: string;
   품명?: string;
   규격?: string;
@@ -15,6 +36,7 @@ export interface MonitorStock {
   원가?: number;
   재고금액?: number;
 }
+*/
 
 // 재고 조회 - 원자재 불량 조회
 export interface MonitorBad {

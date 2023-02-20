@@ -340,73 +340,49 @@ const table_width = [
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[6]"
               >
-                수량
+                재고수
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[7]"
               >
-                평균단가
+                안전재고수
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[8]"
               >
-                금액
+                부족재고수
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[9]"
               >
-                수량
+                입고수
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[10]"
               >
-                평균단가
+                출고수
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[11]"
               >
-                금액
+                불량수
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[12]"
               >
-                수량
+                원가
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[13]"
               >
-                평균단가
-              </Table.Th>
-              <Table.Th
-                class="text-center border-b-0 whitespace-nowrap"
-                :style="table_width[14]"
-              >
-                금액
-              </Table.Th>
-              <Table.Th
-                class="text-center border-b-0 whitespace-nowrap"
-                :style="table_width[15]"
-              >
-                수량
-              </Table.Th>
-              <Table.Th
-                class="text-center border-b-0 whitespace-nowrap"
-                :style="table_width[16]"
-              >
-                평균단가
-              </Table.Th>
-              <Table.Th
-                class="text-center border-b-0 whitespace-nowrap"
-                :style="table_width[17]"
-              >
-                금액
+                재고금액
               </Table.Th>
             </Table.Tr>
           </Table.Thead>
@@ -459,10 +435,15 @@ const table_width = [
                 <div>{{ todo.단위?.toLocaleString() }}</div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-                :style="table_width[5]"
+                :class="[
+                  'first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]',
+                  {
+                    'text-danger': (todo.부족재고수 ? todo.부족재고수 : 0) > 0,
+                  },
+                ]"
+                :style="table_width[6]"
               >
-                <div>{{ todo.단위?.toLocaleString() }}</div>
+                <div>{{ todo.재고수?.toLocaleString() }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -504,30 +485,6 @@ const table_width = [
                 :style="table_width[12]"
               >
                 <div>{{ todo.원가?.toLocaleString() }}</div>
-              </Table.Td>
-              <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-                :style="table_width[13]"
-              >
-                <div>{{ todo.재고금액?.toLocaleString() }}</div>
-              </Table.Td>
-              <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-                :style="table_width[13]"
-              >
-                <div>{{ todo.재고금액?.toLocaleString() }}</div>
-              </Table.Td>
-              <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-                :style="table_width[13]"
-              >
-                <div>{{ todo.재고금액?.toLocaleString() }}</div>
-              </Table.Td>
-              <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-                :style="table_width[13]"
-              >
-                <div>{{ todo.재고금액?.toLocaleString() }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"

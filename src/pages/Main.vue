@@ -275,7 +275,7 @@ const lineChartMonth = [
               </a>
             </div>
             <div class="grid grid-cols-12 gap-6 mt-5">
-              <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
+              <!--<div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
                 <div
                   :class="[
                     'relative zoom-in',
@@ -321,7 +321,7 @@ const lineChartMonth = [
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>-->
               <div class="col-span-9 sm:col-span-6 xl:col-span-3 intro-y">
                 <div
                   :class="[
