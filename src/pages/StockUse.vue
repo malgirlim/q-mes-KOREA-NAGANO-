@@ -118,7 +118,7 @@ const setEditModal = (value: boolean) => {
     (c) => c.품목코드 === editModalData.품목코드
   )[0];
   editModalData.품명 = pfe?.품명;
-  editModalData.거래처명 = pfe?.거래처명;
+  // editModalData.거래처명 = pfe?.거래처명;
   editModalData.규격 = pfe?.규격;
   editModalData.단위 = pfe?.단위;
 };
