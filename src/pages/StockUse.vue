@@ -78,10 +78,8 @@ const insertDataFunction = () => {
     )[0];
     insertModalData.품목코드 = pf.품목코드;
     insertModalData.품명 = pf.품명;
-    insertModalData.거래처명 = pf.거래처명;
     insertModalData.규격 = pf.규격;
     insertModalData.단위 = pf.단위;
-    insertModalData.출고일시 = moment().format("YYYY-MM-DD HH:mm:ss");
     insertData(insertModalData);
     setInsertModal(false);
     search();
@@ -118,7 +116,6 @@ const setEditModal = (value: boolean) => {
     (c) => c.품목코드 === editModalData.품목코드
   )[0];
   editModalData.품명 = pfe?.품명;
-  editModalData.거래처명 = pfe?.거래처명;
   editModalData.규격 = pfe?.규격;
   editModalData.단위 = pfe?.단위;
 };

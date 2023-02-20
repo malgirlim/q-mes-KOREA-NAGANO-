@@ -10,6 +10,7 @@ export interface StockReceive {
   규격?: string;
   단위?: string;
   입고수?: number;
+  입고금액?: number;
   비고?: string;
 }
 

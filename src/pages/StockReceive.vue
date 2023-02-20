@@ -78,10 +78,8 @@ const insertDataFunction = () => {
     )[0];
     insertModalData.품목코드 = pf.품목코드;
     insertModalData.품명 = pf.품명;
-    insertModalData.거래처명 = pf.거래처명;
     insertModalData.규격 = pf.규격;
     insertModalData.단위 = pf.단위;
-    insertModalData.입고일시 = moment().format("YYYY-MM-DD HH:mm:ss");
     insertData(insertModalData);
     setInsertModal(false);
     search();
@@ -118,7 +116,6 @@ const setEditModal = (value: boolean) => {
     (c) => c.품목코드 === editModalData.품목코드
   )[0];
   editModalData.품명 = pfe?.품명;
-  editModalData.거래처명 = pfe?.거래처명;
   editModalData.규격 = pfe?.규격;
   editModalData.단위 = pfe?.단위;
 };
@@ -149,6 +146,7 @@ const printPage = (data: any) => {
       "규격",
       "단위",
       "입고수",
+      "입고금액",
       "비고",
     ],
     type: "json",
@@ -559,6 +557,12 @@ const table_width = [
               </Table.Th>
               <Table.Th
                 class="text-center border-b-0 whitespace-nowrap"
+                :style="table_width[8]"
+              >
+                입고금액
+              </Table.Th>
+              <Table.Th
+                class="text-center border-b-0 whitespace-nowrap"
                 :style="table_width[9]"
               >
                 비고
@@ -623,11 +627,7 @@ const table_width = [
                 :style="table_width[4]"
               >
                 <div>
-                  {{
-                    product.dataAll.value.filter(
-                      (c) => c.품목코드 === todo.품목코드
-                    )[0]?.거래처명
-                  }}
+                  {{ todo.거래처명 }}
                 </div>
               </Table.Td>
               <Table.Td
@@ -671,6 +671,12 @@ const table_width = [
                 :style="table_width[8]"
               >
                 <div>{{ todo.입고수?.toLocaleString() }}</div>
+              </Table.Td>
+              <Table.Td
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                :style="table_width[8]"
+              >
+                <div>{{ todo.입고금액?.toLocaleString() }}</div>
               </Table.Td>
               <Table.Td
                 class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -745,11 +751,29 @@ const table_width = [
           </select>
         </div>
         <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-3">거래처명</FormLabel>
+          <FormInput
+            id="vertical-form-2"
+            type="text"
+            v-model="insertModalData.거래처명"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
           <FormLabel htmlFor="vertical-form-7">입고수</FormLabel>
           <FormInput
             id="vertical-form-7"
             type="text"
             v-model="insertModalData.입고수"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-7">입고금액</FormLabel>
+          <FormInput
+            id="vertical-form-7"
+            type="text"
+            v-model="insertModalData.입고금액"
             placeholder=""
           />
         </div>
@@ -828,7 +852,6 @@ const table_width = [
             type="text"
             v-model="editModalData.거래처명"
             placeholder=""
-            readonly
           />
         </div>
         <div class="mt-3">
@@ -867,6 +890,15 @@ const table_width = [
             id="vertical-form-7"
             type="text"
             v-model="editModalData.입고수"
+            placeholder=""
+          />
+        </div>
+        <div class="mt-3">
+          <FormLabel htmlFor="vertical-form-7">입고금액</FormLabel>
+          <FormInput
+            id="vertical-form-7"
+            type="text"
+            v-model="editModalData.입고금액"
             placeholder=""
           />
         </div>

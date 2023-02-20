@@ -95,12 +95,17 @@ router.post("/insert", async (req, res) => {
         !req.body.data.입고수 ? 0 : req.body.data.입고수
       )
       .input(
+        "입고금액",
+        sql.Int,
+        !req.body.data.입고금액 ? 0 : req.body.data.입고금액
+      )
+      .input(
         "비고",
         sql.NVarChar,
         !req.body.data.비고 ? "" : req.body.data.비고
       )
       .query(
-        "exec [QMES].[dbo].[MANAGE_ITEM_RECEIVE_INS_SP] @입고일시,@품목코드,@거래처명,@품명,@규격,@단위,@입고수,@비고"
+        "exec [QMES].[dbo].[MANAGE_ITEM_RECEIVE_INS_SP] @입고일시,@품목코드,@거래처명,@품명,@규격,@단위,@입고수,@입고금액,@비고"
       );
     res.send("등록완료");
   } catch (err) {
@@ -123,9 +128,10 @@ router.post("/edit", async (req, res) => {
       .input("규격", sql.NVarChar, req.body.data.규격)
       .input("단위", sql.NVarChar, req.body.data.단위)
       .input("입고수", sql.Int, req.body.data.입고수)
+      .input("입고금액", sql.Int, req.body.data.입고금액)
       .input("비고", sql.NVarChar, req.body.data.비고)
       .query(
-        "exec [QMES].[dbo].[MANAGE_ITEM_RECEIVE_UDT_SP] @기본키,@입고일시,@품목코드,@거래처명,@품명,@규격,@단위,@입고수,@비고"
+        "exec [QMES].[dbo].[MANAGE_ITEM_RECEIVE_UDT_SP] @기본키,@입고일시,@품목코드,@거래처명,@품명,@규격,@단위,@입고수,@입고금액,@비고"
       );
     res.send("수정완료");
   } catch (err) {
@@ -196,12 +202,17 @@ router.post("/insertAll", async (req, res) => {
           !req.body.data[i].입고수 ? 0 : req.body.data[i].입고수
         )
         .input(
+          "입고수",
+          sql.Int,
+          !req.body.data[i].입고금액 ? 0 : req.body.data[i].입고금액
+        )
+        .input(
           "비고",
           sql.NVarChar,
           !req.body.data[i].비고 ? "" : req.body.data[i].비고
         )
         .query(
-          "exec [QMES].[dbo].[MANAGE_ITEM_RECEIVE_INS_SP] @입고일시,@품목코드,@거래처명,@품명,@규격,@단위,@입고수,@비고"
+          "exec [QMES].[dbo].[MANAGE_ITEM_RECEIVE_INS_SP] @입고일시,@품목코드,@거래처명,@품명,@규격,@단위,@입고수,@입고금액,@비고"
         );
     }
     res.send("등록완료");

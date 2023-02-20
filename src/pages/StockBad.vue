@@ -83,10 +83,8 @@ const insertDataFunction = () => {
     )[0];
     insertModalData.품목코드 = pf.품목코드;
     insertModalData.품명 = pf.품명;
-    insertModalData.거래처명 = pf.거래처명;
     insertModalData.규격 = pf.규격;
     insertModalData.단위 = pf.단위;
-    insertModalData.불량일시 = moment().format("YYYY-MM-DD HH:mm:ss");
     console.log(insertModalData);
     insertData(insertModalData);
     setInsertModal(false);
