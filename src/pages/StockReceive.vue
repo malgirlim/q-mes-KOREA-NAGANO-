@@ -215,7 +215,7 @@ const onFileImport = (event: any) => {
         )[0];
         if (dataFil != undefined) {
           fd.품명 = dataFil.품명;
-          fd.거래처명 = dataFil.거래처명;
+          // fd.거래처명 = dataFil.거래처명;
           fd.규격 = dataFil.규격;
           fd.단위 = dataFil.단위;
         }
