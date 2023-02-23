@@ -231,8 +231,9 @@ const table_width2 = [
             >
               <option>10</option>
               <option>25</option>
-              <option>35</option>
               <option>50</option>
+              <option>100</option>
+              <option :value="dataCount">전체</option>
             </FormSelect>
             <!-- END: Pagination Pages-->
           </div>
