@@ -32,6 +32,7 @@ const url = "/api/monitor/stock";
 const {
   datas,
   dataAll,
+  dataSearchAll,
   dataCount,
   datasAreLoading,
   loadDatas,
@@ -612,7 +613,7 @@ const table_width = [
           class="w-38 mr-3"
           @click="
             () => {
-              exportFile(dataAll);
+              exportFile(dataSearchAll);
               setExcelExportModal(false);
             }
           "

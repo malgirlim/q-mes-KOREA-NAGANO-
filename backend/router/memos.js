@@ -40,7 +40,7 @@ router.post("/", async (req, res) => {
         ITEM_SKU AS content, \
         ITEM_NAME AS name, \
         ITEM_SIZE AS size, \
-        IR.입고수 - ID.출고수 AS stock, \
+        COALESCE(IR.입고수 - ID.출고수,0) AS stock, \
         1 AS number \
       FROM [QINNOTEK].[dbo].[MASTER_ITEM_TB] AS ITEM \
       LEFT JOIN \
