@@ -9,6 +9,7 @@ export function useSendApi<T>(
 ) {
   const datas: Ref<T[]> = ref([]); // 인터페이스 T 형식에 맞는 데이터를 가져올 공간 BUT, 페이징갯수에 맞는 데이터만 등록됨
   const dataAll: Ref<T[]> = ref([]); // 인터페이스 T 형식에 맞는 데이터를 가져올 공간 모든 데이터 등록됨
+  const dataSearchAll: Ref<T[]> = ref([]); // 인터페이스 T 형식에 맞는 데이터를 가져올 공간 모든 데이터 등록됨
   const datasAreLoading = ref(false); // 데이터를 가져오면서 로딩하고 있는지 확인하는 변수
   const dataCount = ref(0); // 가져온 데이터의 갯수
 
@@ -34,6 +35,7 @@ export function useSendApi<T>(
     try {
       await axios.post(url, { date, key, input }).then((res) => {
         datas.value = res.data;
+        dataSearchAll.value = res.data;
         dataCount.value = datas.value.length;
       });
     } catch (err) {
@@ -89,6 +91,7 @@ export function useSendApi<T>(
   return {
     dataAll,
     datas: paginatedArray,
+    dataSearchAll,
     dataCount,
     datasAreLoading,
     loadDatas,

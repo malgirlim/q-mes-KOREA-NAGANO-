@@ -32,6 +32,7 @@ const url = "/api/monitor/stock";
 const {
   datas,
   dataAll,
+  dataSearchAll,
   dataCount,
   datasAreLoading,
   loadDatas,
@@ -498,19 +499,19 @@ const table_width = [
                 <div>{{ todo.단위 }}</div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-light border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[6]"
               >
                 <div>{{ todo.기초재고_수량?.toLocaleString() }}</div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-light border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[7]"
               >
                 <div>{{ todo.기초재고_평균단가?.toLocaleString() }}</div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-light border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[8]"
               >
                 <div>{{ todo.기초재고_금액?.toLocaleString() }}</div>
@@ -534,19 +535,19 @@ const table_width = [
                 <div>{{ todo.당기입고_금액?.toLocaleString() }}</div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-light border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[12]"
               >
                 <div>{{ todo.당기출고_수량?.toLocaleString() }}</div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-light border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[13]"
               >
                 <div>{{ todo.당기출고_평균단가?.toLocaleString() }}</div>
               </Table.Td>
               <Table.Td
-                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
+                class="first:rounded-l-md last:rounded-r-md w-10 text-center bg-light border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
                 :style="table_width[13]"
               >
                 <div>{{ todo.당기출고_금액?.toLocaleString() }}</div>
@@ -612,7 +613,7 @@ const table_width = [
           class="w-38 mr-3"
           @click="
             () => {
-              exportFile(dataAll);
+              exportFile(dataSearchAll);
               setExcelExportModal(false);
             }
           "
