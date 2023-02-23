@@ -202,7 +202,7 @@ router.post("/insertAll", async (req, res) => {
           !req.body.data[i].입고수 ? 0 : req.body.data[i].입고수
         )
         .input(
-          "입고수",
+          "입고금액",
           sql.Int,
           !req.body.data[i].입고금액 ? 0 : req.body.data[i].입고금액
         )

@@ -20,6 +20,7 @@ export function useSendApi<T>(
       await axios.get(url).then((res) => {
         datas.value = res.data;
         dataAll.value = res.data;
+        dataSearchAll.value = res.data;
         dataCount.value = datas.value.length;
       });
     } catch (err) {
@@ -90,6 +91,7 @@ export function useSendApi<T>(
 
   return {
     dataAll,
+    dataSearchAll,
     datas: paginatedArray,
     dataSearchAll,
     dataCount,

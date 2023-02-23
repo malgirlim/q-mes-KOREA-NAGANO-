@@ -36,7 +36,33 @@ router.post("/", async (req, res) => {
     const result = await Pool.request()
       .input("content", sql.NVarChar, req.body.content)
       .query(
-        "SELECT ITEM_SKU AS content, ITEM_NAME AS name, ITEM_SIZE AS size, 1 AS number FROM [QINNOTEK].[dbo].[MASTER_ITEM_TB] WHERE ITEM_SKU = @content"
+        "SELECT \
+        ITEM_SKU AS content, \
+        ITEM_NAME AS name, \
+        ITEM_SIZE AS size, \
+        COALESCE(IR.입고수 - ID.출고수,0) AS stock, \
+        1 AS number \
+      FROM [QINNOTEK].[dbo].[MASTER_ITEM_TB] AS ITEM \
+      LEFT JOIN \
+      ( \
+        SELECT \
+          ITRE_ITEM_SKU, \
+          SUM(ITRE_AMOUNT * 1.0) AS 입고수 \
+        FROM [QINNOTEK].[dbo].[MANAGE_ITEM_RECEIVE_TB] \
+        WHERE ITRE_ITEM_SKU = @content \
+        GROUP BY ITRE_ITEM_SKU \
+      ) AS IR ON IR.ITRE_ITEM_SKU = ITEM.ITEM_SKU \
+      LEFT JOIN \
+      ( \
+        SELECT \
+          ITDE_ITEM_SKU, \
+          SUM(ITDE_AMOUNT * 1.0) AS 출고수 \
+        FROM [QINNOTEK].[dbo].[MANAGE_ITEM_DELIVER_TB] \
+        WHERE ITDE_ITEM_SKU = @content \
+        GROUP BY ITDE_ITEM_SKU \
+      ) AS ID ON ID.ITDE_ITEM_SKU = ITEM.ITEM_SKU \
+      WHERE ITEM_SKU = @content \
+      GROUP BY ITEM_SKU, ITEM_NAME, ITEM_SIZE, IR.입고수, ID.출고수"
       );
     // console.log(result.recordset);
     res.send(result.recordset);
