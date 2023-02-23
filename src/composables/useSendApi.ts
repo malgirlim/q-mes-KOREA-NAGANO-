@@ -93,7 +93,6 @@ export function useSendApi<T>(
     dataAll,
     dataSearchAll,
     datas: paginatedArray,
-    dataSearchAll,
     dataCount,
     datasAreLoading,
     loadDatas,
